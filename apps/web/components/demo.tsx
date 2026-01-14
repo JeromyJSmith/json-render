@@ -68,6 +68,7 @@ export function Demo() {
   const [streamLines, setStreamLines] = useState<string[]>([]);
   const [activeTab, setActiveTab] = useState<Tab>("json");
   const [simulationTree, setSimulationTree] = useState<UITree | null>(null);
+  const [isFullscreen, setIsFullscreen] = useState(false);
 
   // Use the library's useUIStream hook for real API calls
   const {
@@ -263,7 +264,7 @@ export function Demo() {
       <div className="grid lg:grid-cols-2 gap-4">
         {/* Tabbed code/stream/json panel */}
         <div>
-          <div className="flex gap-4 mb-2">
+          <div className="flex items-center gap-4 mb-2 h-6">
             {(["json", "stream", "code"] as const).map((tab) => (
               <button
                 key={tab}
@@ -306,7 +307,30 @@ export function Demo() {
 
         {/* Rendered output using json-render */}
         <div>
-          <div className="text-xs text-muted-foreground mb-2 font-mono">render</div>
+          <div className="flex items-center justify-between mb-2 h-6">
+            <div className="text-xs text-muted-foreground font-mono">render</div>
+            <button
+              onClick={() => setIsFullscreen(true)}
+              className="text-muted-foreground hover:text-foreground transition-colors"
+              aria-label="Maximize"
+            >
+              <svg
+                width="14"
+                height="14"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M8 3H5a2 2 0 0 0-2 2v3" />
+                <path d="M21 8V5a2 2 0 0 0-2-2h-3" />
+                <path d="M3 16v3a2 2 0 0 0 2 2h3" />
+                <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
+              </svg>
+            </button>
+          </div>
           <div className="border border-border rounded p-3 bg-background h-96 overflow-auto">
             {currentTree && currentTree.root ? (
               <div className="animate-in fade-in duration-200 w-full min-h-full flex items-center justify-center py-4">
@@ -328,6 +352,52 @@ export function Demo() {
           <Toaster position="bottom-right" />
         </div>
       </div>
+
+      {/* Fullscreen modal */}
+      {isFullscreen && (
+        <div className="fixed inset-0 z-50 bg-background flex flex-col">
+          <div className="flex items-center justify-between px-6 h-14 border-b border-border">
+            <div className="text-sm font-mono">render</div>
+            <button
+              onClick={() => setIsFullscreen(false)}
+              className="text-muted-foreground hover:text-foreground transition-colors p-1"
+              aria-label="Close"
+            >
+              <svg
+                width="20"
+                height="20"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M18 6L6 18" />
+                <path d="M6 6l12 12" />
+              </svg>
+            </button>
+          </div>
+          <div className="flex-1 overflow-auto p-6">
+            {currentTree && currentTree.root ? (
+              <div className="w-full min-h-full flex items-center justify-center">
+                <JSONUIProvider registry={demoRegistry as Parameters<typeof JSONUIProvider>[0]['registry']}>
+                  <Renderer
+                    tree={currentTree}
+                    registry={demoRegistry as Parameters<typeof Renderer>[0]['registry']}
+                    loading={isStreaming || isStreamingSimulation}
+                    fallback={fallbackComponent as Parameters<typeof Renderer>[0]['fallback']}
+                  />
+                </JSONUIProvider>
+              </div>
+            ) : (
+              <div className="h-full flex items-center justify-center text-muted-foreground/50 text-sm">
+                {isStreaming ? "generating..." : "waiting..."}
+              </div>
+            )}
+          </div>
+        </div>
+      )}
     </div>
   );
 }
