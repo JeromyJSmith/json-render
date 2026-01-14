@@ -307,19 +307,17 @@ export function Demo() {
         {/* Rendered output using json-render */}
         <div>
           <div className="text-xs text-muted-foreground mb-2 font-mono">render</div>
-          <div className="border border-border rounded p-3 bg-background h-96 overflow-auto flex flex-col">
+          <div className="border border-border rounded p-3 bg-background h-96 overflow-auto">
             {currentTree && currentTree.root ? (
-              <div className="animate-in fade-in duration-200 w-full flex flex-col items-center py-4">
-                <div className="my-auto">
-                  <JSONUIProvider registry={demoRegistry as Parameters<typeof JSONUIProvider>[0]['registry']}>
-                    <Renderer
-                      tree={currentTree}
-                      registry={demoRegistry as Parameters<typeof Renderer>[0]['registry']}
-                      loading={isStreaming || isStreamingSimulation}
-                      fallback={fallbackComponent as Parameters<typeof Renderer>[0]['fallback']}
-                    />
-                  </JSONUIProvider>
-                </div>
+              <div className="animate-in fade-in duration-200 w-full min-h-full flex items-center justify-center py-4">
+                <JSONUIProvider registry={demoRegistry as Parameters<typeof JSONUIProvider>[0]['registry']}>
+                  <Renderer
+                    tree={currentTree}
+                    registry={demoRegistry as Parameters<typeof Renderer>[0]['registry']}
+                    loading={isStreaming || isStreamingSimulation}
+                    fallback={fallbackComponent as Parameters<typeof Renderer>[0]['fallback']}
+                  />
+                </JSONUIProvider>
               </div>
             ) : (
               <div className="h-full flex items-center justify-center text-muted-foreground/50 text-sm">
