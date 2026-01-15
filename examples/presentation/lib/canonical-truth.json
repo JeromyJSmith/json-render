@@ -1,0 +1,145 @@
+{
+  "$schema": "MARPA_CANONICAL_TRUTH_v1",
+  "version": "1.0.0",
+  "last_updated": "2026-01-14",
+  "updated_by": "Jero (verified against Luke audit)",
+  
+  "_WARNING": "🚨 THIS IS THE SINGLE SOURCE OF TRUTH. All other files MUST import from this. DO NOT create canonical values elsewhere.",
+  
+  "ownership": {
+    "structure": "52/24/24",
+    "description": "Three-way ownership split",
+    "partners": {
+      "luke_sanzone": {
+        "percentage": 52,
+        "title": "Principal & Owner",
+        "forbidden_titles": ["CEO", "Founder", "Chairman", "President"]
+      },
+      "bodie_hultin": {
+        "percentage": 24,
+        "title": "Partner",
+        "role": "Operations"
+      },
+      "pablo_banuelos": {
+        "percentage": 24,
+        "title": "Partner", 
+        "role": "Construction"
+      }
+    },
+    "forbidden_splits": ["33/33/33", "30/35/35", "40/30/30", "50/50"]
+  },
+  
+  "solo_path": {
+    "structure": "51/49",
+    "description": "Two-way ownership (Bodie solo successor)",
+    "luke_percentage": 51,
+    "bodie_percentage": 49,
+    "forbidden_splits": ["50/50", "48/52"]
+  },
+  
+  "valuation": {
+    "enterprise_value": 17000000,
+    "enterprise_value_display": "$17M",
+    "forbidden_values": ["$15M", "$16M", "$15 million", "$16 million", "15M", "16M"],
+    "valuation_range": {
+      "low": 16200000,
+      "high": 18000000
+    }
+  },
+  
+  "financials": {
+    "revenue_2025": {
+      "total": 11030000,
+      "display": "$11.03M",
+      "breakdown": {
+        "construction": {
+          "amount": 9600000,
+          "percentage": 87
+        },
+        "design": {
+          "amount": 805000,
+          "percentage": 7.3
+        },
+        "oversight": {
+          "amount": 614000,
+          "percentage": 5.6
+        }
+      },
+      "_note": "Breakdown percentages need owner verification"
+    },
+    "ebitda": {
+      "amount": 1655000,
+      "display": "$1.655M",
+      "margin_percentage": 15
+    },
+    "ebitda_multiple": {
+      "value": 10.3,
+      "display": "10.3x",
+      "forbidden_values": ["8x", "10.2x", "12x", "4-6x"]
+    },
+    "year_11_target": {
+      "revenue": 20000000,
+      "display": "$20M+",
+      "forbidden_values": ["$15M", "$18M"]
+    }
+  },
+  
+  "performance_metrics": {
+    "win_rate": {
+      "value": 95,
+      "display": "95%",
+      "forbidden_values": ["90%", "92%", "90-95%"]
+    },
+    "average_project": {
+      "value": 728000,
+      "display": "$728K"
+    },
+    "licensed_percentage": 71
+  },
+  
+  "transition": {
+    "period_years": 4,
+    "display": "4 years",
+    "forbidden_values": ["3 years", "5 years", "3-year", "5-year"],
+    "vesting_schedule": {
+      "annual_percentage": 6,
+      "year_1": 6,
+      "year_2": 12,
+      "year_3": 18,
+      "year_4": 24
+    }
+  },
+  
+  "growth_rates": {
+    "construction": {
+      "annual_percentage": 10,
+      "display": "10% YoY"
+    },
+    "maintenance": {
+      "annual_percentage": 20,
+      "display": "20% YoY"
+    },
+    "pablo_equipment_conversion": {
+      "percentage": 4.5,
+      "display": "4.5%"
+    }
+  },
+  
+  "presentation_meta": {
+    "total_slides": 79,
+    "chapters": 7,
+    "archived_slides": {
+      "range": "80-92",
+      "reason": "Identified as duplicates - REQUIRES VERIFICATION",
+      "location": "_archive/ch8_duplicates_20260114/"
+    }
+  },
+  
+  "_validation_rules": {
+    "valuation_must_be": "$17M",
+    "ownership_split_must_be": "52/24/24 or 51/49",
+    "win_rate_must_be": "95%",
+    "ebitda_multiple_must_be": "10.3x",
+    "transition_must_be": "4 years"
+  }
+}
