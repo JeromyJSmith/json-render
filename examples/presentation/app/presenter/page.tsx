@@ -534,15 +534,33 @@ export default function PresenterPage() {
           </header>
 
           {/* Middle row: slide viewport + narration */}
-          <section className="flex-1 min-h-0 h-full flex">
+          <section
+            style={{
+              flex: 1,
+              minHeight: 0,
+              display: "flex",
+            }}
+          >
             {/* Slide viewport column */}
-            <div className="flex-1 min-w-0 h-full">
+            <div
+              style={{
+                flex: 1,
+                minWidth: 0,
+                minHeight: 0,
+                position: "relative",
+              }}
+            >
               <SlideViewport>
                 <iframe
                   ref={iframeRef}
                   src={slideUrl}
                   scrolling="no"
-                  className="w-full h-full border-none block"
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    border: "none",
+                    display: "block",
+                  }}
                   sandbox="allow-scripts"
                 />
               </SlideViewport>

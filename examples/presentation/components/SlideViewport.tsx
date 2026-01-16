@@ -44,7 +44,15 @@ export function SlideViewport({
   return (
     <div
       ref={containerRef}
-      className="w-full h-full flex items-center justify-center overflow-hidden bg-black"
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        overflow: "hidden",
+        background: "#000",
+      }}
     >
       <div
         style={{
@@ -53,10 +61,12 @@ export function SlideViewport({
           transform: `scale(${scale})`,
           transformOrigin: "center center",
           flexShrink: 0,
+          background: "#050509",
         }}
-        className="bg-[#050509] shadow-lg"
       >
-        <div className="w-full h-full overflow-hidden">{children}</div>
+        <div style={{ width: "100%", height: "100%", overflow: "hidden" }}>
+          {children}
+        </div>
       </div>
     </div>
   );
