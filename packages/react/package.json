@@ -45,7 +45,10 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
-    "@json-render/core": "workspace:*"
+    "@json-render/core": "workspace:*",
+    "chart.js": "^4.4.0",
+    "isomorphic-dompurify": "^2.16.0",
+    "marked": "^15.0.0"
   },
   "devDependencies": {
     "@repo/typescript-config": "workspace:*",

@@ -1,36 +1,25 @@
 "use client";
 
-import { useState, useEffect, useRef, useCallback, useMemo } from "react";
-import { useChat } from "@ai-sdk/react";
-import { DefaultChatTransport } from "ai";
-import {
-  PRESENTATION_SCRIPT,
-  CHAPTERS,
-  SlideScript,
-} from "@/lib/presentation-script";
+import { useState, useEffect, useRef, useCallback } from "react";
+import { PRESENTATION_SCRIPT, CHAPTERS } from "@/lib/presentation-script";
 import { COLORS } from "@/lib/schema";
 
-type Mode = "presenting" | "paused" | "question" | "generating" | "conversing";
+type Mode = "presenting" | "paused" | "question";
 
 export default function PresenterPage() {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [mode, setMode] = useState<Mode>("paused");
-  const [isPushToTalk, setIsPushToTalk] = useState(false); // Push-to-talk active (CTRL key)
+  const [isPushToTalk, setIsPushToTalk] = useState(false);
   const [transcript, setTranscript] = useState("");
-  const [generatedHtml, setGeneratedHtml] = useState<string | null>(null);
   const [showGallery, setShowGallery] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
-  const [showConversation, setShowConversation] = useState(false);
-  const [chatInput, setChatInput] = useState("");
-  const messagesEndRef = useRef<HTMLDivElement>(null);
-  const showConversationRef = useRef(false); // Ref to avoid stale closure
 
   const recognitionRef = useRef<SpeechRecognition | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
   const slideContainerRef = useRef<HTMLDivElement>(null);
-  const isSpeakingRef = useRef(false); // Ref to check speaking state in callbacks
-  const isPushToTalkRef = useRef(false); // Track push-to-talk state for keyup
+  const isSpeakingRef = useRef(false);
+  const isPushToTalkRef = useRef(false);
 
   // Slide scaling - base dimensions match slide design
   const BASE_WIDTH = 1280;
@@ -52,7 +41,6 @@ export default function PresenterPage() {
     updateScale();
     window.addEventListener("resize", updateScale);
 
-    // Also observe container size changes (gallery open/close)
     const resizeObserver = new ResizeObserver(updateScale);
     if (slideContainerRef.current) {
       resizeObserver.observe(slideContainerRef.current);
@@ -62,170 +50,14 @@ export default function PresenterPage() {
       window.removeEventListener("resize", updateScale);
       resizeObserver.disconnect();
     };
-  }, [showGallery, showConversation]);
+  }, [showGallery]);
 
   const currentSlide = PRESENTATION_SCRIPT[currentSlideIndex];
-
-  // Conversational generation chat
-  const transport = useMemo(
-    () =>
-      new DefaultChatTransport({
-        api: "/api/clarify-and-generate",
-      }),
-    [],
-  );
-
-  const { messages, sendMessage, setMessages, status } = useChat({ transport });
-  const isChatLoading = status === "streaming" || status === "submitted";
-  const sendMessageRef = useRef(sendMessage);
-
-  // Keep refs in sync with state
-  useEffect(() => {
-    showConversationRef.current = showConversation;
-  }, [showConversation]);
-
-  useEffect(() => {
-    sendMessageRef.current = sendMessage;
-  }, [sendMessage]);
-
-  // Auto-scroll messages - speech is handled separately to avoid loops
-  useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
 
   // Ref for welcome tutorial tracking
   const hasPlayedWelcomeRef = useRef(false);
 
-  // Handle speaking new assistant messages - with debouncing to prevent loops
-  const lastSpokenRef = useRef<string | null>(null);
-  const speakingQueueRef = useRef<boolean>(false);
-
-  useEffect(() => {
-    // Only process when chat is done loading and conversation is shown
-    if (isChatLoading || !showConversation) return;
-
-    // Find the latest assistant message
-    const lastAssistant = [...messages]
-      .reverse()
-      .find((m) => m.role === "assistant");
-    if (!lastAssistant || lastAssistant.id === lastSpokenRef.current) return;
-
-    // Prevent multiple speak calls
-    if (speakingQueueRef.current) return;
-
-    // Extract text content from message parts
-    const textContent =
-      lastAssistant.parts
-        ?.filter((part: { type: string }) => part.type === "text")
-        .map((part: { type: string; text?: string }) => part.text)
-        .join("") || "";
-
-    // Check for [GENERATE] tags in response and trigger HTML generation
-    const generateMatch = textContent.match(
-      /\[GENERATE\]([\s\S]*?)\[\/GENERATE\]/,
-    );
-    if (generateMatch) {
-      const generateBlock = generateMatch[1];
-      const typeMatch = generateBlock.match(/Type:\s*(.+)/);
-      const titleMatch = generateBlock.match(/Title:\s*(.+)/);
-      const dataMatch = generateBlock.match(/Data:\s*(.+)/);
-
-      if (typeMatch && titleMatch && dataMatch) {
-        // Build prompt for generation
-        const prompt = `Create a ${typeMatch[1].trim()} visualization titled "${titleMatch[1].trim()}".
-Data to show: ${dataMatch[1].trim()}
-Style: dark theme (#0a0a0a background), animated, professional with MARPA brand colors (teal #4ecdc4, coral #ef6337).
-
-Use MARPA canonical values:
-- Valuation: $17M, EBITDA: $1.655M, Revenue: $11.03M
-- Win Rate: 95%, Multiple: 10.3x
-- Ownership Path C: Luke 52%, Bodie 24%, Pablo 24%
-- Construction: $1.7M (10% YoY), Maintenance: $800K (20% YoY)
-
-Generate complete, animated HTML with Chart.js.`;
-
-        // Trigger generation
-        fetch("/api/generate-html", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ prompt }),
-        })
-          .then((res) => res.text())
-          .then((html) => setGeneratedHtml(html))
-          .catch((err) => console.error("Failed to generate:", err));
-      }
-    }
-
-    // Speak the text (excluding the generate block)
-    const speakableText = textContent
-      .replace(/\[GENERATE\][\s\S]*?\[\/GENERATE\]/g, "")
-      .trim();
-
-    if (speakableText && speakableText.length > 0) {
-      lastSpokenRef.current = lastAssistant.id;
-      speakingQueueRef.current = true;
-
-      // Speak with a small delay to ensure state is stable
-      setTimeout(() => {
-        speak(speakableText);
-        speakingQueueRef.current = false;
-      }, 200);
-    }
-  }, [messages, isChatLoading, showConversation]);
-
-  // Capture user's name from their messages
-  useEffect(() => {
-    if (!userNameRef.current && messages.length > 0) {
-      // Look for user messages that might contain their name
-      const userMessages = messages.filter((m) => m.role === "user");
-      for (const msg of userMessages) {
-        const text =
-          msg.parts?.find((p: { type: string }) => p.type === "text")?.text ||
-          "";
-        // Check for name patterns
-        const namePatterns = [
-          /(?:I'm|I am|my name is|call me|it's|this is)\s+(\w+)/i,
-          /^(\w+)$/i, // Single word response (likely a name)
-        ];
-        for (const pattern of namePatterns) {
-          const match = text.match(pattern);
-          if (match && match[1]) {
-            const name = match[1];
-            // Validate it's a reasonable name (not a common word)
-            const commonWords = [
-              "hi",
-              "hey",
-              "hello",
-              "yes",
-              "no",
-              "show",
-              "me",
-              "the",
-              "a",
-              "an",
-              "please",
-              "thanks",
-              "ok",
-              "okay",
-            ];
-            if (
-              !commonWords.includes(name.toLowerCase()) &&
-              name.length > 1 &&
-              name.length < 20
-            ) {
-              userNameRef.current =
-                name.charAt(0).toUpperCase() + name.slice(1).toLowerCase();
-              console.log("[Name captured]", userNameRef.current);
-              break;
-            }
-          }
-        }
-        if (userNameRef.current) break;
-      }
-    }
-  }, [messages]);
-
-  // Initialize speech recognition - PUSH-TO-TALK ONLY (no continuous listening)
+  // Initialize speech recognition - PUSH-TO-TALK ONLY
   useEffect(() => {
     if (
       typeof window !== "undefined" &&
@@ -234,18 +66,17 @@ Generate complete, animated HTML with Chart.js.`;
       const SpeechRecognition =
         window.SpeechRecognition || window.webkitSpeechRecognition;
       recognitionRef.current = new SpeechRecognition();
-      recognitionRef.current.continuous = false; // CRITICAL: Single utterance only
+      recognitionRef.current.continuous = false;
       recognitionRef.current.interimResults = true;
       recognitionRef.current.lang = "en-US";
 
       recognitionRef.current.onresult = (event) => {
-        // CRITICAL: Ignore ALL input if AI is speaking (prevents feedback loop)
+        // Ignore input if AI is speaking
         if (isSpeakingRef.current) {
           console.log("[Voice] BLOCKED - AI is speaking, ignoring input");
           return;
         }
 
-        // Also ignore if push-to-talk is not active
         if (!isPushToTalkRef.current) {
           console.log("[Voice] BLOCKED - Push-to-talk not active");
           return;
@@ -259,7 +90,7 @@ Generate complete, animated HTML with Chart.js.`;
         if (event.results[last].isFinal) {
           console.log("[Voice] Final transcript:", text);
 
-          // Check for interrupt commands
+          // Check for commands
           if (
             text.includes("question") ||
             text.includes("stop") ||
@@ -273,12 +104,6 @@ Generate complete, animated HTML with Chart.js.`;
             text.includes("go on")
           ) {
             handleContinue();
-          } else if (
-            text.includes("show me") ||
-            text.includes("can you") ||
-            text.includes("generate")
-          ) {
-            handleGenerateRequest(text);
           } else if (text.includes("back") || text.includes("previous")) {
             goToPrevious();
           }
@@ -299,15 +124,16 @@ Generate complete, animated HTML with Chart.js.`;
     }
   }, []);
 
-  // Push-to-talk keyboard handler (CTRL = hold to talk)
+  // Push-to-talk keyboard handler (SPACE = hold to talk)
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // CTRL key = push-to-talk (hold to talk, release to stop)
-      // Using Control instead of CapsLock because CapsLock is a toggle key with inconsistent behavior
-      if (e.key === "Control" && !isPushToTalkRef.current && !e.repeat) {
+      // Spacebar for push-to-talk (hold to talk)
+      if (e.code === "Space" && !isPushToTalkRef.current && !e.repeat) {
+        const target = e.target as HTMLElement;
+        if (target.tagName === "INPUT" || target.tagName === "TEXTAREA") return;
         e.preventDefault();
 
-        // MUST stop audio first to prevent feedback
+        // Stop audio first to prevent feedback
         if (audioRef.current) {
           audioRef.current.pause();
           audioRef.current.currentTime = 0;
@@ -317,7 +143,6 @@ Generate complete, animated HTML with Chart.js.`;
         isSpeakingRef.current = false;
         ttsLockRef.current = false;
 
-        // Small delay to ensure audio is fully stopped before starting mic
         setTimeout(() => {
           isPushToTalkRef.current = true;
           setIsPushToTalk(true);
@@ -336,31 +161,18 @@ Generate complete, animated HTML with Chart.js.`;
         e.preventDefault();
         if (currentSlideIndex < PRESENTATION_SCRIPT.length - 1) {
           setCurrentSlideIndex((i) => i + 1);
-          setGeneratedHtml(null);
         }
       }
       if (e.code === "ArrowLeft" || e.code === "ArrowUp") {
         e.preventDefault();
         if (currentSlideIndex > 0) {
           setCurrentSlideIndex((i) => i - 1);
-          setGeneratedHtml(null);
-        }
-      }
-
-      // Space bar for manual slide advance (no conflict now)
-      if (e.code === "Space") {
-        const target = e.target as HTMLElement;
-        if (target.tagName === "INPUT" || target.tagName === "TEXTAREA") return;
-        e.preventDefault();
-        if (currentSlideIndex < PRESENTATION_SCRIPT.length - 1) {
-          setCurrentSlideIndex((i) => i + 1);
-          setGeneratedHtml(null);
         }
       }
     };
 
     const handleKeyUp = (e: KeyboardEvent) => {
-      if (e.key === "Control" && isPushToTalkRef.current) {
+      if (e.code === "Space" && isPushToTalkRef.current) {
         e.preventDefault();
         isPushToTalkRef.current = false;
         setIsPushToTalk(false);
@@ -371,23 +183,8 @@ Generate complete, animated HTML with Chart.js.`;
           // Ignore
         }
 
-        // Send transcript to chat - auto-open conversation if needed
-        setTranscript((currentTranscript) => {
-          if (currentTranscript && currentTranscript.trim()) {
-            // Always open conversation panel and send message
-            setShowConversation(true);
-            showConversationRef.current = true;
-            setMode("conversing");
-
-            // Small delay to ensure state is updated
-            setTimeout(() => {
-              if (sendMessageRef.current) {
-                sendMessageRef.current({ text: currentTranscript.trim() });
-              }
-            }, 100);
-          }
-          return ""; // Clear transcript
-        });
+        // Clear transcript after processing
+        setTranscript("");
       }
     };
 
@@ -400,69 +197,54 @@ Generate complete, animated HTML with Chart.js.`;
     };
   }, [currentSlideIndex]);
 
-  // TTS function using ElevenLabs - with lock to prevent multiple simultaneous calls
+  // ElevenLabs TTS
   const ttsLockRef = useRef(false);
   const speak = useCallback(async (text: string, onEnd?: () => void) => {
-    // Prevent multiple simultaneous TTS calls
+    // Prevent concurrent TTS calls
     if (ttsLockRef.current) {
-      console.log("[TTS] BLOCKED - already speaking");
+      console.log("[TTS] Blocked - already speaking");
       return;
     }
+
     ttsLockRef.current = true;
-
-    // CRITICAL: Stop any listening before speaking to prevent feedback
-    try {
-      recognitionRef.current?.stop();
-    } catch (e) {
-      // Ignore
-    }
-    setIsPushToTalk(false);
-    isPushToTalkRef.current = false;
-    setTranscript("");
-
-    // Stop any currently playing audio
-    if (audioRef.current) {
-      audioRef.current.pause();
-      audioRef.current = null;
-    }
+    setIsSpeaking(true);
+    isSpeakingRef.current = true;
 
     try {
-      setIsSpeaking(true);
-      isSpeakingRef.current = true;
-
-      console.log("[TTS] Fetching audio for:", text.substring(0, 50) + "...");
       const response = await fetch("/api/tts", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text }),
       });
 
-      if (!response.ok) throw new Error("TTS failed");
+      if (!response.ok) {
+        console.error("[TTS] API error:", response.status);
+        throw new Error("TTS failed");
+      }
 
       const audioBlob = await response.blob();
-      console.log("[TTS] Got audio blob:", audioBlob.size, "bytes");
       const audioUrl = URL.createObjectURL(audioBlob);
       const audio = new Audio(audioUrl);
       audioRef.current = audio;
 
       audio.onended = () => {
-        console.log("[TTS] Audio ended");
+        URL.revokeObjectURL(audioUrl);
         setIsSpeaking(false);
         isSpeakingRef.current = false;
         ttsLockRef.current = false;
-        URL.revokeObjectURL(audioUrl);
+        audioRef.current = null;
         onEnd?.();
       };
 
-      audio.onerror = (e) => {
-        console.error("[TTS] Audio error:", e);
+      audio.onerror = () => {
+        URL.revokeObjectURL(audioUrl);
         setIsSpeaking(false);
         isSpeakingRef.current = false;
         ttsLockRef.current = false;
-        URL.revokeObjectURL(audioUrl);
+        audioRef.current = null;
+        onEnd?.();
       };
 
-      console.log("[TTS] Playing audio...");
       await audio.play();
     } catch (error) {
       console.error("[TTS] Error:", error);
@@ -481,30 +263,28 @@ Generate complete, animated HTML with Chart.js.`;
     }
     setIsSpeaking(false);
     isSpeakingRef.current = false;
-    ttsLockRef.current = false; // Release lock when stopping
+    ttsLockRef.current = false;
   }, []);
 
-  // Welcome tutorial - plays on first user interaction (click or keydown)
+  // Welcome tutorial - plays on first user interaction
   useEffect(() => {
     if (hasPlayedWelcomeRef.current) return;
 
     const playWelcome = (e: Event) => {
       if (hasPlayedWelcomeRef.current) return;
 
-      // Don't block CTRL key - let it work immediately
       const keyEvent = e as KeyboardEvent;
-      if (keyEvent.key === "Control") {
-        hasPlayedWelcomeRef.current = true; // Mark as done but don't play welcome
+      if (keyEvent.code === "Space") {
+        hasPlayedWelcomeRef.current = true;
         cleanup();
         return;
       }
 
       hasPlayedWelcomeRef.current = true;
 
-      // Small delay after interaction
       setTimeout(() => {
         const welcomeText =
-          "Welcome! Hold Control to ask questions, or click Start.";
+          "Welcome! Hold Spacebar to give voice commands, or click Start.";
         speak(welcomeText);
       }, 300);
 
@@ -525,88 +305,39 @@ Generate complete, animated HTML with Chart.js.`;
   const handleInterrupt = useCallback(() => {
     stopSpeaking();
     setMode("question");
-    speak("Of course. Hold Control to ask your question.");
+    speak("Of course. What would you like to know?");
   }, [stopSpeaking, speak]);
 
   // Handle continue
   const handleContinue = useCallback(() => {
-    setGeneratedHtml(null);
     setMode("presenting");
     if (currentSlideIndex < PRESENTATION_SCRIPT.length - 1) {
       setCurrentSlideIndex((i) => i + 1);
     }
   }, [currentSlideIndex]);
 
-  // Track if we know the user's name
-  const userNameRef = useRef<string | null>(null);
-
-  // Handle generate request - starts a conversation instead of immediately generating
-  const handleGenerateRequest = useCallback(
-    async (text: string) => {
-      setMode("conversing");
-      setShowConversation(true);
-      setMessages([]); // Clear previous conversation
-      lastSpokenRef.current = null;
-
-      // If we know their name, include it. Otherwise, just say hi to trigger name ask.
-      if (userNameRef.current) {
-        sendMessage({
-          text: `Hi, I'm ${userNameRef.current}. I'd like to see: ${text}`,
-        });
-      } else {
-        // Send a greeting first - AI will ask for name
-        sendMessage({ text: `Hi! ${text}` });
-      }
-    },
-    [sendMessage, setMessages],
-  );
-
-  // Handle sending a message in the conversation
-  const handleSendChatMessage = useCallback(
-    (text: string) => {
-      if (text.trim() && sendMessage) {
-        sendMessage({ text: text.trim() });
-        setChatInput("");
-      }
-    },
-    [sendMessage],
-  );
-
-  // Close conversation panel
-  const closeConversation = useCallback(() => {
-    setShowConversation(false);
-    setMode("question");
-    setMessages([]);
-    lastSpokenRef.current = null;
-  }, [setMessages]);
-
   // Navigate
   const goToSlide = useCallback((index: number) => {
     setCurrentSlideIndex(index);
-    setGeneratedHtml(null);
     setShowGallery(false);
   }, []);
 
-  // Ref to track manual navigation (defined here, used in effect below)
+  // Ref to track manual navigation
   const manualNavRef = useRef(false);
 
   const goToPrevious = useCallback(() => {
     if (currentSlideIndex > 0) {
-      // Stop current audio immediately
       stopSpeaking();
-      manualNavRef.current = true; // Signal manual navigation
+      manualNavRef.current = true;
       setCurrentSlideIndex((i) => i - 1);
-      setGeneratedHtml(null);
     }
   }, [currentSlideIndex, stopSpeaking]);
 
   const goToNext = useCallback(() => {
     if (currentSlideIndex < PRESENTATION_SCRIPT.length - 1) {
-      // Stop current audio immediately
       stopSpeaking();
-      manualNavRef.current = true; // Signal manual navigation
+      manualNavRef.current = true;
       setCurrentSlideIndex((i) => i + 1);
-      setGeneratedHtml(null);
     }
   }, [currentSlideIndex, stopSpeaking]);
 
@@ -614,7 +345,6 @@ Generate complete, animated HTML with Chart.js.`;
   const startPresentation = useCallback(() => {
     setMode("presenting");
     speak(currentSlide.narration, () => {
-      // After narration, auto-advance or pause
       setTimeout(() => {
         if (currentSlideIndex < PRESENTATION_SCRIPT.length - 1) {
           setCurrentSlideIndex((i) => i + 1);
@@ -628,13 +358,11 @@ Generate complete, animated HTML with Chart.js.`;
   // Effect to narrate when slide changes during presentation
   useEffect(() => {
     if (mode === "presenting" && currentSlide) {
-      // Small delay to ensure stopSpeaking has completed
       const timer = setTimeout(() => {
         const wasManualNav = manualNavRef.current;
-        manualNavRef.current = false; // Reset flag
+        manualNavRef.current = false;
 
         speak(currentSlide.narration, () => {
-          // Only auto-advance if NOT manually navigated
           if (!wasManualNav) {
             setTimeout(() => {
               if (currentSlideIndex < PRESENTATION_SCRIPT.length - 1) {
@@ -721,7 +449,7 @@ Generate complete, animated HTML with Chart.js.`;
                 textTransform: "uppercase",
               }}
             >
-              {mode === "generating" ? "Creating..." : mode}
+              {mode}
             </span>
           </div>
 
@@ -849,8 +577,7 @@ Generate complete, animated HTML with Chart.js.`;
             >
               <iframe
                 ref={iframeRef}
-                src={generatedHtml ? undefined : slideUrl}
-                srcDoc={generatedHtml || undefined}
+                src={slideUrl}
                 scrolling="no"
                 style={{
                   width: "100%",
@@ -863,356 +590,144 @@ Generate complete, animated HTML with Chart.js.`;
             </div>
           </div>
 
-          {/* Info Panel - or Conversation Panel when active */}
+          {/* Info Panel */}
           <div
             style={{
-              width: showConversation ? 400 : 320,
-              minWidth: showConversation ? 400 : 320,
+              width: 320,
+              minWidth: 320,
               flexShrink: 0,
               background: "rgba(15,20,25,0.98)",
               borderLeft: `1px solid ${COLORS.navy}`,
               display: "flex",
               flexDirection: "column",
               overflow: "hidden",
-              transition: "width 0.3s ease",
               zIndex: 10,
               position: "relative",
             }}
           >
-            {showConversation ? (
-              /* Conversation Panel */
-              <>
+            {/* Current Slide Info */}
+            <div
+              style={{
+                padding: 16,
+                borderBottom: `1px solid ${COLORS.navy}`,
+              }}
+            >
+              <p
+                style={{
+                  color: COLORS.coral,
+                  fontSize: 11,
+                  marginBottom: 4,
+                }}
+              >
+                Slide {currentSlideIndex + 1}
+              </p>
+              <h3
+                style={{
+                  color: COLORS.text,
+                  fontSize: 16,
+                  fontWeight: 600,
+                  marginBottom: 8,
+                }}
+              >
+                {currentSlide?.title}
+              </h3>
+            </div>
+
+            {/* Narration */}
+            <div
+              style={{
+                flex: 1,
+                overflowY: "auto",
+                padding: 16,
+                scrollbarWidth: "none",
+                msOverflowStyle: "none",
+              }}
+            >
+              <p
+                style={{
+                  color: COLORS.muted,
+                  fontSize: 11,
+                  marginBottom: 8,
+                  textTransform: "uppercase",
+                }}
+              >
+                Narration
+              </p>
+              <p
+                style={{
+                  color: COLORS.text,
+                  fontSize: 13,
+                  lineHeight: 1.6,
+                }}
+              >
+                {currentSlide?.narration}
+              </p>
+            </div>
+
+            {/* Voice Status */}
+            <div
+              style={{
+                padding: 16,
+                borderTop: `1px solid ${COLORS.navy}`,
+                background: "rgba(0,0,0,0.3)",
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                  marginBottom: 8,
+                }}
+              >
                 <div
                   style={{
-                    padding: "12px 16px",
-                    borderBottom: `1px solid ${COLORS.coral}33`,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "space-between",
+                    width: 8,
+                    height: 8,
+                    borderRadius: "50%",
+                    background: isPushToTalk
+                      ? COLORS.coral
+                      : isSpeaking
+                        ? COLORS.teal
+                        : COLORS.muted,
+                    animation: isPushToTalk ? "pulse 0.5s infinite" : "none",
                   }}
-                >
-                  <div
-                    style={{ display: "flex", alignItems: "center", gap: 8 }}
-                  >
-                    <span style={{ color: COLORS.coral, fontWeight: 600 }}>
-                      Visualization Assistant
-                    </span>
-                    {isChatLoading && (
-                      <span
-                        style={{
-                          padding: "2px 8px",
-                          background: `${COLORS.teal}22`,
-                          borderRadius: 10,
-                          color: COLORS.teal,
-                          fontSize: 10,
-                        }}
-                      >
-                        Thinking...
-                      </span>
-                    )}
-                  </div>
-                  <button
-                    onClick={closeConversation}
-                    style={{
-                      padding: "4px 12px",
-                      background: "rgba(255,255,255,0.05)",
-                      border: "1px solid rgba(255,255,255,0.1)",
-                      borderRadius: 4,
-                      color: COLORS.muted,
-                      fontSize: 11,
-                      cursor: "pointer",
-                    }}
-                  >
-                    Close
-                  </button>
-                </div>
-
-                {/* Messages */}
-                <div
+                />
+                <span
                   style={{
-                    flex: 1,
-                    overflowY: "auto",
-                    padding: 12,
-                    display: "flex",
-                    flexDirection: "column",
-                    gap: 10,
-                    scrollbarWidth: "none",
-                    msOverflowStyle: "none",
+                    color: isPushToTalk
+                      ? COLORS.coral
+                      : isSpeaking
+                        ? COLORS.teal
+                        : COLORS.muted,
+                    fontSize: 11,
                   }}
                 >
-                  {messages.length === 0 && (
-                    <div
-                      style={{
-                        color: COLORS.muted,
-                        fontSize: 13,
-                        textAlign: "center",
-                        marginTop: 40,
-                      }}
-                    >
-                      <p>Starting conversation...</p>
-                    </div>
-                  )}
-                  {messages.map((msg, i) => {
-                    const textContent =
-                      msg.parts
-                        ?.filter(
-                          (part: { type: string }) => part.type === "text",
-                        )
-                        .map(
-                          (part: { type: string; text?: string }) => part.text,
-                        )
-                        .join("") ||
-                      (typeof msg.content === "string" ? msg.content : "");
-
-                    // Check for tool invocations
-                    const toolPart = msg.parts?.find(
-                      (part: { type: string }) =>
-                        part.type === "tool-invocation",
-                    );
-
-                    return (
-                      <div key={`${msg.id || "msg"}-${msg.role}-${i}`}>
-                        {textContent && (
-                          <div
-                            style={{
-                              padding: "10px 14px",
-                              borderRadius: 8,
-                              background:
-                                msg.role === "user"
-                                  ? `${COLORS.coral}15`
-                                  : "rgba(255,255,255,0.05)",
-                              borderLeft: `3px solid ${msg.role === "user" ? COLORS.coral : COLORS.teal}`,
-                            }}
-                          >
-                            <div
-                              style={{
-                                fontSize: 9,
-                                color: COLORS.muted,
-                                marginBottom: 4,
-                                textTransform: "uppercase",
-                              }}
-                            >
-                              {msg.role === "user" ? "You" : "Assistant"}
-                            </div>
-                            <div
-                              style={{
-                                color: COLORS.text,
-                                fontSize: 13,
-                                lineHeight: 1.5,
-                              }}
-                            >
-                              {textContent}
-                            </div>
-                          </div>
-                        )}
-                        {toolPart && (toolPart as any).result?.success && (
-                          <div
-                            style={{
-                              marginTop: 8,
-                              padding: "8px 12px",
-                              background: `${COLORS.teal}15`,
-                              borderRadius: 6,
-                              border: `1px solid ${COLORS.teal}33`,
-                            }}
-                          >
-                            <span style={{ color: COLORS.teal, fontSize: 11 }}>
-                              ✓{" "}
-                              {(toolPart as any).result?.summary ||
-                                "Visualization created!"}
-                            </span>
-                          </div>
-                        )}
-                      </div>
-                    );
-                  })}
-                  <div ref={messagesEndRef} />
-                </div>
-
-                {/* Chat Input */}
-                <div
-                  style={{ padding: 12, borderTop: `1px solid ${COLORS.navy}` }}
-                >
-                  <div style={{ display: "flex", gap: 8 }}>
-                    <input
-                      value={chatInput}
-                      onChange={(e) => setChatInput(e.target.value)}
-                      onKeyDown={(e) => {
-                        if (e.key === "Enter" && !e.shiftKey) {
-                          e.preventDefault();
-                          handleSendChatMessage(chatInput);
-                        }
-                      }}
-                      placeholder="Type or hold CTRL to speak..."
-                      style={{
-                        flex: 1,
-                        padding: "10px 14px",
-                        background: "rgba(255,255,255,0.05)",
-                        border: "1px solid rgba(255,255,255,0.1)",
-                        borderRadius: 6,
-                        color: COLORS.text,
-                        fontSize: 13,
-                        outline: "none",
-                      }}
-                    />
-                    <button
-                      onClick={() => handleSendChatMessage(chatInput)}
-                      disabled={!chatInput.trim() || isChatLoading}
-                      style={{
-                        padding: "10px 16px",
-                        background: chatInput.trim()
-                          ? COLORS.teal
-                          : "rgba(255,255,255,0.1)",
-                        border: "none",
-                        borderRadius: 6,
-                        color: chatInput.trim() ? "#000" : COLORS.muted,
-                        fontWeight: 600,
-                        fontSize: 12,
-                        cursor: chatInput.trim() ? "pointer" : "not-allowed",
-                      }}
-                    >
-                      Send
-                    </button>
-                  </div>
-                  <p
-                    style={{ color: COLORS.muted, fontSize: 10, marginTop: 8 }}
-                  >
-                    Hold CTRL to speak your response
-                  </p>
-                </div>
-              </>
-            ) : (
-              /* Normal Info Panel */
-              <>
-                {/* Current Slide Info */}
-                <div
+                  {isPushToTalk
+                    ? "RECORDING..."
+                    : isSpeaking
+                      ? "Speaking..."
+                      : "Hold SPACE to talk"}
+                </span>
+              </div>
+              {isPushToTalk && transcript && (
+                <p
                   style={{
-                    padding: 16,
-                    borderBottom: `1px solid ${COLORS.navy}`,
+                    color: COLORS.text,
+                    fontSize: 13,
+                    background: "rgba(239,99,55,0.1)",
+                    padding: "8px 12px",
+                    borderRadius: 4,
+                    border: `1px solid ${COLORS.coral}`,
                   }}
                 >
-                  <p
-                    style={{
-                      color: COLORS.coral,
-                      fontSize: 11,
-                      marginBottom: 4,
-                    }}
-                  >
-                    Slide {currentSlideIndex + 1}
-                  </p>
-                  <h3
-                    style={{
-                      color: COLORS.text,
-                      fontSize: 16,
-                      fontWeight: 600,
-                      marginBottom: 8,
-                    }}
-                  >
-                    {currentSlide?.title}
-                  </h3>
-                </div>
-
-                {/* Narration */}
-                <div
-                  style={{
-                    flex: 1,
-                    overflowY: "auto",
-                    padding: 16,
-                    scrollbarWidth: "none",
-                    msOverflowStyle: "none",
-                  }}
-                >
-                  <p
-                    style={{
-                      color: COLORS.muted,
-                      fontSize: 11,
-                      marginBottom: 8,
-                      textTransform: "uppercase",
-                    }}
-                  >
-                    Narration
-                  </p>
-                  <p
-                    style={{
-                      color: COLORS.text,
-                      fontSize: 13,
-                      lineHeight: 1.6,
-                    }}
-                  >
-                    {currentSlide?.narration}
-                  </p>
-                </div>
-
-                {/* Voice Status - Push-to-Talk */}
-                <div
-                  style={{
-                    padding: 16,
-                    borderTop: `1px solid ${COLORS.navy}`,
-                    background: "rgba(0,0,0,0.3)",
-                  }}
-                >
-                  <div
-                    style={{
-                      display: "flex",
-                      alignItems: "center",
-                      gap: 8,
-                      marginBottom: 8,
-                    }}
-                  >
-                    <div
-                      style={{
-                        width: 8,
-                        height: 8,
-                        borderRadius: "50%",
-                        background: isPushToTalk
-                          ? COLORS.coral
-                          : isSpeaking
-                            ? COLORS.teal
-                            : COLORS.muted,
-                        animation: isPushToTalk
-                          ? "pulse 0.5s infinite"
-                          : "none",
-                      }}
-                    />
-                    <span
-                      style={{
-                        color: isPushToTalk
-                          ? COLORS.coral
-                          : isSpeaking
-                            ? COLORS.teal
-                            : COLORS.muted,
-                        fontSize: 11,
-                      }}
-                    >
-                      {isPushToTalk
-                        ? "RECORDING..."
-                        : isSpeaking
-                          ? "Speaking..."
-                          : "Hold CTRL to talk"}
-                    </span>
-                  </div>
-                  {isPushToTalk && transcript && (
-                    <p
-                      style={{
-                        color: COLORS.text,
-                        fontSize: 13,
-                        background: "rgba(239,99,55,0.1)",
-                        padding: "8px 12px",
-                        borderRadius: 4,
-                        border: `1px solid ${COLORS.coral}`,
-                      }}
-                    >
-                      "{transcript}"
-                    </p>
-                  )}
-                  <p
-                    style={{ color: COLORS.muted, fontSize: 10, marginTop: 8 }}
-                  >
-                    CTRL = talk | Arrows/Space = navigate | Say "stop" to
-                    interrupt
-                  </p>
-                </div>
-              </>
-            )}
+                  "{transcript}"
+                </p>
+              )}
+              <p style={{ color: COLORS.muted, fontSize: 10, marginTop: 8 }}>
+                SPACE = talk | Arrows = navigate | Say "stop" to interrupt
+              </p>
+            </div>
           </div>
         </div>
 
@@ -1244,7 +759,7 @@ Generate complete, animated HTML with Chart.js.`;
             Previous
           </button>
 
-          {mode === "paused" ? (
+          {mode === "paused" || mode === "question" ? (
             <button
               onClick={startPresentation}
               style={{
@@ -1330,7 +845,7 @@ Generate complete, animated HTML with Chart.js.`;
                 fontSize: 12,
               }}
             >
-              {isPushToTalk ? "Recording..." : "Hold CTRL to talk"}
+              {isPushToTalk ? "Recording..." : "Hold SPACE to talk"}
             </span>
           </div>
         </div>

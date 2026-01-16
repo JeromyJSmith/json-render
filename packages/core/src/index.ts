@@ -89,3 +89,26 @@ export type {
 } from "./catalog";
 
 export { createCatalog, generateCatalogPrompt } from "./catalog";
+
+// Content Schemas
+export {
+  ChartDatasetSchema,
+  ChartPropsSchema,
+  MarkdownPropsSchema,
+  RichHTMLPropsSchema,
+  HeadingPropsSchema,
+  ParagraphPropsSchema,
+  CalloutPropsSchema,
+  QuotePropsSchema,
+  CodeBlockPropsSchema,
+  contentComponentDefinitions,
+  type ChartDataset,
+  type ChartProps,
+  type MarkdownProps,
+  type RichHTMLProps,
+  type HeadingProps,
+  type ParagraphProps,
+  type CalloutProps,
+  type QuoteProps,
+  type CodeBlockProps,
+} from "./schemas";

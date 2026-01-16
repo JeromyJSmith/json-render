@@ -55,3 +55,16 @@ export {
   type UseUIStreamOptions,
   type UseUIStreamReturn,
 } from "./hooks";
+
+// Pre-built Content Components
+export {
+  Chart,
+  Markdown,
+  RichHTML,
+  Heading,
+  Paragraph,
+  Callout,
+  Quote,
+  CodeBlock,
+  contentComponentRegistry,
+} from "./components";

@@ -1,0 +1,850 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MARPA AI Presenter - System Guide</title>
+  <style>
+    :root {
+      --coral: #EF6337;
+      --teal: #2DD4BF;
+      --navy: #1E3A5F;
+      --bg: #0F1419;
+      --card-bg: #1A2332;
+      --text: #E8EAED;
+      --muted: #8B9CAF;
+      --code-bg: #0D1117;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+      padding: 0;
+    }
+
+    .hero {
+      background: linear-gradient(135deg, var(--navy) 0%, var(--bg) 100%);
+      padding: 80px 40px;
+      text-align: center;
+      border-bottom: 1px solid var(--coral);
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      margin-bottom: 16px;
+      background: linear-gradient(90deg, var(--coral), var(--teal));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+
+    .hero p {
+      font-size: 1.25rem;
+      color: var(--muted);
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 40px;
+    }
+
+    nav {
+      position: sticky;
+      top: 0;
+      background: rgba(15, 20, 25, 0.95);
+      backdrop-filter: blur(10px);
+      padding: 16px 40px;
+      border-bottom: 1px solid var(--navy);
+      z-index: 100;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 32px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 14px;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    nav a:hover {
+      color: var(--coral);
+    }
+
+    section {
+      margin-bottom: 60px;
+    }
+
+    h2 {
+      font-size: 2rem;
+      color: var(--coral);
+      margin-bottom: 24px;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--navy);
+    }
+
+    h3 {
+      font-size: 1.5rem;
+      color: var(--teal);
+      margin: 32px 0 16px;
+    }
+
+    h4 {
+      font-size: 1.1rem;
+      color: var(--text);
+      margin: 24px 0 12px;
+    }
+
+    p {
+      margin-bottom: 16px;
+      color: var(--text);
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 24px;
+      margin-bottom: 20px;
+      border: 1px solid var(--navy);
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 20px;
+      margin: 24px 0;
+    }
+
+    .feature-card {
+      background: var(--card-bg);
+      border-radius: 12px;
+      padding: 24px;
+      border: 1px solid var(--navy);
+      transition: border-color 0.2s;
+    }
+
+    .feature-card:hover {
+      border-color: var(--coral);
+    }
+
+    .feature-card h4 {
+      color: var(--coral);
+      margin-top: 0;
+    }
+
+    code {
+      background: var(--code-bg);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.9em;
+      color: var(--teal);
+    }
+
+    pre {
+      background: var(--code-bg);
+      padding: 20px;
+      border-radius: 8px;
+      overflow-x: auto;
+      margin: 16px 0;
+      border: 1px solid var(--navy);
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+      display: block;
+      line-height: 1.6;
+    }
+
+    .table-wrapper {
+      overflow-x: auto;
+      margin: 16px 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      background: var(--card-bg);
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    th, td {
+      padding: 12px 16px;
+      text-align: left;
+      border-bottom: 1px solid var(--navy);
+    }
+
+    th {
+      background: var(--navy);
+      color: var(--coral);
+      font-weight: 600;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    tr:hover td {
+      background: rgba(239, 99, 55, 0.05);
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      text-transform: uppercase;
+    }
+
+    .badge-coral {
+      background: rgba(239, 99, 55, 0.2);
+      color: var(--coral);
+      border: 1px solid var(--coral);
+    }
+
+    .badge-teal {
+      background: rgba(45, 212, 191, 0.2);
+      color: var(--teal);
+      border: 1px solid var(--teal);
+    }
+
+    .badge-navy {
+      background: rgba(30, 58, 95, 0.5);
+      color: var(--muted);
+      border: 1px solid var(--navy);
+    }
+
+    .key {
+      display: inline-block;
+      background: var(--navy);
+      color: var(--text);
+      padding: 4px 10px;
+      border-radius: 4px;
+      font-family: monospace;
+      font-size: 0.85rem;
+      border: 1px solid #3a5a7f;
+      box-shadow: 0 2px 0 #1a2a3f;
+    }
+
+    .architecture-diagram {
+      background: var(--code-bg);
+      padding: 24px;
+      border-radius: 8px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+      font-size: 0.8rem;
+      line-height: 1.4;
+      overflow-x: auto;
+      border: 1px solid var(--navy);
+      white-space: pre;
+    }
+
+    .flow-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      margin-bottom: 20px;
+    }
+
+    .flow-number {
+      width: 32px;
+      height: 32px;
+      background: var(--coral);
+      color: white;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    .flow-content {
+      flex: 1;
+    }
+
+    .callout {
+      background: rgba(45, 212, 191, 0.1);
+      border-left: 4px solid var(--teal);
+      padding: 16px 20px;
+      border-radius: 0 8px 8px 0;
+      margin: 20px 0;
+    }
+
+    .callout.warning {
+      background: rgba(239, 99, 55, 0.1);
+      border-left-color: var(--coral);
+    }
+
+    .callout p {
+      margin: 0;
+    }
+
+    ul, ol {
+      margin: 16px 0;
+      padding-left: 24px;
+    }
+
+    li {
+      margin-bottom: 8px;
+    }
+
+    footer {
+      text-align: center;
+      padding: 40px;
+      border-top: 1px solid var(--navy);
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    @media (max-width: 768px) {
+      .hero {
+        padding: 40px 20px;
+      }
+      .hero h1 {
+        font-size: 2rem;
+      }
+      .container {
+        padding: 20px;
+      }
+      nav ul {
+        gap: 16px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="hero">
+    <h1>MARPA AI Presenter</h1>
+    <p>A voice-interactive presentation system powered by AI, built on json-render for guardrailed UI generation.</p>
+  </div>
+
+  <nav>
+    <ul>
+      <li><a href="#overview">Overview</a></li>
+      <li><a href="#user-guide">User Guide</a></li>
+      <li><a href="#architecture">Architecture</a></li>
+      <li><a href="#components">Components</a></li>
+      <li><a href="#api-reference">API Reference</a></li>
+      <li><a href="#configuration">Configuration</a></li>
+    </ul>
+  </nav>
+
+  <div class="container">
+    <!-- OVERVIEW SECTION -->
+    <section id="overview">
+      <h2>System Overview</h2>
+
+      <p>The MARPA AI Presenter is a Next.js application that combines AI-powered text-to-speech narration, voice command recognition, and dynamic slide presentation. It's built on top of <strong>json-render</strong>, a library for generating guardrailed, predictable UI from AI.</p>
+
+      <div class="card-grid">
+        <div class="feature-card">
+          <h4>Voice Narration</h4>
+          <p>ElevenLabs text-to-speech reads slide narrations automatically. Natural-sounding voice guides viewers through the presentation.</p>
+          <span class="badge badge-teal">ElevenLabs TTS</span>
+        </div>
+        <div class="feature-card">
+          <h4>Voice Commands</h4>
+          <p>Hold Spacebar and speak commands like "next", "previous", "stop", or ask questions about the content.</p>
+          <span class="badge badge-coral">Web Speech API</span>
+        </div>
+        <div class="feature-card">
+          <h4>AI Q&A Agent</h4>
+          <p>Claude Sonnet answers questions about the presentation with guardrails ensuring factual consistency.</p>
+          <span class="badge badge-teal">Claude Sonnet 4</span>
+        </div>
+        <div class="feature-card">
+          <h4>JSON-Render UI</h4>
+          <p>Slides and components are generated from a defined catalog, enabling AI to create predictable, validated UI.</p>
+          <span class="badge badge-coral">json-render</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- USER GUIDE SECTION -->
+    <section id="user-guide">
+      <h2>User Guide</h2>
+
+      <h3>Getting Started</h3>
+      <p>Access the presenter at <code>http://localhost:3002/presenter</code> after starting the development server.</p>
+
+      <div class="callout">
+        <p><strong>Quick Start:</strong> Run <code>pnpm dev</code> from the project root, then open the presenter URL in Chrome or Safari (required for voice recognition).</p>
+      </div>
+
+      <h3>Keyboard Controls</h3>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Key</th>
+              <th>Action</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="key">SPACE</span> (hold)</td>
+              <td>Push-to-Talk</td>
+              <td>Hold to record voice commands. Release to process.</td>
+            </tr>
+            <tr>
+              <td><span class="key">→</span> or <span class="key">↓</span></td>
+              <td>Next Slide</td>
+              <td>Navigate to the next slide</td>
+            </tr>
+            <tr>
+              <td><span class="key">←</span> or <span class="key">↑</span></td>
+              <td>Previous Slide</td>
+              <td>Navigate to the previous slide</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Voice Commands</h3>
+      <p>Hold <span class="key">SPACE</span> and speak any of these commands:</p>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Command</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>"next", "continue", "go on"</td>
+              <td>Advance to next slide</td>
+            </tr>
+            <tr>
+              <td>"back", "previous"</td>
+              <td>Go to previous slide</td>
+            </tr>
+            <tr>
+              <td>"stop", "wait", "hold on", "question"</td>
+              <td>Pause narration, enter Q&A mode</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Presentation Modes</h3>
+      <div class="card-grid">
+        <div class="card">
+          <h4><span class="badge badge-navy">PAUSED</span></h4>
+          <p>Waiting for user action. Click "Start Presentation" or navigate manually.</p>
+        </div>
+        <div class="card">
+          <h4><span class="badge badge-teal">PRESENTING</span></h4>
+          <p>AI is narrating slides. Auto-advances after each narration completes.</p>
+        </div>
+        <div class="card">
+          <h4><span class="badge badge-coral">QUESTION</span></h4>
+          <p>User interrupted with a question. AI awaits voice input.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ARCHITECTURE SECTION -->
+    <section id="architecture">
+      <h2>Technical Architecture</h2>
+
+      <h3>System Flow Diagram</h3>
+      <div class="architecture-diagram">
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              USER INTERFACE                                  │
+│  ┌─────────────┐  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐ │
+│  │  Presenter  │  │   Gallery   │  │   Agent     │  │   Control Panel     │ │
+│  │   /presenter│  │  (Sidebar)  │  │   /agent    │  │  (Navigation/Voice) │ │
+│  └──────┬──────┘  └──────┬──────┘  └──────┬──────┘  └──────────┬──────────┘ │
+└─────────┼────────────────┼────────────────┼─────────────────────┼───────────┘
+          │                │                │                     │
+          ▼                ▼                ▼                     ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              CORE SERVICES                                   │
+│  ┌─────────────────┐  ┌─────────────────┐  ┌─────────────────────────────┐  │
+│  │ ElevenLabs TTS  │  │ Web Speech API  │  │     AI SDK (Vercel)         │  │
+│  │  /api/tts       │  │ (Browser)       │  │  @ai-sdk/anthropic          │  │
+│  │                 │  │                 │  │  @ai-sdk/google             │  │
+│  │  Voice ID:      │  │  Push-to-Talk   │  │  @ai-sdk/react              │  │
+│  │  UgBBYS2s...    │  │  Recognition    │  │                             │  │
+│  └────────┬────────┘  └────────┬────────┘  └─────────────┬───────────────┘  │
+└───────────┼────────────────────┼─────────────────────────┼──────────────────┘
+            │                    │                         │
+            ▼                    ▼                         ▼
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                              DATA LAYER                                      │
+│  ┌───────────────────────┐  ┌───────────────────────┐  ┌─────────────────┐  │
+│  │  Presentation Script  │  │   Slide HTML Files    │  │   Canonical     │  │
+│  │  78 slides, 10 ch.    │  │   /public/slides/     │  │   Data (Q&A)    │  │
+│  │  Full narration text  │  │   1280x720 static     │  │   Guardrails    │  │
+│  └───────────────────────┘  └───────────────────────┘  └─────────────────┘  │
+└─────────────────────────────────────────────────────────────────────────────┘
+      </div>
+
+      <h3>Data Flow</h3>
+
+      <div class="flow-step">
+        <div class="flow-number">1</div>
+        <div class="flow-content">
+          <h4>User Starts Presentation</h4>
+          <p>Click "Start Presentation" button. Mode changes to <code>presenting</code>.</p>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-number">2</div>
+        <div class="flow-content">
+          <h4>TTS Request</h4>
+          <p>Frontend calls <code>/api/tts</code> with slide narration text. ElevenLabs returns audio stream.</p>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-number">3</div>
+        <div class="flow-content">
+          <h4>Audio Playback</h4>
+          <p>Audio plays in browser. When finished, auto-advances to next slide (if enabled).</p>
+        </div>
+      </div>
+
+      <div class="flow-step">
+        <div class="flow-number">4</div>
+        <div class="flow-content">
+          <h4>Voice Command (Optional)</h4>
+          <p>User holds SPACE, speaks command. Web Speech API transcribes, app processes command.</p>
+        </div>
+      </div>
+
+      <h3>Package Dependencies</h3>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Package</th>
+              <th>Version</th>
+              <th>Purpose</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>ai</code></td>
+              <td>^6.0.33</td>
+              <td>Vercel AI SDK core</td>
+            </tr>
+            <tr>
+              <td><code>@ai-sdk/anthropic</code></td>
+              <td>^3.0.14</td>
+              <td>Claude model provider</td>
+            </tr>
+            <tr>
+              <td><code>@ai-sdk/google</code></td>
+              <td>^3.0.9</td>
+              <td>Gemini model provider</td>
+            </tr>
+            <tr>
+              <td><code>@ai-sdk/react</code></td>
+              <td>^3.0.39</td>
+              <td>React hooks (useChat)</td>
+            </tr>
+            <tr>
+              <td><code>@json-render/core</code></td>
+              <td>workspace:*</td>
+              <td>Schemas, catalog, types</td>
+            </tr>
+            <tr>
+              <td><code>@json-render/react</code></td>
+              <td>workspace:*</td>
+              <td>Renderer, hooks, components</td>
+            </tr>
+            <tr>
+              <td><code>chart.js</code></td>
+              <td>^4.5.1</td>
+              <td>Chart visualizations</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <!-- COMPONENTS SECTION -->
+    <section id="components">
+      <h2>JSON-Render Components</h2>
+
+      <p>The presentation uses a catalog of pre-defined slide components. AI generates JSON matching these schemas.</p>
+
+      <h3>Slide Components</h3>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Description</th>
+              <th>Key Props</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>TitleSlide</code></td>
+              <td>Opening/chapter title slides</td>
+              <td>title, tag, subtitle, bullets, footer</td>
+            </tr>
+            <tr>
+              <td><code>MetricsSlide</code></td>
+              <td>KPI dashboard with metrics</td>
+              <td>title, chapter, metrics[]</td>
+            </tr>
+            <tr>
+              <td><code>ChartSlide</code></td>
+              <td>Chart.js visualizations</td>
+              <td>type (line/bar/pie), data, insight</td>
+            </tr>
+            <tr>
+              <td><code>ComparisonSlide</code></td>
+              <td>Side-by-side comparisons</td>
+              <td>title, columns[]</td>
+            </tr>
+            <tr>
+              <td><code>TableSlide</code></td>
+              <td>Structured data tables</td>
+              <td>title, headers[], rows[]</td>
+            </tr>
+            <tr>
+              <td><code>TextSlide</code></td>
+              <td>Content with markdown</td>
+              <td>title, content, highlights[]</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Content Components (NEW)</h3>
+      <p>Recently added to <code>@json-render/react</code> for rich content rendering:</p>
+
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Component</th>
+              <th>Description</th>
+              <th>Key Props</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><code>Chart</code></td>
+              <td>Chart.js wrapper</td>
+              <td>type, labels, datasets, title, height</td>
+            </tr>
+            <tr>
+              <td><code>Markdown</code></td>
+              <td>Markdown to HTML</td>
+              <td>content, allowedTags, className</td>
+            </tr>
+            <tr>
+              <td><code>RichHTML</code></td>
+              <td>Sanitized HTML</td>
+              <td>html, allowedTags, allowedAttributes</td>
+            </tr>
+            <tr>
+              <td><code>Heading</code></td>
+              <td>h1-h6 headings</td>
+              <td>text, level, id</td>
+            </tr>
+            <tr>
+              <td><code>Paragraph</code></td>
+              <td>Text paragraph</td>
+              <td>text, align</td>
+            </tr>
+            <tr>
+              <td><code>Callout</code></td>
+              <td>Alert boxes</td>
+              <td>type, title, content</td>
+            </tr>
+            <tr>
+              <td><code>Quote</code></td>
+              <td>Blockquotes</td>
+              <td>text, author, source, variant</td>
+            </tr>
+            <tr>
+              <td><code>CodeBlock</code></td>
+              <td>Code with highlighting</td>
+              <td>code, language, showLineNumbers, copyable</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>Using Content Components</h3>
+      <pre><code>// In your catalog
+import { createCatalog, contentComponentDefinitions } from "@json-render/core";
+
+const catalog = createCatalog({
+  name: "my-catalog",
+  components: {
+    ...contentComponentDefinitions,  // Include all content components
+    // Add custom components...
+  },
+});
+
+// In your app
+import { Renderer, contentComponentRegistry } from "@json-render/react";
+
+const registry = {
+  ...contentComponentRegistry,
+  ...myCustomComponents,
+};
+
+&lt;Renderer tree={tree} registry={registry} /&gt;</code></pre>
+    </section>
+
+    <!-- API REFERENCE SECTION -->
+    <section id="api-reference">
+      <h2>API Reference</h2>
+
+      <h3>POST /api/tts</h3>
+      <p>Text-to-speech synthesis using ElevenLabs.</p>
+
+      <h4>Request</h4>
+      <pre><code>{
+  "text": "Welcome to the presentation..."
+}</code></pre>
+
+      <h4>Response</h4>
+      <p>Returns <code>audio/mpeg</code> stream.</p>
+
+      <h4>Error Codes</h4>
+      <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>Status</th>
+              <th>Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>400</td>
+              <td>No text provided</td>
+            </tr>
+            <tr>
+              <td>500</td>
+              <td>ElevenLabs API key not configured</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <h3>POST /api/chat</h3>
+      <p>AI-powered Q&A about presentation content.</p>
+
+      <h4>Request</h4>
+      <pre><code>{
+  "messages": [
+    { "role": "user", "content": "What is the valuation?" }
+  ],
+  "slideContext": {
+    "currentSlide": 15,
+    "chapter": "Foundation",
+    "narration": "The valuation is $17M..."
+  }
+}</code></pre>
+
+      <h4>Response</h4>
+      <p>Returns streaming text response with factual answers based on canonical data.</p>
+
+      <div class="callout warning">
+        <p><strong>Guardrails:</strong> The chat API enforces specific values (e.g., "$17M valuation", "95% win rate") and will correct users who mention incorrect figures.</p>
+      </div>
+    </section>
+
+    <!-- CONFIGURATION SECTION -->
+    <section id="configuration">
+      <h2>Configuration</h2>
+
+      <h3>Environment Variables</h3>
+      <p>Create <code>.env.local</code> in <code>examples/presentation/</code>:</p>
+
+      <pre><code># ElevenLabs TTS
+ELEVENLABS_API_KEY=your_api_key_here
+ELEVENLABS_VOICE_ID=UgBBYS2sOqTuMpoF3BR0  # Optional, has default
+
+# AI Providers
+ANTHROPIC_API_KEY=your_anthropic_key
+GOOGLE_GENERATIVE_AI_API_KEY=your_google_key  # Optional, for Gemini</code></pre>
+
+      <h3>Voice Settings</h3>
+      <p>TTS voice is configured in <code>/api/tts/route.ts</code>:</p>
+      <pre><code>{
+  model_id: "eleven_turbo_v2_5",
+  voice_settings: {
+    stability: 0.5,
+    similarity_boost: 0.8,
+    style: 0.2,
+    use_speaker_boost: true
+  }
+}</code></pre>
+
+      <h3>File Structure</h3>
+      <pre><code>examples/presentation/
+├── app/
+│   ├── presenter/
+│   │   └── page.tsx       # Main presenter UI
+│   ├── agent/
+│   │   └── page.tsx       # Generative slide agent
+│   ├── api/
+│   │   ├── tts/
+│   │   │   └── route.ts   # ElevenLabs TTS endpoint
+│   │   └── chat/
+│   │       └── route.ts   # AI Q&A endpoint
+│   └── page.tsx           # Simple audio playback mode
+├── lib/
+│   ├── presentation-script.ts  # 78 slides with narration
+│   ├── catalog.ts              # json-render component catalog
+│   └── schema.ts               # Colors and styling
+├── public/
+│   └── slides/                 # Static HTML slides (1280x720)
+└── docs/
+    └── system-guide.html       # This documentation</code></pre>
+
+      <h3>Running the Application</h3>
+      <pre><code># From project root
+pnpm install
+pnpm dev
+
+# Or run just the presentation
+pnpm --filter marpa-presentation dev
+
+# Access at
+http://localhost:3002/presenter</code></pre>
+    </section>
+  </div>
+
+  <footer>
+    <p>MARPA AI Presenter &bull; Built with json-render, Vercel AI SDK, and ElevenLabs</p>
+    <p style="margin-top: 8px; font-size: 0.8rem;">Generated January 2026</p>
+  </footer>
+</body>
+</html>
