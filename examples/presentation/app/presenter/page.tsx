@@ -167,36 +167,30 @@ export default function PresenterPage() {
     };
   }, []);
 
-  // Push-to-talk keyboard handler (SPACE = hold to talk)
+  // Keyboard handler: SPACE = play/pause, Arrows = navigate
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Spacebar for push-to-talk (hold to talk)
-      if (e.code === "Space" && !isPushToTalkRef.current && !e.repeat) {
-        const target = e.target as HTMLElement;
-        if (target.tagName === "INPUT" || target.tagName === "TEXTAREA") return;
+      const target = e.target as HTMLElement;
+      if (target.tagName === "INPUT" || target.tagName === "TEXTAREA") return;
+
+      // Spacebar for play/pause narration
+      if (e.code === "Space" && !e.repeat) {
         e.preventDefault();
 
-        // Stop audio first to prevent feedback
-        if (audioRef.current) {
-          audioRef.current.pause();
-          audioRef.current.currentTime = 0;
-          audioRef.current = null;
-        }
-        setIsSpeaking(false);
-        isSpeakingRef.current = false;
-        ttsLockRef.current = false;
-
-        setTimeout(() => {
-          isPushToTalkRef.current = true;
-          setIsPushToTalk(true);
-          setTranscript("");
-
-          try {
-            recognitionRef.current?.start();
-          } catch (e) {
-            // Ignore if already started
+        if (mode === "presenting") {
+          // Pause: stop audio and switch to paused mode
+          if (audioRef.current) {
+            audioRef.current.pause();
+            audioRef.current = null;
           }
-        }, 50);
+          setIsSpeaking(false);
+          isSpeakingRef.current = false;
+          ttsLockRef.current = false;
+          setMode("paused");
+        } else {
+          // Play: start presenting
+          setMode("presenting");
+        }
       }
 
       // Arrow keys for navigation
@@ -214,31 +208,12 @@ export default function PresenterPage() {
       }
     };
 
-    const handleKeyUp = (e: KeyboardEvent) => {
-      if (e.code === "Space" && isPushToTalkRef.current) {
-        e.preventDefault();
-        isPushToTalkRef.current = false;
-        setIsPushToTalk(false);
-
-        try {
-          recognitionRef.current?.stop();
-        } catch (e) {
-          // Ignore
-        }
-
-        // Clear transcript after processing
-        setTranscript("");
-      }
-    };
-
     window.addEventListener("keydown", handleKeyDown);
-    window.addEventListener("keyup", handleKeyUp);
 
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
-      window.removeEventListener("keyup", handleKeyUp);
     };
-  }, [currentSlideIndex]);
+  }, [currentSlideIndex, mode]);
 
   // ElevenLabs TTS
   const ttsLockRef = useRef(false);
@@ -643,27 +618,11 @@ export default function PresenterPage() {
                           : COLORS.muted,
                     }}
                   >
-                    {isPushToTalk
-                      ? "RECORDING..."
-                      : isSpeaking
-                        ? "Speaking..."
-                        : "Hold SPACE to talk"}
+                    {isSpeaking ? "Speaking..." : "Ready"}
                   </span>
                 </div>
-                {isPushToTalk && transcript && (
-                  <p
-                    className="text-[13px] px-3 py-2 rounded"
-                    style={{
-                      color: COLORS.text,
-                      background: "rgba(239,99,55,0.1)",
-                      border: `1px solid ${COLORS.coral}`,
-                    }}
-                  >
-                    "{transcript}"
-                  </p>
-                )}
                 <p className="text-[10px] mt-2" style={{ color: COLORS.muted }}>
-                  SPACE = talk | Arrows = navigate | Say "stop" to interrupt
+                  SPACE = play/pause | Arrows = navigate
                 </p>
               </div>
             </aside>
@@ -745,22 +704,22 @@ export default function PresenterPage() {
               Next
             </button>
 
-            {/* Push-to-talk indicator */}
+            {/* Status indicator */}
             <div className="ml-6 pl-6 border-l border-white/10 flex items-center gap-2">
               <div
                 className="w-2.5 h-2.5 rounded-full"
                 style={{
-                  background: isPushToTalk ? COLORS.coral : COLORS.muted,
-                  animation: isPushToTalk ? "pulse 0.5s infinite" : "none",
+                  background: isSpeaking ? COLORS.teal : COLORS.muted,
+                  animation: isSpeaking ? "pulse 0.5s infinite" : "none",
                 }}
               />
               <span
                 className="text-xs"
                 style={{
-                  color: isPushToTalk ? COLORS.coral : COLORS.muted,
+                  color: isSpeaking ? COLORS.teal : COLORS.muted,
                 }}
               >
-                {isPushToTalk ? "Recording..." : "Hold SPACE to talk"}
+                {isSpeaking ? "Playing..." : "SPACE = play/pause"}
               </span>
             </div>
           </footer>
