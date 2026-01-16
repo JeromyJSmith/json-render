@@ -302,7 +302,7 @@ export default function PresenterPage() {
 
       setTimeout(() => {
         const welcomeText =
-          "Welcome! Hold Spacebar to give voice commands, or click Start.";
+          "Welcome to the MARPA presentation. Press Spacebar or click Start to begin.";
         speak(welcomeText);
       }, 300);
 
