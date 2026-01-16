@@ -57,7 +57,6 @@ When answering questions about specific data, format numbers clearly (e.g., "$17
     model: gateway("anthropic/claude-sonnet-4-20250514"),
     system: systemPrompt,
     messages: modelMessages,
-    maxTokens: 1024,
   });
 
   // Return with originalMessages for proper UIMessage handling

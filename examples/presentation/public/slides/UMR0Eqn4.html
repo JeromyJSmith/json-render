@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/UMR0Eqn4 -->
+<html lang="en" data-chapter="Solo Path" data-chapter-number="2" data-slide-position="18"><head>
+<meta name="marpa-chapter" content="Solo Path" data-chapter-number="2" data-slide-position="18"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Bodie's Path to 49% Ownership</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(2)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            min-height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 40px 60px;
+            box-sizing: border-box;
+        }
+
+        /* Timeline Container */
+        .timeline-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            margin-top: 20px;
+        }
+
+        /* The horizontal line */
+        .timeline-track {
+            position: absolute;
+            top: 50%;
+            left: 40px;
+            right: 40px;
+            height: 4px;
+            background-color: rgba(4, 76, 115, 0.3);
+            transform: translateY(-50%);
+            z-index: 0;
+            border-radius: 4px;
+        }
+
+        /* Progress fill for the track */
+        .timeline-progress {
+            position: absolute;
+            top: 50%;
+            left: 40px;
+            height: 4px;
+            /* Avoid gradients for PDF export compatibility - using solid color or fallback */
+            background-color: var(--turquoise); 
+            /* To simulate gradient effect without gradient property: use overlapping divs or accept solid */
+            /* For modern browsers rendering, linear-gradient is fine, but per instructions avoid it */
+            /* Using solid color to be safe */
+            transform: translateY(-50%);
+            z-index: 1;
+            width: 90%; /* Represents full timeline completion */
+            border-radius: 4px;
+            opacity: 0.8;
+        }
+
+        /* Timeline Nodes/Milestones Container */
+        .timeline-nodes {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            z-index: 10;
+            padding: 0 40px;
+            height: 100%;
+        }
+
+        /* Individual Node */
+        .node-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            width: 280px; 
+        }
+
+        /* The circle on the line */
+        .node-point {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background-color: var(--bg-dark);
+            border: 4px solid;
+            margin: 20px 0;
+            position: relative;
+            z-index: 20;
+            box-shadow: 0 0 0 6px rgba(15, 20, 25, 0.5); /* Mask line behind */
+        }
+
+        /* Top Card (Phase Info) */
+        .info-card-top {
+            background-color: rgba(4, 76, 115, 0.15);
+            border: 1px solid rgba(4, 76, 115, 0.4);
+            border-radius: 8px;
+            padding: 20px;
+            width: 100%;
+            margin-bottom: 20px;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+        
+        .info-card-top::after {
+            content: '';
+            position: absolute;
+            bottom: -8px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-top: 8px solid rgba(4, 76, 115, 0.4);
+        }
+
+        /* Bottom Card (Stats) */
+        .stats-card-bottom {
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        /* Specific Node Styling */
+        .node-1 .node-point { border-color: var(--turquoise); }
+        .node-1 .info-card-top { border-top: 4px solid var(--turquoise); }
+        
+        .node-2 .node-point { border-color: var(--yellow); } /* Changed from coral to yellow for mid-phase */
+        .node-2 .info-card-top { border-top: 4px solid var(--yellow); }
+
+        .node-3 .node-point { border-color: var(--coral); }
+        .node-3 .info-card-top { border-top: 4px solid var(--coral); background-color: rgba(239, 99, 55, 0.1); }
+
+        .cumulative-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 32px;
+            font-weight: 700;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .milestone-marker {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translate(50%, -50%);
+            display: flex;
+            align-items: center;
+            background-color: var(--coral); /* Coral for final goal */
+            color: var(--bg-dark);
+            padding: 8px 16px;
+            border-radius: 50px;
+            font-weight: 700;
+            font-size: 14px;
+            white-space: nowrap;
+            box-shadow: 0 0 20px rgba(239, 99, 55, 0.3);
+            z-index: 30;
+        }
+
+        /* Arrows between cards */
+        .flow-arrow {
+            position: absolute;
+            top: 50%;
+            right: -30px;
+            color: rgba(255,255,255,0.1);
+            font-size: 20px;
+        }
+
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="flex justify-between items-start mb-8 border-b border-[#044c73] border-opacity-30 pb-4">
+<div>
+<div class="flex items-center mb-2">
+<span class="w-2 h-8 bg-[#4ECDC4] mr-3"></span>
+<span class="text-[#4ECDC4] font-bold tracking-widest text-sm uppercase">Chapter 2: Solo Principal Path</span>
+</div>
+<h1 class="font-serif text-4xl text-[#f5f7fa]">BODIE'S PATH TO 49% OWNERSHIP</h1>
+<p class="text-[#b0b8c1] text-lg mt-2">11-Year Ownership Accumulation Timeline</p>
+</div>
+<div class="text-right">
+<div class="bg-[#044c73] bg-opacity-30 px-4 py-2 rounded border border-[#044c73]">
+<p class="text-[#b0b8c1] text-xs uppercase tracking-widest mb-1">Target Goal</p>
+<p class="font-serif text-2xl text-[#f5f7fa]">49% Equity</p>
+</div>
+</div>
+</div>
+<!-- Timeline Visualization -->
+<div class="timeline-wrapper">
+<!-- Background Line -->
+<div class="timeline-track"></div>
+<div class="timeline-progress"></div>
+<!-- Milestone End Marker -->
+<div class="milestone-marker" style="right: 40px;">
+<i class="fas fa-flag-checkered mr-2"></i> YEAR 11: 49% Reached
+            </div>
+<!-- Nodes -->
+<div class="timeline-nodes">
+<!-- Node 1: Years 1-2 -->
+<div class="node-group node-1">
+<!-- Top Card -->
+<div class="info-card-top">
+<div class="flex justify-between items-center mb-2">
+<span class="text-[#8db6b0] font-bold text-xs uppercase tracking-wider">Phase 1</span>
+<span class="bg-[#044c73] text-[#f5f7fa] text-[10px] px-2 py-1 rounded">YEARS 1-2</span>
+</div>
+<h3 class="text-[#f5f7fa] font-serif text-xl mb-1">Initial Gifting</h3>
+<div class="flex items-center text-[#b0b8c1] text-sm mt-3">
+<i class="fas fa-gift text-[#4ECDC4] mr-2"></i>
+<p>4.5% Gifted Equity</p>
+</div>
+<p class="text-xs text-[#b0b8c1] mt-1 opacity-70">Zero cost foundation</p>
+</div>
+<!-- Point -->
+<div class="node-point"></div>
+<!-- Bottom Stats -->
+<div class="stats-card-bottom">
+<span class="cumulative-badge text-[#4ECDC4]">4.5%</span>
+<p class="text-[#b0b8c1] text-xs uppercase tracking-widest">Cumulative Ownership</p>
+</div>
+<i class="fas fa-chevron-right flow-arrow"></i>
+</div>
+<!-- Node 2: Years 3-5 -->
+<div class="node-group node-2">
+<!-- Top Card -->
+<div class="info-card-top">
+<div class="flex justify-between items-center mb-2">
+<span class="text-[#FFE66D] font-bold text-xs uppercase tracking-wider">Phase 2</span>
+<span class="bg-[#044c73] text-[#f5f7fa] text-[10px] px-2 py-1 rounded">YEARS 3-10</span>
+</div>
+<h3 class="text-[#f5f7fa] font-serif text-xl mb-1">Annual Purchases</h3>
+<div class="flex items-center text-[#b0b8c1] text-sm mt-3">
+<i class="fas fa-dollar-sign text-[#FFE66D] mr-2 ml-1"></i>
+<p>~2.4% Purchased / Yr</p>
+</div>
+<p class="text-xs text-[#b0b8c1] mt-1 opacity-70">Funded by distributions</p>
+</div>
+<!-- Point -->
+<div class="node-point"></div>
+<!-- Bottom Stats -->
+<div class="stats-card-bottom">
+<span class="cumulative-badge text-[#FFE66D] opacity-80">24.0%</span>
+<p class="text-[#b0b8c1] text-xs uppercase tracking-widest">Cumulative Ownership</p>
+</div>
+<i class="fas fa-chevron-right flow-arrow"></i>
+</div>
+<!-- Node 3: Years 6-10 -->
+<div class="node-group node-3">
+<!-- Top Card -->
+<div class="info-card-top shadow-lg shadow-coral/10">
+<div class="flex justify-between items-center mb-2">
+<span class="text-[#ef6337] font-bold text-xs uppercase tracking-wider">Phase 3</span>
+<span class="bg-[#044c73] text-[#f5f7fa] text-[10px] px-2 py-1 rounded">YEAR 11</span>
+</div>
+<h3 class="text-[#f5f7fa] font-serif text-xl mb-1">Final Threshold</h3>
+<div class="flex items-center text-[#b0b8c1] text-sm mt-3">
+<i class="fas fa-chart-line text-[#ef6337] mr-2"></i>
+<p>Max Minority Stake</p>
+</div>
+<p class="text-xs text-[#b0b8c1] mt-1 opacity-70">Partnership capped</p>
+</div>
+<!-- Point -->
+<div class="node-point"></div>
+<!-- Bottom Stats -->
+<div class="stats-card-bottom">
+<span class="cumulative-badge text-[#ef6337]">49.0%</span>
+<p class="text-[#b0b8c1] text-xs uppercase tracking-widest">Cumulative Ownership</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer / Summary Box -->
+<div class="mt-auto flex items-center bg-[#044c73] bg-opacity-20 border border-[#044c73] rounded-lg p-4">
+<div class="w-10 h-10 rounded-full bg-[#FFE66D] flex items-center justify-center mr-4 flex-shrink-0">
+<i class="fas fa-shield-alt text-[#0f1419]"></i>
+</div>
+<div class="flex-1">
+<p class="text-[#f5f7fa] font-medium">Risk Protection: Share Price Cap</p>
+<p class="text-[#b0b8c1] text-sm">Annual share price increases are capped at 10% max to ensure affordability even if firm value grows faster.</p>
+</div>
+<div class="text-right border-l border-[#044c73] pl-4 ml-4">
+<span class="block text-[#b0b8c1] text-[10px] uppercase tracking-widest">Total Timeline</span>
+<span class="text-[#f5f7fa] font-mono font-bold">11 YEARS</span>
+</div>
+</div>
+<!-- Branding Footer -->
+<div class="absolute bottom-4 right-10 text-[#4e5d6c] text-[10px] uppercase tracking-widest">
+            MARPA Equity Pathway 2026 · Confidential
+        </div>
+</div>
+
+
+<script src="./slide-inner.js"></script></body></html>

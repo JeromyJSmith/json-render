@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/8IICxmjk -->
+<html lang="en" data-chapter="Appendix" data-chapter-number="9" data-slide-position="60"><head>
+<meta name="marpa-chapter" content="Appendix" data-chapter-number="9" data-slide-position="60"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Valuation Scenarios - MARPA Equity Pathway</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(2)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<link href="./global-marpa-styles.css" rel="stylesheet">
+<script src="./gsap.min.js"></script>
+<style>
+        /* ==========================================
+           COLOR PRESERVATION BLOCK
+           ========================================== */
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --mint: #95E1D3;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+            --text-gray: #4e5d6c;
+        }
+
+        /* Tailwind color preservation */
+        .text-\[\#ef6337\] { color: #ef6337 !important; }
+        .text-\[\#f5f7fa\] { color: #f5f7fa !important; }
+        .text-\[\#8db6b0\] { color: #8db6b0 !important; }
+        .text-\[\#b0b8c1\] { color: #b0b8c1 !important; }
+        .text-\[\#4e5d6c\] { color: #4e5d6c !important; }
+        .text-\[\#044c73\] { color: #044c73 !important; }
+        .text-\[\#4ECDC4\] { color: #4ECDC4 !important; }
+        .text-\[\#FFE66D\] { color: #FFE66D !important; }
+        .text-\[\#95E1D3\] { color: #95E1D3 !important; }
+        .text-\[\#0f1419\] { color: #0f1419 !important; }
+
+        .bg-\[\#0f1419\] { background-color: #0f1419 !important; }
+        .bg-\[\#044c73\] { background-color: #044c73 !important; }
+        .bg-\[\#ef6337\] { background-color: #ef6337 !important; }
+        .bg-\[\#0b0f13\] { background-color: #0b0f13 !important; }
+        .bg-\[\#FFE66D\] { background-color: #FFE66D !important; }
+
+        .border-\[\#044c73\] { border-color: #044c73 !important; }
+        .border-\[\#ef6337\] { border-color: #ef6337 !important; }
+
+        /* Slide-specific component styles */
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            min-height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 25px 40px; /* Optimized padding */
+            box-sizing: border-box;
+            background-color: var(--bg-dark, #0f1419);
+            overflow: hidden;
+        }
+
+        /* Visualization Container */
+        .chart-area {
+            flex: 1;
+            display: flex;
+            align-items: flex-end;
+            justify-content: space-between;
+            gap: 32px; /* Reduced gap */
+            padding-bottom: 20px;
+            position: relative;
+            margin-top: 16px; /* Reduced margin */
+        }
+
+        /* Grid lines background */
+        .chart-grid {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 20px;
+            z-index: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            pointer-events: none;
+        }
+        .grid-line {
+            width: 100%;
+            border-top: 1px dashed rgba(255, 255, 255, 0.1);
+            position: relative;
+        }
+        .grid-label {
+            position: absolute;
+            left: -35px;
+            top: -8px;
+            font-size: 10px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Scenario Columns */
+        .scenario-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            position: relative;
+            z-index: 10;
+            height: 100%;
+        }
+
+        .bar-container {
+            width: 100%;
+            border-radius: 8px 8px 0 0;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            padding: 16px; /* Reduced padding */
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.05);
+            border-bottom: none;
+            /* Initial state for animation */
+            transform: scaleY(0);
+            transform-origin: bottom;
+            opacity: 0;
+        }
+
+        /* Bar Colors & Heights */
+        /* Conservative: $16.2M / $18M max = ~90% */
+        .bar-conservative {
+            background-color: rgba(78, 205, 196, 0.15);
+            border-top: 4px solid var(--turquoise);
+            height: 90%; 
+        }
+        /* Mid-Range: $17.0M / $18M max = ~94.4% */
+        .bar-mid {
+            background-color: rgba(255, 230, 109, 0.15);
+            border-top: 4px solid var(--yellow);
+            height: 94.4%;
+        }
+        /* Premium: $18.0M / $18M max = 100% */
+        .bar-premium {
+            background-color: rgba(239, 99, 55, 0.15);
+            border-top: 4px solid var(--coral);
+            height: 100%;
+            box-shadow: 0 0 40px rgba(239, 99, 55, 0.1);
+        }
+
+        /* Typography within bars */
+        .value-text {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 38px; /* Reduced from 42px */
+            line-height: 1;
+            margin-bottom: 8px;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            opacity: 0; /* Animated separately */
+        }
+
+        .scenario-label {
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 12px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: inline-block;
+            padding: 4px 8px;
+            border-radius: 4px;
+            opacity: 0; /* Animated separately */
+        }
+
+        .multiple-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            padding: 4px 0;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            margin-top: auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            opacity: 0; /* Animated separately */
+        }
+
+        .math-detail {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+            opacity: 0; /* Animated separately */
+        }
+
+        /* Color specific text */
+        .text-conservative { color: var(--turquoise); }
+        .bg-conservative-sub { background-color: rgba(78, 205, 196, 0.2); color: var(--turquoise); }
+        
+        .text-mid { color: var(--yellow); }
+        .bg-mid-sub { background-color: rgba(255, 230, 109, 0.2); color: var(--yellow); }
+        
+        .text-premium { color: var(--coral); }
+        .bg-premium-sub { background-color: rgba(239, 99, 55, 0.2); color: var(--coral); }
+
+        .ebitda-base-pill {
+            background-color: var(--navy);
+            padding: 6px 14px;
+            border-radius: 50px;
+            border: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            transform: translateY(-10px);
+        }
+
+        .animate-pulse-glow {
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+
+        @keyframes pulseGlow {
+            0% { opacity: 0.6; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.1); }
+            100% { opacity: 0.6; transform: scale(1); }
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="flex justify-between items-start mb-6 header-elements">
+<div>
+<h2 class="text-[#ef6337] font-bold tracking-widest text-sm mb-2 uppercase flex items-center opacity-0 translate-y-2" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<span class="w-8 h-px bg-[#ef6337] mr-2"></span>
+                    Appendix: Valuation Range
+                </h2>
+<h1 class="font-serif text-4xl font-bold text-[#f5f7fa] mb-2 opacity-0 translate-y-2" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">APPENDIX: VALUATION SCENARIOS</h1>
+<p class="text-[#b0b8c1] text-lg font-light opacity-0 translate-y-2" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">Projected Enterprise Value based on EBITDA multiples</p>
+</div>
+<!-- Base Metric Pill -->
+<div class="ebitda-base-pill" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<span class="text-[#8db6b0] text-xs uppercase tracking-wider font-bold">Calculation Base</span>
+<span class="h-4 w-px bg-gray-600"></span>
+<span class="text-[#f5f7fa] font-mono font-bold">Trailing EBITDA: $1.655M</span>
+</div>
+</div>
+<!-- Main Chart Visualization -->
+<div class="chart-area">
+<!-- Background Grid -->
+<div class="chart-grid">
+<div class="grid-line opacity-0 scale-x-0" style="translate: none; rotate: none; scale: none; transform-origin: 0% 50%; opacity: 1; transform: translate(0px, 0px);"><span class="grid-label">$18M</span></div>
+<div class="grid-line opacity-0 scale-x-0" style="translate: none; rotate: none; scale: none; transform-origin: 0% 50%; opacity: 1; transform: translate(0px, 0px);"><span class="grid-label">$17M</span></div>
+<div class="grid-line opacity-0 scale-x-0" style="translate: none; rotate: none; scale: none; transform-origin: 0% 50%; opacity: 1; transform: translate(0px, 0px);"><span class="grid-label">$16M</span></div>
+<div class="grid-line opacity-0 scale-x-0" style="translate: none; rotate: none; scale: none; transform-origin: 0% 50%; opacity: 1; transform: translate(0px, 0px);"><span class="grid-label">$15M</span></div>
+<div class="grid-line opacity-0 scale-x-0" style="translate: none; rotate: none; scale: none; transform-origin: 0% 50%; opacity: 1; transform: translate(0px, 0px);"><span class="grid-label">$14M</span></div>
+<div class="grid-line opacity-0 scale-x-0" style="translate: none; rotate: none; scale: none; transform-origin: 0% 50%; opacity: 1; transform: translate(0px, 0px);"><span class="grid-label">$13M</span></div>
+<div class="grid-line border-solid border-white border-opacity-20 opacity-0 scale-x-0" style="translate: none; rotate: none; scale: none; transform-origin: 0% 50%; opacity: 1; transform: translate(0px, 0px);"></div>
+</div>
+<!-- Column 1: Conservative -->
+<div class="scenario-column">
+<div class="bar-container bar-conservative" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<!-- Top Content -->
+<div>
+<span class="scenario-label bg-conservative-sub" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">Conservative</span>
+<div class="value-text text-[#f5f7fa]" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">$16.2M</div>
+</div>
+<!-- Bottom Content -->
+<div>
+<div class="multiple-badge text-conservative" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<span>Multiple</span>
+<span class="font-bold text-xl">9.8×</span>
+</div>
+<div class="math-detail" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<span class="opacity-60">$1.655M × 9.8</span>
+<div class="mt-2 text-[#b0b8c1] leading-tight">Floor valuation based on conservative multiple.</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Column 2: Mid-Range -->
+<div class="scenario-column">
+<div class="bar-container bar-mid" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<!-- Top Content -->
+<div>
+<span class="scenario-label bg-mid-sub" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">Target</span>
+<div class="value-text text-[#f5f7fa]" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">$17.0M</div>
+</div>
+<!-- Bottom Content -->
+<div>
+<div class="multiple-badge text-mid" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<span>Multiple</span>
+<span class="font-bold text-xl">10.3×</span>
+</div>
+<div class="math-detail" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<span class="opacity-60">$1.655M × 10.3</span>
+<div class="mt-2 text-[#b0b8c1] leading-tight">Aligned with current premium market position.</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Column 3: Premium -->
+<div class="scenario-column">
+<div class="bar-container bar-premium relative overflow-hidden" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<!-- Subtle Glow Effect -->
+<div class="absolute top-0 right-0 w-32 h-32 bg-[#ef6337] rounded-full filter blur-3xl opacity-10 -translate-y-1/2 translate-x-1/2"></div>
+<!-- Top Content -->
+<div class="relative z-10">
+<div class="flex justify-between items-start">
+<span class="scenario-label bg-premium-sub" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">Optimistic</span>
+<i class="fas fa-star text-[#ef6337] text-sm animate-pulse-glow"></i>
+</div>
+<div class="value-text text-[#f5f7fa]" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">$18.0M</div>
+</div>
+<!-- Bottom Content -->
+<div class="relative z-10">
+<div class="multiple-badge text-premium" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<span>Multiple</span>
+<span class="font-bold text-xl">10.9×</span>
+</div>
+<div class="math-detail" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<span class="opacity-60">$1.655M × 10.9</span>
+<div class="mt-2 text-[#b0b8c1] leading-tight">Ceiling valuation assuming flawless execution.</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="border-t border-[#044c73] border-opacity-50 pt-4 flex justify-between items-center mt-2 footer-element opacity-0" style="opacity: 1;">
+<div class="flex items-center text-[#b0b8c1] text-xs">
+<i class="fas fa-info-circle mr-2 text-[#8db6b0]"></i>
+<p>Valuation range derived from multiple analysis.</p>
+</div>
+<p class="text-[#4e5d6c] text-xs tracking-widest uppercase">Confidential · For Review</p>
+</div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+        
+        // 1. Header Elements Animation
+        tl.to(".header-elements h2, .header-elements h1, .header-elements p", {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            stagger: 0.1
+        })
+        .to(".ebitda-base-pill", {
+            y: 0,
+            opacity: 1,
+            duration: 0.6
+        }, "-=0.4");
+
+        // 2. Grid Lines Animation
+        tl.to(".grid-line", {
+            scaleX: 1,
+            opacity: 1,
+            duration: 0.8,
+            stagger: 0.05,
+            transformOrigin: "left center"
+        }, "-=0.2");
+
+        // 3. Bars Growing Animation (Staggered)
+        // Conservative Bar
+        tl.to(".bar-conservative", {
+            scaleY: 1,
+            opacity: 1,
+            duration: 1.0,
+            ease: "back.out(1.2)"
+        }, "-=0.4");
+        
+        // Mid Bar
+        tl.to(".bar-mid", {
+            scaleY: 1,
+            opacity: 1,
+            duration: 1.0,
+            ease: "back.out(1.2)"
+        }, "-=0.8");
+        
+        // Premium Bar
+        tl.to(".bar-premium", {
+            scaleY: 1,
+            opacity: 1,
+            duration: 1.2,
+            ease: "back.out(1.2)"
+        }, "-=0.8");
+
+        // 4. Content inside bars (Fade In)
+        tl.to(".scenario-label, .value-text, .multiple-badge, .math-detail", {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            stagger: 0.05
+        }, "-=0.5");
+
+        // 5. Footer
+        tl.to(".footer-element", {
+            opacity: 1,
+            duration: 0.8
+        }, "-=0.4");
+    });
+</script>
+
+
+<script src="./slide-inner.js"></script></body></html>

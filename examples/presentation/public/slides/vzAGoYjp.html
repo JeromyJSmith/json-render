@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/vzAGoYjp -->
+<html lang="en" data-chapter="Design-Build" data-chapter-number="4" data-slide-position="34"><head>
+<meta name="marpa-chapter" content="Design-Build" data-chapter-number="4" data-slide-position="34"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Margin Stack Comparison</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(2)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 40px 60px;
+            box-sizing: border-box;
+        }
+
+        /* Chart Area */
+        .chart-wrapper {
+            flex: 1;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            gap: 80px;
+            position: relative;
+            margin-bottom: 20px;
+        }
+
+        .stack-column {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 240px;
+            position: relative;
+        }
+
+        .stack-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 700;
+            text-align: center;
+            margin-bottom: 8px;
+            color: var(--text-light);
+        }
+
+        .stack-bar {
+            width: 100%;
+            height: 400px;
+            display: flex;
+            flex-direction: column;
+            border-radius: 8px;
+            overflow: hidden;
+            position: relative;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .segment {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            transition: height 1s ease-out;
+        }
+
+        .segment-costs {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .segment-profit {
+            background-color: var(--coral);
+            border-top: 1px solid rgba(255, 255, 255, 0.2);
+        }
+
+        .segment-profit-base {
+            background-color: rgba(239, 99, 55, 0.4);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .segment-label {
+            position: absolute;
+            color: #fff;
+            font-weight: 700;
+            text-align: center;
+            width: 100%;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            z-index: 10;
+        }
+        
+        .segment-value {
+            font-size: 24px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+        
+        .segment-desc {
+            font-size: 12px;
+            opacity: 0.9;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 4px;
+        }
+
+        /* Connector */
+        .delta-connector {
+            position: absolute;
+            top: 100px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            z-index: 20;
+        }
+
+        .delta-badge {
+            background-color: var(--yellow);
+            color: var(--bg-dark);
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 800;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 20px;
+            box-shadow: 0 4px 20px rgba(255, 230, 109, 0.4);
+            position: relative;
+            z-index: 5;
+            text-align: center;
+            min-width: 160px;
+        }
+        
+        .delta-arrow {
+            position: absolute;
+            right: -12px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--yellow);
+            font-size: 24px;
+            filter: drop-shadow(2px 2px 0 var(--bg-dark));
+        }
+        
+        .delta-subtext {
+            margin-top: 8px;
+            font-size: 12px;
+            color: var(--yellow);
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            text-align: center;
+        }
+
+        /* Legend */
+        .chart-legend {
+            display: flex;
+            justify-content: center;
+            gap: 40px;
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .legend-text {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* Insight Overlay */
+        .insight-overlay {
+            position: absolute;
+            top: 0;
+            right: 0;
+            background: rgba(4, 76, 115, 0.2);
+            border: 1px solid var(--navy);
+            border-left: 4px solid var(--coral);
+            padding: 16px 20px;
+            border-radius: 0 8px 8px 0;
+            max-width: 300px;
+        }
+
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="flex justify-between items-end mb-8 border-b border-[#044c73] pb-4">
+<div>
+<div class="flex items-center mb-2">
+<span class="w-2 h-2 bg-[#ef6337] rounded-full mr-2"></span>
+<p class="text-[#ef6337] font-bold tracking-widest text-xs uppercase">Chapter 4: Design-Build Expansion</p>
+</div>
+<h1 class="font-serif text-4xl text-[#f5f7fa]">MARGIN STACK COMPARISON</h1>
+</div>
+<div class="text-right">
+<p class="text-[#b0b8c1] text-sm font-mono">SCENARIO C ECONOMICS</p>
+</div>
+</div>
+<!-- Main Content -->
+<div class="flex-1 flex flex-col relative">
+<!-- Insight -->
+<div class="insight-overlay">
+<p class="text-[#ef6337] font-bold text-xs uppercase tracking-wider mb-1">Key Insight</p>
+<p class="text-[#f5f7fa] text-sm leading-relaxed">
+                Integrated delivery allows MARPA to capture the construction margin that is usually handed off to third-party contractors.
+            </p>
+</div>
+<!-- Chart Area -->
+<div class="chart-wrapper">
+<!-- Stack 1: Design Only -->
+<div class="stack-column">
+<div class="stack-title text-[#8db6b0]">Design-Only</div>
+<div class="stack-bar border border-[#8db6b0] border-opacity-30">
+<!-- Profit: 10% -->
+<div class="segment segment-profit-base" style="height: 10%;">
+<div class="segment-label">
+<p class="segment-value">$1.1M</p>
+<p class="segment-desc">Profit (10%)</p>
+</div>
+</div>
+<!-- Costs: 90% -->
+<div class="segment segment-costs" style="height: 90%;">
+<div class="segment-label">
+<p class="segment-value text-[#b0b8c1]">$9.9M</p>
+<p class="segment-desc text-[#b0b8c1]">Costs (90%)</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Connector -->
+<div class="delta-connector">
+<div class="delta-badge">
+                    +$2.4M
+                    <i class="fas fa-arrow-right delta-arrow"></i>
+</div>
+<p class="delta-subtext">Retained Margin</p>
+</div>
+<!-- Stack 2: Design Build -->
+<div class="stack-column">
+<div class="stack-title text-[#ef6337]">Design-Build</div>
+<div class="stack-bar border border-[#ef6337] border-opacity-50 shadow-[0_0_30px_rgba(239,99,55,0.15)]">
+<!-- Profit: 32% -->
+<div class="segment segment-profit" style="height: 32%;">
+<div class="segment-label">
+<p class="segment-value text-3xl">$3.5M</p>
+<p class="segment-desc font-bold">Profit (32%)</p>
+</div>
+</div>
+<!-- Costs: 68% -->
+<div class="segment segment-costs" style="height: 68%;">
+<div class="segment-label">
+<p class="segment-value text-[#b0b8c1]">$7.5M</p>
+<p class="segment-desc text-[#b0b8c1]">Costs (68%)</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Legend -->
+<div class="chart-legend">
+<div class="legend-item">
+<div class="legend-dot bg-[#ef6337]"></div>
+<p class="legend-text">Net Profit (EBITDA)</p>
+</div>
+<div class="legend-item">
+<div class="legend-dot bg-[#ef6337] bg-opacity-40"></div>
+<p class="legend-text">Base Design Profit</p>
+</div>
+<div class="legend-item">
+<div class="legend-dot bg-white bg-opacity-10"></div>
+<p class="legend-text">Operational Costs &amp; COGS</p>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="mt-auto pt-4 border-t border-[#044c73] border-opacity-30 flex justify-between items-center">
+<p class="text-[#4e5d6c] text-xs tracking-widest uppercase">Confidential · MARPA Equity Pathway 2026</p>
+<p class="text-[#4e5d6c] text-xs font-mono">CH4-S06</p>
+</div>
+</div>
+
+
+<script src="./slide-inner.js"></script></body></html>

@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/RpHDCkMO -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Equity Vesting Schedule - Vertical Progress</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<script src="./gsap.min.js"></script>
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+            
+            /* Vesting Colors */
+            --vested-dark: #1B5E20;
+            --vested-med: #2E7D32;
+            --vested-light: #43A047;
+            --vested-bright: #66BB6A;
+            --unvested: #263238;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-light);
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 60px;
+            position: relative;
+            background-color: var(--bg-dark);
+            box-sizing: border-box;
+        }
+
+        /* Header */
+        .header {
+            margin-bottom: 30px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .title-tag {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--turquoise);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        h1.main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            font-weight: 900;
+            line-height: 1.1;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        /* Main Content Layout */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 60px;
+            flex: 1;
+            height: 100%;
+            position: relative;
+        }
+
+        /* Progress Bar Container */
+        .progress-wrapper {
+            position: relative;
+            height: 480px;
+            width: 140px;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            margin-left: 60px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column-reverse; /* Stack from bottom up */
+        }
+
+        /* Progress Segments */
+        .segment {
+            width: 100%;
+            position: relative;
+            border-top: 1px solid rgba(0,0,0,0.2);
+            transition: all 0.5s ease-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .seg-unvested {
+            background-color: var(--unvested);
+            flex: 1; /* Fills remaining space */
+            border-top: 1px dashed rgba(255,255,255,0.1);
+        }
+
+        .seg-y4 { background-color: var(--vested-bright); height: 0; }
+        .seg-y3 { background-color: var(--vested-light); height: 0; }
+        .seg-y2 { background-color: var(--vested-med); height: 0; }
+        .seg-y1 { background-color: var(--vested-dark); height: 0; }
+
+        /* Labels on Progress Bar */
+        .seg-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            color: rgba(255,255,255,0.9);
+            font-size: 14px;
+            opacity: 0; /* Fade in */
+        }
+
+        /* Connecting Lines & Markers */
+        .marker-line {
+            position: absolute;
+            left: 140px;
+            height: 1px;
+            width: 60px;
+            background-color: rgba(255,255,255,0.2);
+            z-index: 10;
+        }
+
+        /* Right Panel - Annotations */
+        .annotation-list {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            height: 480px;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        .annotation-item {
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            transform: translateX(20px);
+        }
+
+        .year-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            margin-right: 16px;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .badge-y4 { background: rgba(102, 187, 106, 0.2); color: var(--vested-bright); border: 1px solid var(--vested-bright); }
+        .badge-y3 { background: rgba(67, 160, 71, 0.2); color: var(--vested-light); border: 1px solid var(--vested-light); }
+        .badge-y2 { background: rgba(46, 125, 50, 0.2); color: var(--vested-med); border: 1px solid var(--vested-med); }
+        .badge-y1 { background: rgba(27, 94, 32, 0.2); color: #81C784; border: 1px solid var(--vested-dark); }
+
+        .note-content h3 {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-light);
+            margin: 0 0 4px 0;
+        }
+
+        .note-content p {
+            font-size: 13px;
+            color: var(--text-muted);
+            margin: 0;
+        }
+
+        /* Unvested Marker */
+        .unvested-marker {
+            position: absolute;
+            top: 20px;
+            left: -140px;
+            text-align: right;
+            width: 120px;
+        }
+        
+        .unvested-text {
+            color: #546E7A;
+            font-size: 12px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Summary Footer */
+        .summary-footer {
+            margin-top: auto;
+            background: rgba(4, 76, 115, 0.2);
+            border-left: 4px solid var(--turquoise);
+            padding: 16px 24px;
+            border-radius: 0 8px 8px 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .arrow-up {
+            font-size: 24px;
+            color: var(--turquoise);
+            margin-right: 16px;
+        }
+
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="header">
+<div>
+<p class="title-tag">Partnership Timeline</p>
+<h1 class="main-title">Equity Vesting Schedule</h1>
+<p class="subtitle">4-Year Cliff Vesting Plan: 6% Annual Increments</p>
+</div>
+<div class="text-right">
+<p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Chart 5A</p>
+<p class="text-sm font-bold text-white">Cumulative Progress</p>
+</div>
+</div>
+<!-- Content Grid -->
+<div class="content-grid">
+<!-- Left: Visual Bar -->
+<div class="relative">
+<div class="unvested-marker">
+<p class="unvested-text">Retained<br>76%</p>
+</div>
+<div class="progress-wrapper">
+<!-- Unvested Space (fills remaining) -->
+<div class="segment seg-unvested"></div>
+<!-- Year 4 -->
+<div class="segment seg-y4" data-height="6%" style="height: 85px;">
+<span class="seg-label" style="opacity: 1;">+6%</span>
+</div>
+<!-- Year 3 -->
+<div class="segment seg-y3" data-height="6%" style="height: 85px;">
+<span class="seg-label" style="opacity: 1;">+6%</span>
+</div>
+<!-- Year 2 -->
+<div class="segment seg-y2" data-height="6%" style="height: 85px;">
+<span class="seg-label" style="opacity: 1;">+6%</span>
+</div>
+<!-- Year 1 -->
+<div class="segment seg-y1" data-height="6%" style="height: 85px;">
+<span class="seg-label" style="opacity: 1;">+6%</span>
+</div>
+</div>
+<!-- Connector Lines (positioned absolutely relative to wrapper) -->
+<div class="marker-line" style="bottom: 430px;"></div> <!-- Y4 top -->
+<div class="marker-line" style="bottom: 110px;"></div> <!-- Y4 start -->
+<div class="marker-line" style="bottom: 75px;"></div> <!-- Y3 start -->
+<div class="marker-line" style="bottom: 40px;"></div> <!-- Y2 start -->
+<div class="marker-line" style="bottom: 5px;"></div> <!-- Y1 start -->
+</div>
+<!-- Right: Annotations -->
+<div class="flex flex-col h-full">
+<div class="annotation-list">
+<!-- Year 4 -->
+<div class="annotation-item item-y4" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<span class="year-badge badge-y4">YEAR 4</span>
+<div class="note-content">
+<h3>Full Vesting Achieved</h3>
+<p>Cumulative: 24% | Minority partner reaches full equity stake. 0% cliff remaining.</p>
+</div>
+</div>
+<!-- Year 3 -->
+<div class="annotation-item item-y3" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<span class="year-badge badge-y3">YEAR 3</span>
+<div class="note-content">
+<h3>18% Vested</h3>
+<p>Third tranche unlocks. Only 6% cliff remaining.</p>
+</div>
+</div>
+<!-- Year 2 -->
+<div class="annotation-item item-y2" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<span class="year-badge badge-y2">YEAR 2</span>
+<div class="note-content">
+<h3>12% Vested</h3>
+<p>Second tranche unlocks. Significant partnership milestone.</p>
+</div>
+</div>
+<!-- Year 1 -->
+<div class="annotation-item item-y1" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<span class="year-badge badge-y1">YEAR 1</span>
+<div class="note-content">
+<h3>Initial Cliff Passed</h3>
+<p>First 6% vests. 18% remaining in lock-up.</p>
+</div>
+</div>
+</div>
+<!-- Summary Footer -->
+<div class="summary-footer" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="flex items-center">
+<i class="fas fa-trophy arrow-up"></i>
+<div>
+<p class="text-xs text-[#b0b8c1] uppercase tracking-widest font-bold">Target Outcome</p>
+<p class="text-lg font-bold text-[#f5f7fa]">Minority partner achieves 24% ownership</p>
+</div>
+</div>
+<div class="text-right">
+<p class="font-mono text-2xl text-[#4ECDC4] font-bold">24%</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+            // 1. Grow segments from bottom up
+            // Total height of wrapper is 480px. 6% of 100% total (which would be huge) isn't right.
+            // Let's assume the wrapper represents 30% total height for visual scale? 
+            // Or better: Let's make the 24% take up about 70% of the bar visual for impact.
+            // 24% equity = ~340px visual height
+            // Each 6% segment = ~85px
+            
+            const segmentHeight = "85px";
+
+            tl.to(".seg-y1", { height: segmentHeight, duration: 0.6 })
+              .to(".seg-y2", { height: segmentHeight, duration: 0.6 }, "-=0.2")
+              .to(".seg-y3", { height: segmentHeight, duration: 0.6 }, "-=0.2")
+              .to(".seg-y4", { height: segmentHeight, duration: 0.6 }, "-=0.2");
+
+            // 2. Fade in labels
+            tl.to(".seg-label", { opacity: 1, duration: 0.4, stagger: 0.1 }, "-=1.0");
+
+            // 3. Slide in annotations matching the vertical build
+            // Reverse order because HTML order is Top-Down but visual build is Bottom-Up
+            tl.to(".item-y1", { opacity: 1, x: 0, duration: 0.5 }, 0.2)
+              .to(".item-y2", { opacity: 1, x: 0, duration: 0.5 }, 0.6)
+              .to(".item-y3", { opacity: 1, x: 0, duration: 0.5 }, 1.0)
+              .to(".item-y4", { opacity: 1, x: 0, duration: 0.5 }, 1.4);
+
+            // 4. Footer reveal
+            tl.from(".summary-footer", { y: 20, opacity: 0, duration: 0.8 }, "-=0.2");
+        });
+    </script>
+
+
+<script src="./slide-inner.js"></script></body></html>

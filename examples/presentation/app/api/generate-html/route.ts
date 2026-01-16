@@ -76,7 +76,6 @@ export async function POST(request: NextRequest) {
       model: gateway("anthropic/claude-sonnet-4-20250514"),
       system: SYSTEM_PROMPT,
       prompt: `Generate an animated HTML slide for: ${prompt}`,
-      maxTokens: 4096,
     });
 
     const html = result.text;

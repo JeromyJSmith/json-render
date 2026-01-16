@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/Yf6GzbNq -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>10-Year Growth Projection</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<script src="./chart.js"></script>
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+            
+            /* Chart Colors */
+            --chart-const: #044c73;
+            --chart-maint: #ef6337;
+            --chart-total: #4ECDC4;
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-light);
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            padding: 28px 36px; /* Optimized padding */
+            position: relative;
+            background-color: var(--bg-dark);
+            box-sizing: border-box;
+        }
+
+        /* Header */
+        .header {
+            margin-bottom: 12px;
+            padding-bottom: 10px; /* Reduced padding */
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-shrink: 0;
+        }
+
+        .title-tag {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--turquoise);
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 6px;
+        }
+
+        h1.main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 34px; /* Reduced font size */
+            font-weight: 900;
+            line-height: 1.1;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px; /* Reduced gap */
+            flex: 1;
+            height: 100%;
+            position: relative;
+            min-height: 0; 
+        }
+
+        /* Chart Area */
+        .chart-wrapper {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 12px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+
+        /* Right Panel */
+        .metrics-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 12px; /* Reduced gap */
+            height: 100%;
+        }
+
+        /* Data Table */
+        .data-table-container {
+            background: rgba(4, 76, 115, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 12px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .growth-table {
+            width: 100%;
+            border-collapse: collapse;
+            flex: 1;
+        }
+
+        .growth-table th {
+            text-align: left;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            padding-bottom: 8px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .growth-table td {
+            padding: 5px 0; /* Slightly tighter */
+            font-size: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            color: var(--text-light);
+        }
+        
+        .growth-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .val-col {
+            text-align: right;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+        }
+
+        /* Value Projection Box */
+        .value-projection-box {
+            background: rgba(78, 205, 196, 0.1);
+            border: 1px solid var(--turquoise);
+            border-radius: 12px;
+            padding: 12px; /* Reduced padding */
+            position: relative;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+
+        .value-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--turquoise);
+            font-weight: 700;
+            margin-bottom: 2px;
+        }
+
+        .value-amount {
+            font-family: 'Playfair Display', serif;
+            font-size: 26px; /* Reduced font size */
+            font-weight: 900;
+            color: var(--text-light);
+            margin-bottom: 2px;
+        }
+
+        .value-sub {
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        /* Legend */
+        .chart-legend {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            margin-top: 8px;
+            flex-shrink: 0;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+
+        .legend-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        /* Insight Box */
+        .insight-text {
+            font-size: 11px; /* Slightly reduced */
+            line-height: 1.4;
+            color: var(--text-muted);
+            margin-top: 8px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 6px;
+        }
+
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="header">
+<div>
+<p class="title-tag">Long-Term Value Creation</p>
+<h1 class="main-title">11-Year Growth Projection</h1>
+<p class="subtitle">Construction (10%) + Maintenance (20%) Compounding Impact (2026-2036)</p>
+</div>
+<div class="text-right">
+<p class="text-xs text-gray-500 uppercase tracking-widest mb-1">New Slide</p>
+<p class="text-sm font-bold text-white">Projected Uplift</p>
+</div>
+</div>
+<!-- Content Grid -->
+<div class="content-grid">
+<!-- Left: Chart -->
+<div class="chart-wrapper">
+<div style="flex: 1; position: relative; width: 100%; min-height: 0;">
+<canvas id="growthChart" width="842" height="554" style="display: block; box-sizing: border-box; height: 503.9px; width: 766.2px;"></canvas>
+</div>
+<div class="chart-legend">
+<div class="legend-item">
+<div class="legend-dot" style="background-color: var(--navy);"></div>
+<span>Construction (10% CAGR)</span>
+</div>
+<div class="legend-item">
+<div class="legend-dot" style="background-color: var(--coral);"></div>
+<span>Maintenance (20% CAGR)</span>
+</div>
+<div class="legend-item">
+<div class="legend-dot" style="background-color: var(--turquoise);"></div>
+<span>Combined Revenue</span>
+</div>
+</div>
+</div>
+<!-- Right: Metrics -->
+<div class="metrics-panel">
+<!-- Value Box -->
+<div class="value-projection-box">
+<p class="value-label"><i class="fas fa-bullseye mr-2"></i>Year 11 Annual Uplift</p>
+<p class="value-amount">$6.21M</p>
+<p class="value-sub">Projected Incremental Revenue in 2036</p>
+<div class="insight-text">
+<p>At Year 11 buyout, the maintenance stream matches construction in value, effectively doubling the business uplift despite starting 60% lower.</p>
+</div>
+</div>
+<!-- Data Table -->
+<div class="data-table-container">
+<p class="text-xs text-gray-400 uppercase tracking-widest font-bold mb-2">Milestone Trajectory</p>
+<table class="growth-table">
+<thead>
+<tr>
+<th>Period</th>
+<th class="val-col" style="color: #044c73;">Const.</th>
+<th class="val-col" style="color: #ef6337;">Maint.</th>
+<th class="val-col" style="color: #4ECDC4;">Total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Year 1 (Start)</td>
+<td class="val-col">$1.20M</td>
+<td class="val-col">$0.50M</td>
+<td class="val-col">$1.70M</td>
+</tr>
+<tr>
+<td>Year 3</td>
+<td class="val-col">$1.45M</td>
+<td class="val-col">$0.72M</td>
+<td class="val-col">$2.17M</td>
+</tr>
+<tr>
+<td>Year 5</td>
+<td class="val-col">$1.76M</td>
+<td class="val-col">$1.04M</td>
+<td class="val-col">$2.80M</td>
+</tr>
+<tr>
+<td>Year 8</td>
+<td class="val-col">$2.34M</td>
+<td class="val-col">$1.79M</td>
+<td class="val-col">$4.13M</td>
+</tr>
+<tr>
+<td class="font-bold text-white">Year 11 (Exit)</td>
+<td class="val-col font-bold text-white">$3.11M</td>
+<td class="val-col font-bold text-white">$3.10M</td>
+<td class="val-col font-bold text-white" style="color: #4ECDC4;">$6.21M</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Compounding Note -->
+<div class="bg-[#0b0f13] border border-gray-800 rounded-lg p-2.5 flex items-start gap-3 flex-shrink-0">
+<div class="text-[#ef6337] mt-0.5 text-xs"><i class="fas fa-chart-line"></i></div>
+<div>
+<p class="text-xs text-gray-400 leading-relaxed" style="font-size: 11px;">
+<span class="text-white font-bold">Compounding Power:</span> Maintenance grows 6.2x over the period, while Construction grows 2.6x. By Year 11, both streams contribute equally to valuation.
+                    </p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+    // Data Calculation Logic
+    const years = Array.from({length: 11}, (_, i) => `Year ${i + 1}`);
+    
+    // Construction: Start $1.2M, 10% growth
+    let constVal = 1.2;
+    const constData = years.map(() => {
+        let val = constVal;
+        constVal *= 1.10;
+        return parseFloat(val.toFixed(2));
+    });
+
+    // Maintenance: Start $0.5M, 20% growth
+    let maintVal = 0.5;
+    const maintData = years.map(() => {
+        let val = maintVal;
+        maintVal *= 1.20;
+        return parseFloat(val.toFixed(2));
+    });
+
+    // Combined for Top Line
+    const totalData = constData.map((v, i) => parseFloat((v + maintData[i]).toFixed(2)));
+
+    const ctx = document.getElementById('growthChart').getContext('2d');
+
+    new Chart(ctx, {
+        type: 'line',
+        data: {
+            labels: years,
+            datasets: [
+                {
+                    label: 'Total Revenue',
+                    data: totalData,
+                    borderColor: '#4ECDC4', // Turquoise
+                    borderWidth: 2,
+                    borderDash: [5, 5],
+                    pointBackgroundColor: '#4ECDC4',
+                    pointBorderColor: '#fff',
+                    pointRadius: 4,
+                    fill: false,
+                    tension: 0.4,
+                    order: 0
+                },
+                {
+                    label: 'Maintenance (20%)',
+                    data: maintData,
+                    borderColor: '#ef6337', // Coral
+                    backgroundColor: 'rgba(239, 99, 55, 0.8)',
+                    borderWidth: 0,
+                    fill: '-1', 
+                    tension: 0.4,
+                    pointRadius: 0,
+                    order: 1
+                },
+                {
+                    label: 'Construction (10%)',
+                    data: constData,
+                    borderColor: '#044c73', // Navy
+                    backgroundColor: 'rgba(4, 76, 115, 0.9)',
+                    borderWidth: 0,
+                    fill: 'origin',
+                    tension: 0.4,
+                    pointRadius: 0,
+                    order: 2
+                }
+            ]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: { display: false },
+                tooltip: {
+                    mode: 'index',
+                    intersect: false,
+                    backgroundColor: 'rgba(15, 20, 25, 0.95)',
+                    titleFont: { family: 'Playfair Display', size: 14 },
+                    bodyFont: { family: 'JetBrains Mono', size: 12 },
+                    padding: 12,
+                    callbacks: {
+                        label: function(context) {
+                            return context.dataset.label + ': $' + context.raw.toFixed(2) + 'M';
+                        }
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.05)',
+                        drawBorder: false
+                    },
+                    ticks: {
+                        color: '#b0b8c1',
+                        font: { family: 'Inter', size: 10 },
+                        maxRotation: 45,
+                        minRotation: 0
+                    }
+                },
+                y: {
+                    stacked: true, 
+                    beginAtZero: true,
+                    grid: {
+                        color: 'rgba(255, 255, 255, 0.05)',
+                        borderDash: [5, 5]
+                    },
+                    ticks: {
+                        color: '#b0b8c1',
+                        font: { size: 10 },
+                        callback: function(value) { return '$' + value + 'M'; }
+                    },
+                    suggestedMax: 7.0
+                }
+            },
+            animation: {
+                duration: 2000,
+                easing: 'easeOutQuart'
+            }
+        }
+    });
+</script>
+
+
+<script src="./slide-inner.js"></script></body></html>

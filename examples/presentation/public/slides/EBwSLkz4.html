@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/EBwSLkz4 -->
+<html lang="en" data-chapter="Financial Analysis" data-chapter-number="3" data-slide-position="19"><head>
+<meta name="marpa-chapter" content="Financial Analysis" data-chapter-number="3" data-slide-position="19"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Revenue Waterfall — Service Line Breakdown</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(5)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<script src="./echarts.min.js"></script>
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --mint: #95E1D3;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+            --text-gray: #4e5d6c;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 40px 60px;
+            background-color: var(--bg-dark);
+        }
+
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        /* Custom Card Styling */
+        .insight-card {
+            background-color: rgba(4, 76, 115, 0.15);
+            border-left: 4px solid var(--coral);
+            border-top: 1px solid rgba(4, 76, 115, 0.3);
+            border-right: 1px solid rgba(4, 76, 115, 0.3);
+            border-bottom: 1px solid rgba(4, 76, 115, 0.3);
+        }
+
+        .stat-card {
+            background-color: rgba(15, 20, 25, 0.6);
+            border: 1px solid rgba(141, 182, 176, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .primary-badge {
+            background-color: var(--coral);
+            color: white;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 700;
+            display: inline-block;
+            margin-bottom: 6px;
+        }
+        
+        /* Custom positioning for waterfall labels */
+        .waterfall-label {
+            position: absolute;
+            font-weight: 600;
+            color: var(--text-light);
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            pointer-events: none;
+            z-index: 10;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header Section -->
+<header class="flex justify-between items-end mb-4 border-b border-[#044c73] pb-4">
+<div>
+<p class="text-[#ef6337] font-bold tracking-widest text-xs mb-1 uppercase">Foundation: Financial Detail</p>
+<h1 class="font-serif text-4xl font-bold text-[#f5f7fa]">REVENUE COMPOSITION 2025</h1>
+</div>
+<div class="text-right">
+<p class="text-[#b0b8c1] text-xs font-mono mb-1">CH2-S01</p>
+<p class="text-[#8db6b0] text-sm font-bold">TOTAL: $11.03M</p>
+</div>
+</header>
+<!-- Main Content Area -->
+<div class="flex flex-1 gap-8">
+<!-- Left Side: Chart Area -->
+<div class="flex-1 relative h-full flex flex-col">
+<div id="waterfallChart" style="width: 100%; height: 420px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); position: relative;" _echarts_instance_="ec_1768401959111"><div style="position: relative; width: 733px; height: 420px; padding: 0px; margin: 0px; border-width: 0px;"><canvas data-zr-dom-id="zr_0" width="806" height="462" style="position: absolute; left: 0px; top: 0px; width: 733px; height: 420px; user-select: none; -webkit-tap-highlight-color: rgba(0, 0, 0, 0); padding: 0px; margin: 0px; border-width: 0px;"></canvas></div><div class=""></div></div>
+<!-- Chart Legend/Labels overlay (positioned via absolute if needed, or part of echarts) -->
+<!-- We'll use ECharts built-in labels, but add context below -->
+<div class="grid grid-cols-3 gap-4 mt-2">
+<div class="stat-card p-3 rounded border-t-2 border-[#ef6337]">
+<p class="text-[#b0b8c1] text-[10px] uppercase tracking-widest mb-1">Primary Engine</p>
+<p class="text-[#ef6337] font-bold text-lg">Construction</p>
+<p class="text-white font-mono text-sm">$9.61M (87.1%)</p>
+</div>
+<div class="stat-card p-3 rounded border-t-2 border-[#FFE66D]">
+<p class="text-[#b0b8c1] text-[10px] uppercase tracking-widest mb-1">Strategic Entry</p>
+<p class="text-[#FFE66D] font-bold text-lg">Design</p>
+<p class="text-white font-mono text-sm">$805K (7.3%)</p>
+</div>
+<div class="stat-card p-3 rounded border-t-2 border-[#4ECDC4]">
+<p class="text-[#b0b8c1] text-[10px] uppercase tracking-widest mb-1">Quality Control</p>
+<p class="text-[#4ECDC4] font-bold text-lg">Oversight</p>
+<p class="text-white font-mono text-sm">$614K (5.6%)</p>
+</div>
+</div>
+</div>
+<!-- Right Side: Narrative & Insights -->
+<div class="w-1/3 flex flex-col justify-center space-y-6">
+<!-- Insight Card -->
+<div class="insight-card p-6 rounded-r-lg">
+<div class="flex items-start mb-3">
+<div class="w-8 h-8 rounded-full bg-[#044c73] flex items-center justify-center mr-3 flex-shrink-0">
+<i class="fas fa-lightbulb text-[#ef6337] text-sm"></i>
+</div>
+<div>
+<h3 class="text-[#f5f7fa] font-bold text-sm uppercase tracking-wider mt-1">Strategic Insight</h3>
+</div>
+</div>
+<p class="text-[#b0b8c1] text-sm leading-relaxed mb-4">
+<span class="text-[#ef6337] font-bold">Construction is the core revenue engine (87%)</span>, providing the necessary scale to achieve the $17M valuation target. While Design &amp; Oversight contribute less to top-line volume, they are critical for pipeline quality and brand prestige.
+                    </p>
+<div class="flex items-center text-xs text-[#8db6b0]">
+<i class="fas fa-arrow-right mr-2 text-[#ef6337]"></i>
+<p>Design fees feed the construction pipeline</p>
+</div>
+</div>
+<!-- Key Metric Breakdown -->
+<div class="space-y-4">
+<h3 class="text-[#f5f7fa] font-serif text-xl border-b border-[#044c73] pb-2">Revenue Dynamics</h3>
+<div class="flex items-start">
+<div class="w-1.5 h-1.5 rounded-full bg-[#ef6337] mt-2 mr-3"></div>
+<div>
+<p class="text-[#f5f7fa] font-bold text-sm">Volume Driver</p>
+<p class="text-[#b0b8c1] text-xs">Construction creates the cash flow magnitude required for enterprise value.</p>
+</div>
+</div>
+<div class="flex items-start">
+<div class="w-1.5 h-1.5 rounded-full bg-[#FFE66D] mt-2 mr-3"></div>
+<div>
+<p class="text-[#f5f7fa] font-bold text-sm">Margin Expander</p>
+<p class="text-[#b0b8c1] text-xs">Design services operate at higher margins and lock in clients early.</p>
+</div>
+</div>
+<div class="flex items-start">
+<div class="w-1.5 h-1.5 rounded-full bg-[#4ECDC4] mt-2 mr-3"></div>
+<div>
+<p class="text-[#f5f7fa] font-bold text-sm">Risk Mitigation</p>
+<p class="text-[#b0b8c1] text-xs">Oversight ensures project success and protects reputation.</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="mt-auto pt-4 border-t border-[#044c73] border-opacity-30 flex justify-between items-center text-[#4e5d6c] text-[10px] uppercase tracking-widest">
+<p>MARPA Equity Pathway 2026</p>
+<p>Confidential · Financial Data</p>
+</div>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var chartDom = document.getElementById('waterfallChart');
+            var myChart = echarts.init(chartDom);
+            var option;
+
+            // Data for waterfall
+            // Total: 11.03M
+            // Segments: Construction 9.61, Design 0.805, Oversight 0.614
+            // We want a waterfall that shows the buildup to total or breakdown
+            // Let's show: Construction -> + Design -> + Oversight = Total
+            
+            var data = [
+                {
+                    name: 'Construction',
+                    value: 9.61,
+                    itemStyle: { color: '#ef6337' }, // Coral
+                    label: { show: true, position: 'top', formatter: '$9.61M', color: '#fff', fontWeight: 'bold' }
+                },
+                {
+                    name: 'Design',
+                    value: 0.805,
+                    itemStyle: { color: '#FFE66D' }, // Yellow
+                    label: { show: true, position: 'top', formatter: '$805K', color: '#fff', fontWeight: 'bold' }
+                },
+                {
+                    name: 'Oversight',
+                    value: 0.614,
+                    itemStyle: { color: '#4ECDC4' }, // Turquoise
+                    label: { show: true, position: 'top', formatter: '$614K', color: '#fff', fontWeight: 'bold' }
+                },
+                {
+                    name: 'Total Revenue',
+                    value: 11.03,
+                    itemStyle: { color: '#044c73' }, // Navy
+                    label: { show: true, position: 'top', formatter: '$11.03M', color: '#fff', fontWeight: 'bold', fontSize: 14 }
+                }
+            ];
+
+            // Helper for waterfall visual construction
+            // For waterfall chart in ECharts, we usually use a transparent series to push bars up
+            // Step 1: 0 (base) -> 9.61
+            // Step 2: 9.61 (base) -> +0.805
+            // Step 3: 10.415 (base) -> +0.614
+            // Step 4: 0 (base) -> 11.03
+            
+            var placeholderData = [0, 9.61, 10.415, 0];
+            var actualData = [9.61, 0.805, 0.614, 11.03];
+            var labels = ['Construction', 'Design', 'Oversight', 'Total'];
+            var colors = ['#ef6337', '#FFE66D', '#4ECDC4', '#044c73'];
+
+            option = {
+                backgroundColor: 'transparent',
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: { type: 'shadow' },
+                    formatter: function (params) {
+                        var tar = params[1];
+                        return tar.name + '<br/>' + tar.seriesName + ' : $' + tar.value + 'M';
+                    },
+                    backgroundColor: 'rgba(15, 20, 25, 0.9)',
+                    borderColor: '#044c73',
+                    textStyle: { color: '#f5f7fa' }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    top: '10%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    splitLine: { show: false },
+                    data: labels,
+                    axisLabel: {
+                        color: '#b0b8c1',
+                        fontSize: 12,
+                        fontWeight: 'bold',
+                        interval: 0
+                    },
+                    axisLine: { lineStyle: { color: '#044c73' } }
+                },
+                yAxis: {
+                    type: 'value',
+                    name: 'Revenue (Millions USD)',
+                    nameTextStyle: { color: '#b0b8c1', padding: [0, 0, 0, 20] },
+                    splitLine: { 
+                        show: true, 
+                        lineStyle: { 
+                            type: 'dashed', 
+                            color: 'rgba(141, 182, 176, 0.1)' 
+                        } 
+                    },
+                    axisLabel: { color: '#b0b8c1', formatter: '${value}M' }
+                },
+                series: [
+                    {
+                        name: 'Placeholder',
+                        type: 'bar',
+                        stack: 'Total',
+                        itemStyle: {
+                            borderColor: 'transparent',
+                            color: 'transparent'
+                        },
+                        emphasis: {
+                            itemStyle: {
+                                borderColor: 'transparent',
+                                color: 'transparent'
+                            }
+                        },
+                        data: placeholderData
+                    },
+                    {
+                        name: 'Revenue',
+                        type: 'bar',
+                        stack: 'Total',
+                        label: {
+                            show: true,
+                            position: 'top',
+                            color: '#fff',
+                            fontWeight: 'bold',
+                            formatter: function(params) {
+                                if(params.dataIndex === 0) return '$9.61M\n(87.1%)';
+                                if(params.dataIndex === 1) return '$805K\n(7.3%)';
+                                if(params.dataIndex === 2) return '$614K\n(5.6%)';
+                                return '$11.03M';
+                            },
+                            fontSize: 12,
+                            lineHeight: 16
+                        },
+                        data: [
+                            { value: 9.61, itemStyle: { color: '#ef6337', borderRadius: [4, 4, 4, 4] } },
+                            { value: 0.805, itemStyle: { color: '#FFE66D', borderRadius: [4, 4, 4, 4] } },
+                            { value: 0.614, itemStyle: { color: '#4ECDC4', borderRadius: [4, 4, 4, 4] } },
+                            { value: 11.03, itemStyle: { color: '#044c73', borderRadius: [4, 4, 0, 0] } }
+                        ]
+                    },
+                    // Connecting lines visualization (custom graphic elements)
+                    {
+                        type: 'custom',
+                        renderItem: function (params, api) {
+                            // Logic to draw lines connecting bars could be complex, omitting for simplicity
+                            // relying on stacked bar visual nature
+                            return; 
+                        },
+                        data: [0]
+                    }
+                ]
+            };
+
+            myChart.setOption(option);
+            
+            // Handle resize
+            window.addEventListener('resize', function() {
+                myChart.resize();
+            });
+        });
+    </script>
+
+
+<script src="./slide-inner.js"></script></body></html>

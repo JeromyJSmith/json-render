@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/YLtzJqOd -->
+<html lang="en" data-chapter="Financial Analysis" data-chapter-number="3" data-slide-position="18"><head>
+<meta name="marpa-chapter" content="Financial Analysis" data-chapter-number="3" data-slide-position="18"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Business Health Snapshot</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(3)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<script src="./gsap.min.js"></script>
+<style>
+        /* ==========================================
+           COLOR PRESERVATION BLOCK
+           ========================================== */
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --mint: #95E1D3;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+            --text-gray: #4e5d6c;
+        }
+
+        /* Tailwind color preservation */
+        .text-\[\#ef6337\] { color: #ef6337 !important; }
+        .text-\[\#f5f7fa\] { color: #f5f7fa !important; }
+        .text-\[\#8db6b0\] { color: #8db6b0 !important; }
+        .text-\[\#b0b8c1\] { color: #b0b8c1 !important; }
+        .text-\[\#4e5d6c\] { color: #4e5d6c !important; }
+        .text-\[\#044c73\] { color: #044c73 !important; }
+        .text-\[\#4ECDC4\] { color: #4ECDC4 !important; }
+        .text-\[\#FFE66D\] { color: #FFE66D !important; }
+        .text-\[\#95E1D3\] { color: #95E1D3 !important; }
+        .text-\[\#0f1419\] { color: #0f1419 !important; }
+
+        .bg-\[\#0f1419\] { background-color: #0f1419 !important; }
+        .bg-\[\#044c73\] { background-color: #044c73 !important; }
+        .bg-\[\#ef6337\] { background-color: #ef6337 !important; }
+        .bg-\[\#0b0f13\] { background-color: #0b0f13 !important; }
+        .bg-\[\#FFE66D\] { background-color: #FFE66D !important; }
+
+        .border-\[\#044c73\] { border-color: #044c73 !important; }
+        .border-\[\#ef6337\] { border-color: #ef6337 !important; }
+
+        /* Slide-specific overrides */
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 25px 40px;
+            box-sizing: border-box;
+            background-color: var(--bg-dark);
+        }
+
+        .metric-card {
+            background-color: rgba(4, 76, 115, 0.15); /* Navy tint */
+            border: 1px solid rgba(4, 76, 115, 0.3);
+            border-left: 4px solid var(--coral);
+            transition: transform 0.3s ease;
+            position: relative;
+            z-index: 10;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+        
+        .valuation-spectrum {
+            position: relative;
+            height: 12px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 6px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .spectrum-fill {
+            position: absolute;
+            left: 20%;
+            right: 20%;
+            top: 0;
+            bottom: 0;
+            background-color: var(--coral);
+            opacity: 0.7;
+            border-radius: 6px;
+        }
+
+        /* Animation for floating background elements */
+        @keyframes float-subtle {
+            0% { transform: translate(0, 0) rotate(0deg); }
+            50% { transform: translate(10px, -15px) rotate(2deg); }
+            100% { transform: translate(0, 0) rotate(0deg); }
+        }
+        
+        .animate-float {
+            animation: float-subtle 8s ease-in-out infinite;
+        }
+        
+        .animate-float-delayed {
+            animation: float-subtle 9s ease-in-out infinite;
+            animation-delay: 1s;
+        }
+
+        /* Ensure header and other content is above background */
+        .header-animate, .spectrum-container, .absolute.bottom-4 {
+            position: relative;
+            z-index: 10;
+        }
+
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- ==========================================
+       BACKGROUND SYSTEM (Layers 1-4)
+       ========================================== -->
+<!-- Layer 1: Subtle Grid Pattern -->
+<svg class="absolute inset-0 w-full h-full opacity-5 pointer-events-none" style="z-index: 0;" xmlns="http://www.w3.org/2000/svg">
+<pattern height="40" id="grid" patternUnits="userSpaceOnUse" width="40">
+<circle cx="2" cy="2" fill="#044c73" r="1.5"></circle>
+</pattern>
+<rect fill="url(#grid)" height="100%" width="100%"></rect>
+</svg>
+<!-- Layer 2: Geometric Shapes (Floating) -->
+<div class="absolute inset-0 pointer-events-none" style="z-index: 1;">
+<!-- Top right triangle group -->
+<svg class="absolute top-0 right-0 w-96 h-96 opacity-10 animate-float" viewBox="0 0 400 400" xmlns="http://www.w3.org/2000/svg">
+<path d="M400 0 L200 0 L400 200 Z" fill="#044c73"></path>
+<path d="M350 50 L250 50 L350 150 Z" fill="#ef6337" opacity="0.5"></path>
+</svg>
+<!-- Bottom left subtle shapes -->
+<svg class="absolute bottom-0 left-0 w-64 h-64 opacity-5 animate-float-delayed" viewBox="0 0 300 300" xmlns="http://www.w3.org/2000/svg">
+<circle cx="50" cy="250" fill="#8db6b0" r="100"></circle>
+<path d="M0 300 L150 300 L0 150 Z" fill="#044c73"></path>
+</svg>
+</div>
+<!-- Layer 3: Decorative Accent Lines -->
+<div class="absolute inset-0 pointer-events-none" style="z-index: 1;">
+<!-- Top accent line -->
+<div class="absolute top-0 left-40 right-0 h-px bg-[#ef6337] opacity-20"></div>
+<!-- Vertical accent line -->
+<div class="absolute top-0 bottom-0 left-12 w-px bg-[#044c73] opacity-20 border-r border-dashed border-[#044c73]"></div>
+</div>
+<!-- Layer 4: Radial Glow / Spotlight -->
+<!-- Replaced gradient with simpler background utility due to restrictions, utilizing a pseudo-element logic in spirit via div -->
+<div class="absolute top-0 left-0 w-full h-full pointer-events-none" style="z-index: 0; background-color: rgba(4, 76, 115, 0.05);"></div>
+<!-- ==========================================
+       MAIN CONTENT
+       ========================================== -->
+<!-- Header -->
+<div class="flex justify-between items-end mb-3 border-b border-gray-800 pb-2 header-animate" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div>
+<p class="text-[#ef6337] font-bold tracking-widest text-sm mb-1 uppercase">Chapter 1: Valuation Foundation</p>
+<h2 class="font-serif text-4xl text-[#f5f7fa]">BUSINESS HEALTH SNAPSHOT</h2>
+</div>
+<div class="text-right">
+<p class="text-[#8db6b0] text-sm font-medium">CH1-S03</p>
+<p class="text-[#b0b8c1] text-xs font-mono mt-1">OPERATIONAL EXCELLENCE</p>
+</div>
+</div>
+<!-- Main Content Grid -->
+<div class="flex-1 flex flex-col justify-between pb-4" style="z-index: 10;">
+<!-- Top Row Metrics (2x2 Grid) -->
+<div class="grid grid-cols-2 gap-5 mb-3 flex-1">
+<!-- Metric 1: Pipeline Verified -->
+<div class="metric-card p-6 rounded-r-lg shadow-lg" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 30px);">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<i class="fas fa-check-circle text-6xl text-white"></i>
+</div>
+<div>
+<div class="flex items-center mb-2">
+<div class="w-8 h-8 rounded bg-[#044c73] bg-opacity-30 flex items-center justify-center text-[#ef6337] mr-3">
+<i class="fas fa-filter"></i>
+</div>
+<p class="text-[#8db6b0] text-xs uppercase tracking-wider font-bold">Pipeline Quality</p>
+</div>
+<p class="text-[#f5f7fa] text-[50px] font-bold font-serif leading-none tracking-tight">Verified</p>
+</div>
+<div class="mt-4 pt-4 border-t border-[#044c73] border-opacity-30">
+<div class="flex justify-between items-center">
+<span class="text-[#b0b8c1] text-sm font-medium">Close Rate</span>
+<span class="text-[#4ECDC4] font-bold text-lg">95%</span>
+</div>
+<p class="text-[#8db6b0] text-[10px] mt-1 italic">Score: 5/5 (Industry Avg: ~50%)</p>
+</div>
+</div>
+<!-- Metric 2: Licensed Staff Density -->
+<div class="metric-card p-6 rounded-r-lg shadow-lg" style="border-left-color: rgb(255, 230, 109); translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 30px);">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<i class="fas fa-id-card text-6xl text-white"></i>
+</div>
+<div>
+<div class="flex items-center mb-2">
+<div class="w-8 h-8 rounded bg-[#044c73] bg-opacity-30 flex items-center justify-center text-[#FFE66D] mr-3">
+<i class="fas fa-user-graduate"></i>
+</div>
+<p class="text-[#8db6b0] text-xs uppercase tracking-wider font-bold">Talent Density</p>
+</div>
+<p class="text-[#f5f7fa] text-[50px] font-bold font-serif leading-none">71%</p>
+</div>
+<div class="mt-4 pt-4 border-t border-[#044c73] border-opacity-30">
+<div class="flex justify-between items-center">
+<span class="text-[#b0b8c1] text-sm font-medium">Licensed Staff</span>
+<span class="text-[#FFE66D] font-bold text-lg">5 of 7</span>
+</div>
+<p class="text-[#8db6b0] text-[10px] mt-1 italic">Score: 5/5 (Industry Avg: ~45%)</p>
+</div>
+</div>
+<!-- Metric 3: Zero Marketing Spend -->
+<div class="metric-card p-6 rounded-r-lg shadow-lg" style="border-left-color: rgb(78, 205, 196); translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 30px);">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<i class="fas fa-bullhorn text-6xl text-white"></i>
+</div>
+<div>
+<div class="flex items-center mb-2">
+<div class="w-8 h-8 rounded bg-[#044c73] bg-opacity-30 flex items-center justify-center text-[#4ECDC4] mr-3">
+<i class="fas fa-handshake"></i>
+</div>
+<p class="text-[#8db6b0] text-xs uppercase tracking-wider font-bold">Acquisition Cost</p>
+</div>
+<p class="text-[#f5f7fa] text-[50px] font-bold font-serif leading-none">$0</p>
+</div>
+<div class="mt-4 pt-4 border-t border-[#044c73] border-opacity-30">
+<div class="flex justify-between items-center">
+<span class="text-[#b0b8c1] text-sm font-medium">Source</span>
+<span class="text-[#4ECDC4] font-bold text-sm">100% Referral</span>
+</div>
+<p class="text-[#8db6b0] text-[10px] mt-1 italic">Score: 5/5 (Infinite Efficiency)</p>
+</div>
+</div>
+<!-- Metric 4: Operational Redundancy -->
+<div class="metric-card p-6 rounded-r-lg shadow-lg" style="border-left-color: rgb(141, 182, 176); translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 30px);">
+<div class="absolute top-0 right-0 p-4 opacity-10">
+<i class="fas fa-users-gear text-6xl text-white"></i>
+</div>
+<div>
+<div class="flex items-center mb-2">
+<div class="w-8 h-8 rounded bg-[#044c73] bg-opacity-30 flex items-center justify-center text-[#8db6b0] mr-3">
+<i class="fas fa-network-wired"></i>
+</div>
+<p class="text-[#8db6b0] text-xs uppercase tracking-wider font-bold">Organizational Health</p>
+</div>
+<p class="text-[#f5f7fa] text-[50px] font-bold font-serif leading-none">100%</p>
+</div>
+<div class="mt-4 pt-4 border-t border-[#044c73] border-opacity-30">
+<div class="flex justify-between items-center">
+<span class="text-[#b0b8c1] text-sm font-medium">Core Roles</span>
+<span class="text-[#8db6b0] font-bold text-sm">Fully Filled</span>
+</div>
+<p class="text-[#8db6b0] text-[10px] mt-1 italic">Score: 5/5 (Redundancy in Place)</p>
+</div>
+</div>
+</div>
+<!-- Bottom Section: Valuation Range Spectrum -->
+<div class="bg-[#0b0f13] p-3 rounded-lg border border-[#1e2730] spectrum-container relative" style="z-index: 20; translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="flex justify-between items-end mb-1">
+<p class="text-[#8db6b0] uppercase tracking-widest text-[10px] font-semibold">Resulting Valuation Impact</p>
+<p class="text-[#f5f7fa] font-serif text-base"><span class="text-[#ef6337]">Top Tier Premium</span> <span class="text-[#4e5d6c] mx-2">|</span> Operational Excellence</p>
+</div>
+<!-- Visual Range Bar -->
+<div class="valuation-spectrum">
+<!-- Active Range Fill (Representing the spread) -->
+<div class="spectrum-fill" style="left: 60%; width: 35%; background-color: rgb(239, 99, 55); translate: none; rotate: none; scale: none; transform-origin: 204.432px 5.99432px; transform: translate(0px, 0px);"></div>
+<!-- Low End Marker -->
+<div class="absolute flex flex-col items-center spectrum-marker" style="left: 20%; top: 15px; translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="w-2.5 h-2.5 bg-[#4e5d6c] rounded-full border-2 border-[#0f1419] -mt-[19px] z-10 opacity-50"></div>
+<p class="text-[#4e5d6c] text-[9px] font-bold opacity-50">Commodity</p>
+</div>
+<!-- Mid Marker -->
+<div class="absolute flex flex-col items-center spectrum-marker" style="left: 50%; top: 15px; translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="w-2.5 h-2.5 bg-[#8db6b0] rounded-full border-2 border-[#0f1419] -mt-[19px] z-10 opacity-70"></div>
+<p class="text-[#8db6b0] text-[9px] font-bold opacity-70">Standard</p>
+</div>
+<!-- High End Marker -->
+<div class="absolute flex flex-col items-center spectrum-marker" style="left: 85%; top: 15px; translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="w-3 h-3 bg-[#ef6337] rounded-full border-2 border-[#f5f7fa] -mt-[20px] z-10 shadow-lg shadow-coral/50"></div>
+<p class="text-[#ef6337] text-[9px] font-bold">MARPA</p>
+<p class="text-[#b0b8c1] text-[8px]">Premium Zone</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="absolute bottom-4 right-6" style="z-index: 20;">
+<p class="text-[#4e5d6c] text-xs tracking-widest uppercase">MARPA Equity Pathway 2026</p>
+</div>
+</div>
+<script>
+    // GSAP Animations
+    document.addEventListener("DOMContentLoaded", (event) => {
+        const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
+
+        // Header animation
+        tl.from(".header-animate", { 
+            duration: 0.8, 
+            y: -20, 
+            opacity: 0 
+        })
+        
+        // Cards stagger animation
+        .from(".metric-card", { 
+            duration: 0.8, 
+            y: 30, 
+            opacity: 0, 
+            stagger: 0.15 
+        }, "-=0.4")
+        
+        // Spectrum container fade in
+        .from(".spectrum-container", {
+            duration: 0.8,
+            y: 20,
+            opacity: 0
+        }, "-=0.2")
+
+        // Spectrum bar expand
+        .from(".spectrum-fill", { 
+            duration: 1, 
+            scaleX: 0,
+            transformOrigin: "center left",
+            ease: "power2.inOut" 
+        }, "-=0.4")
+        
+        // Markers pop up
+        .from(".spectrum-marker", { 
+            duration: 0.5, 
+            y: 10, 
+            opacity: 0, 
+            ease: "back.out(1.7)", 
+            stagger: 0.1 
+        }, "-=0.2");
+    });
+</script>
+
+
+<script src="./slide-inner.js"></script></body></html>

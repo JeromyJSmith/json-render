@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/AIm4UtE2 -->
+<html lang="en" data-chapter="Vision & Call to Action" data-chapter-number="7" data-slide-position="60"><head>
+<meta name="marpa-chapter" content="Vision & Call to Action" data-chapter-number="7" data-slide-position="60"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Chapter 5: Making the Decision</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(1)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<link href="./global-marpa-styles.css" rel="stylesheet">
+<script src="./gsap.min.js"></script>
+<script src="./ScrollTrigger.min.js"></script>
+<style>
+        /* ==========================================
+           COLOR PRESERVATION BLOCK
+           ========================================== */
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --mint: #95E1D3;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+            --text-gray: #4e5d6c;
+        }
+
+        /* Tailwind color preservation */
+        .text-\[\#ef6337\] { color: #ef6337 !important; }
+        .text-\[\#f5f7fa\] { color: #f5f7fa !important; }
+        .text-\[\#8db6b0\] { color: #8db6b0 !important; }
+        .text-\[\#b0b8c1\] { color: #b0b8c1 !important; }
+        .text-\[\#4e5d6c\] { color: #4e5d6c !important; }
+        .text-\[\#044c73\] { color: #044c73 !important; }
+        .text-\[\#4ECDC4\] { color: #4ECDC4 !important; }
+        .text-\[\#FFE66D\] { color: #FFE66D !important; }
+        .text-\[\#95E1D3\] { color: #95E1D3 !important; }
+        .text-\[\#0f1419\] { color: #0f1419 !important; }
+
+        .bg-\[\#0f1419\] { background-color: #0f1419 !important; }
+        .bg-\[\#044c73\] { background-color: #044c73 !important; }
+        .bg-\[\#ef6337\] { background-color: #ef6337 !important; }
+        .bg-\[\#0b0f13\] { background-color: #0b0f13 !important; }
+        .bg-\[\#FFE66D\] { background-color: #FFE66D !important; }
+
+        .border-\[\#044c73\] { border-color: #044c73 !important; }
+        .border-\[\#ef6337\] { border-color: #ef6337 !important; }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            min-height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Abstract Pathway Visual - Converging Paths */
+        .pathway-visual {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 65%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.9;
+            pointer-events: none;
+        }
+
+        /* ANIMATION DEFINITIONS */
+        @keyframes energyFlow {
+            0% { stroke-dashoffset: 1000; }
+            100% { stroke-dashoffset: 0; }
+        }
+
+        @keyframes pulseGlow {
+            0%, 100% { filter: drop-shadow(0 0 5px rgba(149, 225, 211, 0.4)); }
+            50% { filter: drop-shadow(0 0 15px rgba(149, 225, 211, 0.8)); }
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+
+        /* Base Lines (Static Tracks) */
+        .path-track {
+            stroke-dasharray: 4 4;
+            opacity: 0.2;
+        }
+
+        /* Pulse Lines (Moving Energy) */
+        .path-pulse {
+            stroke-dasharray: 100 900;
+            stroke-dashoffset: 1000;
+            stroke-linecap: round;
+        }
+
+        .pulse-solo {
+            stroke: var(--turquoise);
+            animation: energyFlow 4s linear infinite;
+        }
+        .pulse-shared {
+            stroke: var(--yellow);
+            animation: energyFlow 3s linear infinite;
+        }
+        .pulse-db {
+            stroke: var(--coral);
+            animation: energyFlow 3.5s linear infinite;
+        }
+        .pulse-decision {
+            stroke: var(--mint);
+            stroke-dasharray: 50 950;
+            animation: energyFlow 3s linear infinite, pulseGlow 2s ease-in-out infinite;
+        }
+
+        .content-area {
+            z-index: 10;
+            padding: 60px; /* Reduced from 80px */
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-width: 45%;
+        }
+
+        .chapter-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 140px; /* Reduced from 180px */
+            font-weight: 900;
+            line-height: 0.8;
+            color: transparent;
+            -webkit-text-stroke: 2px var(--mint);
+            opacity: 0;
+            position: absolute;
+            top: 60px;
+            left: 60px;
+            z-index: -1;
+        }
+
+        .chapter-label {
+            color: var(--mint);
+            font-size: 16px; /* Reduced from 18px */
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .chapter-label::before {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background-color: var(--mint);
+            margin-right: 16px;
+        }
+
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 56px; /* Reduced from 72px */
+            font-weight: 700;
+            line-height: 1.1;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .subtitle {
+            font-size: 18px; /* Reduced from 20px */
+            line-height: 1.6;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            max-width: 500px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .emotional-anchor-box {
+            border-left: 4px solid var(--mint);
+            padding: 20px 30px;
+            background-color: rgba(149, 225, 211, 0.1);
+            margin-top: 20px;
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        .anchor-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--mint);
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .anchor-text {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 22px; /* Reduced from 24px */
+            color: var(--text-light);
+        }
+        
+        .icon-badge {
+            width: 80px;
+            height: 80px;
+            background-color: rgba(149, 225, 211, 0.1);
+            border: 1px solid var(--mint);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: scale(0.8);
+            box-shadow: 0 0 20px rgba(149, 225, 211, 0.2);
+            animation: float 4s ease-in-out infinite;
+        }
+
+        /* Node dots */
+        .node-dot {
+            fill: var(--bg-dark);
+            stroke-width: 2;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body style="">
+<div class="slide-container">
+<!-- Background Visual with Parallax Layers -->
+<div class="pathway-visual" style="opacity: 0.9;">
+<svg height="100%" preserveAspectRatio="none" viewBox="0 0 800 720" width="100%">
+<defs>
+<filter id="glow">
+<fegaussianblur result="coloredBlur" stdDeviation="4"></fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+<!-- Layer 1: Parallax Background Shapes -->
+<path class="bg-shape-1" d="M100,720 L300,400 L800,200 L800,720 Z" fill="#044c73" opacity="0.1"></path>
+<!-- Layer 2: Static Tracks (Converging) -->
+<g class="bg-shape-2">
+<!-- Solo Path (Top) -->
+<path class="path-track" d="M800,100 C600,200 500,300 400,360" fill="none" stroke="#4ECDC4" stroke-width="3"></path>
+<!-- Shared Path (Middle) -->
+<path class="path-track" d="M800,360 C650,360 550,360 400,360" fill="none" stroke="#FFE66D" stroke-width="3"></path>
+<!-- DB Path (Bottom) -->
+<path class="path-track" d="M800,620 C600,520 500,420 400,360" fill="none" stroke="#ef6337" stroke-width="3"></path>
+<!-- Decision Path (Left) -->
+<path class="path-track" d="M400,360 C250,360 100,360 0,360" fill="none" stroke="#95E1D3" stroke-width="5"></path>
+</g>
+<!-- Layer 3: Animated Pulse Lines -->
+<g class="bg-shape-3">
+<!-- Solo Pulse -->
+<path class="path-pulse pulse-solo" d="M800,100 C600,200 500,300 400,360" fill="none" stroke-width="4"></path>
+<circle class="node-dot" cx="800" cy="100" r="4" stroke="#4ECDC4"></circle>
+<!-- Shared Pulse -->
+<path class="path-pulse pulse-shared" d="M800,360 C650,360 550,360 400,360" fill="none" stroke-width="4"></path>
+<circle class="node-dot" cx="800" cy="360" r="4" stroke="#FFE66D"></circle>
+<!-- DB Pulse -->
+<path class="path-pulse pulse-db" d="M800,620 C600,520 500,420 400,360" fill="none" stroke-width="4"></path>
+<circle class="node-dot" cx="800" cy="620" r="4" stroke="#ef6337"></circle>
+<!-- Decision Pulse (Main) -->
+<path class="path-pulse pulse-decision" d="M400,360 C250,360 100,360 0,360" fill="none" stroke-width="6"></path>
+</g>
+<!-- Layer 4: Merge Point -->
+<g class="bg-shape-4">
+<!-- Outer Rings -->
+<circle cx="400" cy="360" fill="none" opacity="0.3" r="30" stroke="#95E1D3" stroke-width="1"></circle>
+<circle cx="400" cy="360" fill="none" opacity="0.1" r="50" stroke="#95E1D3" stroke-width="1"></circle>
+<!-- Core Node -->
+<circle cx="400" cy="360" fill="#95E1D3" filter="url(#glow)" r="12"></circle>
+<!-- Connection Nodes -->
+<circle cx="400" cy="360" fill="#0f1419" r="4"></circle>
+</g>
+</svg>
+</div>
+<!-- Background Chapter Number -->
+<div class="chapter-number" style="translate: none; rotate: none; scale: none; transform: translate3d(0px, 0px, 0px) scale(1.0398, 1.0398); opacity: 0.2385;">05</div>
+<!-- Main Content -->
+<div class="content-area">
+<div class="icon-badge" style="translate: none; rotate: none; scale: none; transform: translate(0px, -5.23351px); opacity: 1;">
+<i class="fas fa-map-signs text-3xl text-[#95E1D3]"></i>
+</div>
+<div class="chapter-label" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<p>Chapter 5</p>
+</div>
+<h1 class="main-title" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<p>MAKING THE<br>DECISION</p>
+</h1>
+<div class="subtitle" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<p>Bringing data and intuition together to choose a path.</p>
+</div>
+<div class="emotional-anchor-box" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<p class="anchor-label">Strategic Focus</p>
+<p class="anchor-text">"The moment where data meets intuition."</p>
+</div>
+</div>
+<!-- Footer -->
+<div class="absolute bottom-8 left-12 right-12 flex justify-between items-end border-t border-[#044c73] pt-4 opacity-60">
+<div class="text-[#b0b8c1] text-xs tracking-widest uppercase">MARPA Equity Pathway 2026</div>
+<div class="text-[#b0b8c1] text-xs">Confidential Presentation</div>
+</div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", (event) => {
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Entrance Animations
+        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+        // Background pulses start immediately via CSS, but we can animate opacity of lines
+        tl.from(".pathway-visual", { opacity: 0, duration: 1.5 })
+          .to(".chapter-number", { opacity: 0.2, duration: 1.5, ease: "power2.out" }, "-=1.0")
+          .to(".icon-badge", { opacity: 1, scale: 1, duration: 0.6, ease: "back.out(1.7)" }, "-=1.0")
+          .to(".chapter-label", { opacity: 1, y: 0, duration: 0.6 }, "-=0.4")
+          .to(".main-title", { opacity: 1, y: 0, duration: 0.8 }, "-=0.4")
+          .to(".subtitle", { opacity: 1, y: 0, duration: 0.8 }, "-=0.6")
+          .to(".emotional-anchor-box", { opacity: 1, x: 0, duration: 0.8 }, "-=0.6");
+
+        // Pulse effect on Chapter Number
+        gsap.to(".chapter-number", {
+            opacity: 0.3,
+            scale: 1.05,
+            duration: 2,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut"
+        });
+
+        // Parallax Effect
+        const container = document.querySelector('.slide-container');
+        
+        container.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth - 0.5) * 20;
+            const y = (e.clientY / window.innerHeight - 0.5) * 20;
+
+            gsap.to(".bg-shape-1", { duration: 1, x: x * 0.5, y: y * 0.5 });
+            gsap.to(".bg-shape-2", { duration: 1, x: x * 0.8, y: y * 0.8 });
+            gsap.to(".bg-shape-3", { duration: 1, x: x * 1.2, y: y * 1.2 });
+            gsap.to(".bg-shape-4", { duration: 1, x: x * 1.5, y: y * 1.5 });
+        });
+    });
+</script>
+
+
+<script src="./slide-inner.js"></script></body></html>

@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/X9Duzb2H -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>2025 Revenue Breakdown</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(1)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<script src="./chart.js"></script>
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+            
+            /* Revenue Colors */
+            --color-construction: #1B5E20; /* Dark Green */
+            --color-design: #66BB6A;      /* Light Green */
+            --color-oversight: #4ECDC4;   /* Accent */
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-light);
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 60px;
+            position: relative;
+            background-color: var(--bg-dark);
+            box-sizing: border-box;
+        }
+
+        .header {
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .title-tag {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--color-oversight);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        h1.main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            font-weight: 900;
+            line-height: 1.1;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        /* Chart Area */
+        .chart-section {
+            width: 100%;
+            margin-bottom: 40px;
+            position: relative;
+        }
+
+        .bar-container {
+            height: 120px;
+            width: 100%;
+            position: relative;
+            border-radius: 8px;
+            overflow: hidden;
+            background: rgba(255,255,255,0.05);
+        }
+
+        /* Narrative Cards */
+        .narrative-container {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr; /* Proportional to revenue roughly but balanced for text */
+            gap: 24px;
+            flex: 1;
+        }
+
+        .insight-card {
+            background: rgba(4, 76, 115, 0.15);
+            border-top: 4px solid;
+            padding: 24px;
+            border-radius: 0 0 8px 8px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: transform 0.3s ease;
+        }
+
+        .insight-card:hover {
+            transform: translateY(-5px);
+            background: rgba(4, 76, 115, 0.25);
+        }
+
+        .card-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-bottom: 16px;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            color: var(--text-light);
+        }
+
+        .card-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 700;
+            margin-bottom: 12px;
+            display: block;
+        }
+
+        .card-text {
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--text-muted);
+        }
+
+        /* Specific Colors */
+        .construction-theme { border-color: var(--color-construction); }
+        .construction-theme .card-icon { color: var(--color-construction); background: rgba(27, 94, 32, 0.2); }
+        .construction-theme .card-value { color: #4CAF50; }
+
+        .design-theme { border-color: var(--color-design); }
+        .design-theme .card-icon { color: var(--color-design); background: rgba(102, 187, 106, 0.2); }
+        .design-theme .card-value { color: var(--color-design); }
+
+        .oversight-theme { border-color: var(--color-oversight); }
+        .oversight-theme .card-icon { color: var(--color-oversight); background: rgba(78, 205, 196, 0.2); }
+        .oversight-theme .card-value { color: var(--color-oversight); }
+
+        /* Strategic Note Footer */
+        .footer-note {
+            margin-top: auto;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            padding-top: 16px;
+            display: flex;
+            align-items: center;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+
+        .note-icon {
+            color: var(--yellow);
+            margin-right: 10px;
+        }
+
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<div class="header">
+<div>
+<p class="title-tag">Strategic Revenue Mix</p>
+<h1 class="main-title">2025 Revenue Breakdown by Service Line</h1>
+<p class="subtitle">Horizontal stacked analysis of the $11.03M revenue composition</p>
+</div>
+<div class="text-right">
+<p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Chart 2C</p>
+<p class="text-sm font-bold text-white">Narrative View</p>
+</div>
+</div>
+<div class="chart-section">
+<div class="bar-container">
+<canvas id="stackedBar" width="1276" height="132" style="display: block; box-sizing: border-box; height: 120px; width: 1160px;"></canvas>
+</div>
+</div>
+<div class="narrative-container">
+<!-- Construction -->
+<div class="insight-card construction-theme">
+<div class="card-icon">
+<i class="fas fa-hard-hat"></i>
+</div>
+<h3 class="card-title">Construction</h3>
+<span class="card-value">$9.6M • 87.1%</span>
+<p class="card-text">
+                    The primary engine of the business. Project delivery &amp; construction services provide the revenue volume and cash flow stability required for valuation targets.
+                </p>
+</div>
+<!-- Design -->
+<div class="insight-card design-theme">
+<div class="card-icon">
+<i class="fas fa-pencil-ruler"></i>
+</div>
+<h3 class="card-title">Design</h3>
+<span class="card-value">$805K • 7.3%</span>
+<p class="card-text">
+                    Strategic entry point. Consulting &amp; architectural services feed the construction pipeline and establish brand prestige.
+                </p>
+</div>
+<!-- Oversight -->
+<div class="insight-card oversight-theme">
+<div class="card-icon">
+<i class="fas fa-clipboard-check"></i>
+</div>
+<h3 class="card-title">Oversight</h3>
+<span class="card-value">$614K • 5.6%</span>
+<p class="card-text">
+                    Quality assurance layer. Project management ensures design intent is realized and maintains client trust.
+                </p>
+</div>
+</div>
+<div class="footer-note">
+<i class="fas fa-lightbulb note-icon"></i>
+<p>Construction represents core revenue scaling potential, while Design &amp; Oversight provide critical strategic value and pipeline generation.</p>
+</div>
+</div>
+<script>
+        const ctx = document.getElementById('stackedBar').getContext('2d');
+
+        // Custom plugin to draw percentage labels inside bars
+        const dataLabelPlugin = {
+            id: 'dataLabels',
+            afterDatasetsDraw(chart) {
+                const { ctx } = chart;
+                chart.data.datasets.forEach((dataset, i) => {
+                    const meta = chart.getDatasetMeta(i);
+                    meta.data.forEach((bar, index) => {
+                        const value = dataset.data[index];
+                        // Only draw if width is sufficient
+                        if (bar.width > 40) {
+                            ctx.fillStyle = '#FFFFFF';
+                            ctx.font = 'bold 16px JetBrains Mono';
+                            ctx.textAlign = 'center';
+                            ctx.textBaseline = 'middle';
+                            ctx.fillText(value + '%', bar.x - (bar.width / 2), bar.y);
+                            
+                            // Optional: Draw dollar value below percentage if space permits
+                            if (bar.width > 100) {
+                                ctx.font = '500 12px Inter';
+                                ctx.fillStyle = 'rgba(255,255,255,0.8)';
+                                let dollarVal = '';
+                                if(i === 0) dollarVal = '$9.6M';
+                                if(i === 1) dollarVal = '$805K';
+                                if(i === 2) dollarVal = '$614K';
+                                ctx.fillText(dollarVal, bar.x - (bar.width / 2), bar.y + 20);
+                            }
+                        }
+                    });
+                });
+            }
+        };
+
+        const config = {
+            type: 'bar',
+            data: {
+                labels: ['Revenue'],
+                datasets: [
+                    {
+                        label: 'Construction',
+                        data: [87.1],
+                        backgroundColor: '#1B5E20',
+                        barThickness: 80,
+                        borderSkipped: false,
+                        borderRadius: { topLeft: 4, bottomLeft: 4 }
+                    },
+                    {
+                        label: 'Design',
+                        data: [7.3],
+                        backgroundColor: '#66BB6A',
+                        barThickness: 80,
+                        borderSkipped: false
+                    },
+                    {
+                        label: 'Oversight',
+                        data: [5.6],
+                        backgroundColor: '#4ECDC4',
+                        barThickness: 80,
+                        borderSkipped: false,
+                        borderRadius: { topRight: 4, bottomRight: 4 }
+                    }
+                ]
+            },
+            options: {
+                indexAxis: 'y',
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: { enabled: false }
+                },
+                scales: {
+                    x: {
+                        display: false,
+                        stacked: true,
+                        max: 100
+                    },
+                    y: {
+                        display: false,
+                        stacked: true
+                    }
+                },
+                animation: {
+                    duration: 1500,
+                    easing: 'easeOutQuart'
+                }
+            },
+            plugins: [dataLabelPlugin]
+        };
+
+        new Chart(ctx, config);
+    </script>
+
+
+<script src="./slide-inner.js"></script></body></html>

@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/F4ApIk5H -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Revenue Distribution - Donut Chart</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(1)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<script src="./chart.js"></script>
+<script src="./chartjs-plugin-datalabels@2.0.0"></script>
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+            
+            /* Revenue Colors */
+            --color-construction: #1B5E20; /* Dark Green - Construction */
+            --color-design: #66BB6A;      /* Light Green - Design */
+            --color-oversight: #4ECDC4;   /* Accent - Oversight */
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-light);
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 60px;
+            position: relative;
+            background-color: var(--bg-dark);
+            box-sizing: border-box;
+        }
+
+        .header {
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .title-tag {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--color-design);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        h1.main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            font-weight: 900;
+            line-height: 1.1;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        /* Chart Area */
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: row;
+            gap: 40px;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .chart-container {
+            width: 500px;
+            height: 500px;
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Center Text */
+        .chart-center-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: none;
+            z-index: 10;
+        }
+
+        .center-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 48px;
+            font-weight: 900;
+            color: var(--text-light);
+            line-height: 1;
+            margin-bottom: 4px;
+        }
+
+        .center-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Callout Cards */
+        .callouts-container {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+        }
+
+        .callout-card {
+            position: absolute;
+            background: rgba(4, 76, 115, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 16px;
+            border-radius: 8px;
+            width: 260px;
+            pointer-events: auto;
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .callout-card:hover {
+            transform: scale(1.02);
+            background: rgba(4, 76, 115, 0.25);
+            border-color: rgba(255, 255, 255, 0.2);
+        }
+
+        /* Callout Positions */
+        .callout-construction {
+            top: 15%;
+            right: 5%;
+            border-left: 4px solid var(--color-construction);
+        }
+
+        .callout-design {
+            bottom: 25%;
+            right: 5%;
+            border-left: 4px solid var(--color-design);
+        }
+
+        .callout-oversight {
+            bottom: 35%;
+            left: 5%;
+            border-left: 4px solid var(--color-oversight);
+        }
+
+        .callout-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 4px;
+        }
+
+        .callout-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 16px;
+            font-weight: 700;
+            margin-bottom: 8px;
+        }
+
+        .callout-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        .construction-val { color: #4CAF50; } /* Lighter green for visibility on dark */
+        .design-val { color: var(--color-design); }
+        .oversight-val { color: var(--color-oversight); }
+
+        /* Connector Lines (SVG) */
+        .connector-svg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .connector-line {
+            fill: none;
+            stroke-width: 1;
+            opacity: 0.5;
+        }
+
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<div class="header">
+<div>
+<p class="title-tag">Revenue Composition</p>
+<h1 class="main-title">Revenue Distribution: Service Line Breakdown</h1>
+<p class="subtitle">2025 Projected Revenue Sources and Strategic Contributions</p>
+</div>
+<div class="text-right">
+<p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Chart 2B</p>
+<p class="text-sm font-bold text-white">Ring Chart View</p>
+</div>
+</div>
+<div class="content-wrapper">
+<!-- SVG Connectors Background -->
+<svg class="connector-svg" height="100%" width="100%">
+<!-- Lines will be positioned relative to chart and cards -->
+<!-- Construction Line -->
+<path class="connector-line" d="M 750 250 L 880 180" stroke="#1B5E20" stroke-dasharray="4 4"></path>
+<circle cx="750" cy="250" fill="#1B5E20" r="3"></circle>
+<!-- Design Line -->
+<path class="connector-line" d="M 700 400 L 880 480" stroke="#66BB6A" stroke-dasharray="4 4"></path>
+<circle cx="700" cy="400" fill="#66BB6A" r="3"></circle>
+<!-- Oversight Line -->
+<path class="connector-line" d="M 500 400 L 320 420" stroke="#4ECDC4" stroke-dasharray="4 4"></path>
+<circle cx="500" cy="400" fill="#4ECDC4" r="3"></circle>
+</svg>
+<div class="chart-container">
+<canvas id="revenueDonut" width="550" height="550" style="display: block; box-sizing: border-box; height: 500px; width: 500px;"></canvas>
+<div class="chart-center-text">
+<p class="center-value">$11.03M</p>
+<p class="center-label">2025 Total Revenue</p>
+</div>
+</div>
+<div class="callouts-container">
+<!-- Construction Callout -->
+<div class="callout-card callout-construction">
+<h3 class="callout-title">Construction / Services</h3>
+<p class="callout-value construction-val">$9.6M (87.1%)</p>
+<p class="callout-desc">Primary revenue driver providing the volume necessary for scale and valuation targets.</p>
+</div>
+<!-- Design Callout -->
+<div class="callout-card callout-design">
+<h3 class="callout-title">Design Services</h3>
+<p class="callout-value design-val">$805K (7.3%)</p>
+<p class="callout-desc">Strategic consulting services that feed the construction pipeline and define brand quality.</p>
+</div>
+<!-- Oversight Callout -->
+<div class="callout-card callout-oversight">
+<h3 class="callout-title">Design Oversight</h3>
+<p class="callout-value oversight-val">$614K (5.6%)</p>
+<p class="callout-desc">Project management &amp; quality oversight ensuring design intent is executed correctly.</p>
+</div>
+</div>
+</div>
+</div>
+<script>
+    // Register plugins
+    Chart.register(ChartDataLabels);
+
+    const ctx = document.getElementById('revenueDonut').getContext('2d');
+
+    const data = {
+        labels: ['Construction', 'Design', 'Oversight'],
+        datasets: [{
+            data: [87.1, 7.3, 5.6],
+            backgroundColor: [
+                '#1B5E20', // Construction (Dark Green)
+                '#66BB6A', // Design (Light Green)
+                '#4ECDC4'  // Oversight (Turquoise)
+            ],
+            borderColor: '#0f1419', // Match background for spacing
+            borderWidth: 6,
+            hoverOffset: 15,
+            hoverBorderWidth: 0
+        }]
+    };
+
+    const config = {
+        type: 'doughnut',
+        data: data,
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '70%',
+            plugins: {
+                legend: {
+                    display: false // Using custom callouts
+                },
+                tooltip: {
+                    enabled: false // Disable tooltips in favor of static callouts
+                },
+                datalabels: {
+                    display: false // Hide labels on chart, using callouts
+                }
+            },
+            animation: {
+                animateScale: true,
+                animateRotate: true,
+                duration: 1500,
+                easing: 'easeOutQuart'
+            }
+        }
+    };
+
+    new Chart(ctx, config);
+</script>
+
+
+<script src="./slide-inner.js"></script></body></html>

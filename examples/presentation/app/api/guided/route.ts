@@ -53,7 +53,6 @@ When answering questions about specific data, format numbers clearly (e.g., "$17
     model: gateway("anthropic/claude-sonnet-4-20250514"),
     system: systemPrompt,
     messages,
-    maxTokens: 1024,
   });
 
   return result.toUIMessageStreamResponse();

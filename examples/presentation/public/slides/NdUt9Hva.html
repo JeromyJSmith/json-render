@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/NdUt9Hva -->
+<html lang="en" data-chapter="Deal Structure" data-chapter-number="6" data-slide-position="46"><head>
+<meta name="marpa-chapter" content="Deal Structure" data-chapter-number="6" data-slide-position="46"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Governance Rights Unlock</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(2)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --navy-dark: #0a1f2e;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            min-height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 40px 60px;
+            box-sizing: border-box;
+        }
+
+        /* Tier Cards */
+        .tiers-container {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            position: relative;
+            padding-left: 20px;
+        }
+
+        .tier-card {
+            background-color: rgba(4, 76, 115, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            transition: transform 0.2s ease;
+            height: 85px; /* Fixed height to control layout */
+        }
+        
+        .tier-card:hover {
+            transform: translateX(5px);
+            background-color: rgba(4, 76, 115, 0.2);
+        }
+
+        .tier-level-4 { border-left: 6px solid var(--coral); }
+        .tier-level-3 { border-left: 6px solid var(--yellow); }
+        .tier-level-2 { border-left: 6px solid var(--teal); }
+        .tier-level-1 { border-left: 6px solid #4a5568; }
+
+        .tier-percent {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 20px;
+            width: 100px;
+        }
+        
+        .color-coral { color: var(--coral); }
+        .color-yellow { color: var(--yellow); }
+        .color-teal { color: var(--teal); }
+        .color-gray { color: #a0aec0; }
+
+        .tier-content {
+            flex: 1;
+            padding-left: 30px;
+            border-left: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .tier-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background-color: rgba(255,255,255,0.05);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            margin-left: 20px;
+        }
+
+        /* Sidebar */
+        .terms-sidebar {
+            background-color: var(--navy-dark);
+            border: 1px solid var(--navy);
+            border-radius: 12px;
+            padding: 30px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .term-item {
+            margin-bottom: 24px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 16px;
+        }
+        .term-item:last-child {
+            margin-bottom: 0;
+            border-bottom: none;
+            padding-bottom: 0;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="flex justify-between items-end mb-8 border-b border-[#044c73] pb-4">
+<div>
+<div class="flex items-center mb-2">
+<span class="w-2 h-2 bg-[#ef6337] rounded-full mr-2"></span>
+<p class="text-[#ef6337] font-bold tracking-widest text-xs uppercase">Chapter 4: Design-Build Expansion</p>
+</div>
+<h1 class="font-serif text-4xl text-[#f5f7fa]">GOVERNANCE RIGHTS UNLOCK</h1>
+<p class="text-[#b0b8c1] text-lg mt-1">Staircase to Partnership Authority</p>
+</div>
+<div class="text-right">
+<p class="text-[#b0b8c1] text-sm font-mono">CH4-S14</p>
+</div>
+</div>
+<!-- Main Content -->
+<div class="flex flex-1 gap-10">
+<!-- Left Column: Rights Ladder -->
+<div class="flex-1 tiers-container justify-center">
+<!-- Tier 4 (Top) -->
+<div class="tier-card tier-level-4">
+<div class="tier-percent color-coral">24%</div>
+<div class="tier-content">
+<h3 class="text-[#f5f7fa] font-bold text-xl mb-1">Co-Principal Status</h3>
+<p class="text-[#b0b8c1] text-xs">Full partnership parity in strategic and operational decisions.</p>
+</div>
+<div class="tier-icon color-coral">
+<i class="fas fa-handshake"></i>
+</div>
+</div>
+<!-- Tier 3 -->
+<div class="tier-card tier-level-3">
+<div class="tier-percent color-yellow">20%</div>
+<div class="tier-content">
+<h3 class="text-[#f5f7fa] font-bold text-xl mb-1">Full Partnership Vote</h3>
+<p class="text-[#b0b8c1] text-xs">Voting member status on all standard board resolutions.</p>
+</div>
+<div class="tier-icon color-yellow">
+<i class="fas fa-vote-yea"></i>
+</div>
+</div>
+<!-- Tier 2 -->
+<div class="tier-card tier-level-2">
+<div class="tier-percent color-teal">15%</div>
+<div class="tier-content">
+<h3 class="text-[#f5f7fa] font-bold text-xl mb-1">Approval Rights</h3>
+<p class="text-[#b0b8c1] text-xs">Consent required for specific major expenditures or hires.</p>
+</div>
+<div class="tier-icon color-teal">
+<i class="fas fa-check-double"></i>
+</div>
+</div>
+<!-- Tier 1 (Bottom) -->
+<div class="tier-card tier-level-1">
+<div class="tier-percent color-gray">10%</div>
+<div class="tier-content">
+<h3 class="text-[#f5f7fa] font-bold text-xl mb-1">Board Observer</h3>
+<p class="text-[#b0b8c1] text-xs">Access to all financials and strategic meetings; voice but no vote.</p>
+</div>
+<div class="tier-icon color-gray">
+<i class="fas fa-eye"></i>
+</div>
+</div>
+<!-- Progression Arrow Graphic -->
+<div class="absolute left-0 top-0 bottom-0 flex flex-col items-center justify-between py-6 opacity-30">
+<i class="fas fa-arrow-up text-[#f5f7fa] text-xl"></i>
+<div class="h-full w-px bg-gradient-to-b from-white to-transparent my-2"></div>
+</div>
+</div>
+<!-- Right Column: Terms Sidebar -->
+<div class="w-1/3">
+<div class="terms-sidebar">
+<div class="flex items-center mb-6">
+<i class="fas fa-layer-group text-[#8db6b0] text-xl mr-3"></i>
+<h3 class="text-[#f5f7fa] font-bold text-lg uppercase tracking-wider">Evolution of Control</h3>
+</div>
+<div class="term-item">
+<div class="flex justify-between mb-2">
+<span class="text-[#ef6337] font-bold text-sm">DESIGN-BUILD GOAL</span>
+<span class="text-[#b0b8c1] font-mono text-xs">YEAR 10</span>
+</div>
+<p class="text-[#b0b8c1] text-sm leading-relaxed">
+                            The destination is shared leadership. As ownership grows, so does the responsibility and authority to shape the firm's future.
+                        </p>
+</div>
+<div class="term-item">
+<div class="flex justify-between mb-2">
+<span class="text-[#ef6337] font-bold text-sm">VOICE VS VOTE</span>
+<span class="text-[#b0b8c1] font-mono text-xs">CRITICAL DISTINCTION</span>
+</div>
+<p class="text-[#b0b8c1] text-sm leading-relaxed">
+                            Early stages grant "voice" (influence) without "vote" (binding power), protecting the firm while new partners learn the ropes.
+                        </p>
+</div>
+<div class="mt-auto pt-4 border-t border-[#044c73]">
+<p class="text-[#8db6b0] text-xs italic">
+                            "Your voice grows as your stake grows. By year ten, you're a full partner."
+                        </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="mt-auto pt-4 flex justify-between items-center text-[#4e5d6c] text-[10px] uppercase tracking-widest border-t border-[#044c73] border-opacity-30">
+<p>MARPA Equity Pathway 2026</p>
+<p>Confidential Presentation</p>
+</div>
+</div>
+
+
+<script src="./slide-inner.js"></script></body></html>

@@ -1,0 +1,44 @@
+{
+  "memories": [],
+  "manual_memories": [],
+  "realtime_memories": [
+    {
+      "type": "claude_response",
+      "content": "Reassessment complete. Report saved to `docs/AUDIO_REASSESSMENT_REPORT.md`.\n\n## Key Findings\n\n| Current State | Count |\n|---------------|-------|\n| **Total Slides** | 79 |\n| **Audio Scripts** | 62 |\n|",
+      "added_at": "2026-01-14T17:59:42.160166",
+      "source": "realtime_capture"
+    },
+    {
+      "type": "message",
+      "content": "We can we can leave the we can leave the text. I like that I like having the text in there but maybe maybe just we can just show those right after the text. Maybe we can update the text to say the fol",
+      "added_at": "2026-01-14T17:59:42.160173",
+      "source": "realtime_capture"
+    },
+    {
+      "type": "claude_response",
+      "content": "The dashboard is now open in your browser.\n\n## Audit Complete - Key Findings\n\n| Metric | Value |\n|--------|-------|\n| **Total Slides** | 96 (79 main + 17 needs review) |\n| **Canonical PASS** | 107 |\n|",
+      "added_at": "2026-01-15T05:21:31.225006",
+      "source": "realtime_capture"
+    },
+    {
+      "type": "message",
+      "content": "excellent Now we should have everything we need as long as we have metadata for each slide we can use the Metadata and these 2 reports to draw % match to Audio and Slide Similarity. We need to create ",
+      "added_at": "2026-01-15T05:21:31.225022",
+      "source": "realtime_capture"
+    },
+    {
+      "type": "claude_response",
+      "content": "I now have a clear picture of the data. Let me create the intelligent matching system.",
+      "added_at": "2026-01-15T05:22:22.807297",
+      "source": "realtime_capture"
+    },
+    {
+      "type": "message",
+      "content": "Make sure you're using multiple agents in parallel to do all this",
+      "added_at": "2026-01-15T05:22:22.807317",
+      "source": "realtime_capture"
+    }
+  ],
+  "created_at": "2026-01-14T17:59:42.159112",
+  "updated_at": "2026-01-15T05:22:22.807318"
+}

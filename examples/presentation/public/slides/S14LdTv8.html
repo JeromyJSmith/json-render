@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/S14LdTv8 -->
+<html lang="en" data-chapter="Financial Analysis" data-chapter-number="3" data-slide-position="24"><head>
+<meta name="marpa-chapter" content="Financial Analysis" data-chapter-number="3" data-slide-position="24"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>11-Year Growth Projection</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(2)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<script src="./chart.js"></script>
+<script src="./gsap.min.js"></script>
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+        }
+
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 40px 60px;
+            box-sizing: border-box;
+            background-color: var(--bg-dark);
+        }
+
+        /* Layout Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            flex: 1;
+            margin-top: 20px;
+            min-height: 0; /* Prevent overflow */
+        }
+
+        /* Chart Section */
+        .chart-panel {
+            background-color: rgba(4, 76, 115, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Right Side Data Panel */
+        .data-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Metric Card */
+        .metric-card {
+            background-color: rgba(4, 76, 115, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-left: 4px solid var(--yellow);
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        /* Data Table */
+        .milestone-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+
+        .milestone-table th {
+            text-align: left;
+            padding: 8px 4px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            text-transform: uppercase;
+            font-size: 11px;
+            border-bottom: 2px solid rgba(4, 76, 115, 0.3);
+        }
+
+        .milestone-table td {
+            padding: 10px 4px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+        .milestone-table tr:last-child td {
+            border-bottom: none;
+            font-weight: 700;
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        /* Insight Box */
+        .insight-box {
+            margin-top: auto;
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+            padding-top: 20px;
+        }
+
+        .insight-text {
+            color: var(--text-muted);
+            font-size: 14px;
+            line-height: 1.6;
+            font-style: italic;
+        }
+
+        /* Footer */
+        .footer-bar {
+            margin-top: auto;
+            border-top: 1px solid rgba(4, 76, 115, 0.3);
+            padding-top: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        /* Legend Dots */
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 6px;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="flex justify-between items-end mb-6 border-b border-[#044c73] pb-4">
+<div>
+<div class="flex items-center mb-2">
+<span class="w-2 h-2 bg-[#ef6337] rounded-full mr-2"></span>
+<p class="text-[#ef6337] font-bold tracking-widest text-xs uppercase">Chapter 4: Design-Build Expansion</p>
+</div>
+<div class="flex items-center gap-4">
+<h1 class="font-serif text-4xl text-[#f5f7fa]">11-Year Growth Projection</h1>
+<span class="px-3 py-1 bg-[#044c73] text-[#4ECDC4] text-xs font-mono font-bold rounded">2026—2036</span>
+</div>
+</div>
+<div class="text-right">
+<p class="text-[#b0b8c1] text-sm font-medium">Dual Engine Compounding</p>
+</div>
+</div>
+<!-- Main Content -->
+<div class="content-grid">
+<!-- Left: Chart -->
+<div class="chart-panel" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="flex justify-between items-center mb-4">
+<h3 class="font-bold text-[#f5f7fa]">Revenue Trajectory</h3>
+<div class="flex gap-4">
+<div class="flex items-center">
+<span class="legend-dot bg-[#ef6337]"></span>
+<span class="text-xs text-[#b0b8c1] font-mono">Construction (10%)</span>
+</div>
+<div class="flex items-center">
+<span class="legend-dot bg-[#4ECDC4]"></span>
+<span class="text-xs text-[#b0b8c1] font-mono">Maintenance (20%)</span>
+</div>
+</div>
+</div>
+<div style="flex: 1; position: relative; width: 100%; min-height: 0;">
+<canvas id="growthChart" width="766" height="580" style="display: block; box-sizing: border-box; height: 527.3px; width: 696.9px;"></canvas>
+</div>
+<!-- Annotation on Chart -->
+<div class="absolute bottom-8 right-8 bg-[#0f1419] border border-[#FFE66D] p-3 rounded shadow-lg z-10">
+<div class="flex items-center gap-2 mb-1">
+<i class="fas fa-handshake text-[#FFE66D] text-xs"></i>
+<span class="text-[10px] text-[#b0b8c1] uppercase tracking-wider font-bold">Convergence Point</span>
+</div>
+<p class="text-xs text-white">Streams Equalize @ Year 11</p>
+</div>
+</div>
+<!-- Right: Data & Insights -->
+<div class="data-panel">
+<!-- Uplift Badge -->
+<div class="metric-card" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<p class="text-[#b0b8c1] text-xs uppercase tracking-widest font-bold mb-1">Projected Annual Uplift</p>
+<div class="flex items-baseline gap-2">
+<p class="font-mono text-4xl font-bold text-white">$6.21M</p>
+<span class="text-[#FFE66D] text-sm font-bold"><i class="fas fa-arrow-up"></i> Year 11</span>
+</div>
+<p class="text-[10px] text-[#b0b8c1] mt-2">Incremental revenue at exit milestone</p>
+</div>
+<!-- Milestone Table -->
+<div class="bg-[#0f1419] rounded-lg p-4 border border-[#ffffff10]" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<p class="text-xs font-bold text-[#ef6337] mb-3 uppercase tracking-wider">Milestone Trajectory</p>
+<table class="milestone-table">
+<thead>
+<tr>
+<th>Period</th>
+<th>Const.</th>
+<th>Maint.</th>
+<th>Total</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Year 1</td>
+<td>$1.20M</td>
+<td>$0.50M</td>
+<td>$1.70M</td>
+</tr>
+<tr>
+<td>Year 3</td>
+<td>$1.45M</td>
+<td>$0.72M</td>
+<td>$2.17M</td>
+</tr>
+<tr>
+<td>Year 5</td>
+<td>$1.76M</td>
+<td>$1.04M</td>
+<td>$2.80M</td>
+</tr>
+<tr>
+<td>Year 8</td>
+<td>$2.34M</td>
+<td>$1.79M</td>
+<td>$4.13M</td>
+</tr>
+<tr>
+<td class="text-[#ef6337]">Year 11</td>
+<td class="text-[#ef6337]">$3.11M</td>
+<td class="text-[#4ECDC4]">$3.10M</td>
+<td class="text-[#FFE66D]">$6.21M</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Strategic Insight -->
+<div class="insight-box" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="flex gap-3">
+<i class="fas fa-lightbulb text-[#FFE66D] mt-1"></i>
+<p class="insight-text">
+                            "Maintenance grows <span class="text-[#4ECDC4] font-bold">6.2x</span> while Construction grows <span class="text-[#ef6337] font-bold">2.6x</span>. By Year 11, both streams contribute equally to valuation."
+                        </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="footer-bar">
+<p class="text-[#4e5d6c] text-xs tracking-widest uppercase font-bold">Confidential · MARPA Equity Pathway 2026</p>
+<p class="text-[#4e5d6c] text-xs font-mono">CH4-S12</p>
+</div>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // GSAP Animations
+            gsap.from(".chart-panel", { x: -30, opacity: 0, duration: 1, ease: "power3.out" });
+            gsap.from(".data-panel > div", { x: 30, opacity: 0, duration: 0.8, stagger: 0.2, ease: "power3.out", delay: 0.3 });
+
+            // Chart Configuration
+            const ctx = document.getElementById('growthChart').getContext('2d');
+            
+            // Generate Data
+            const years = Array.from({length: 12}, (_, i) => `Y${i}`); // Y0 to Y11 (using 1-based indexing logic roughly, mapped to 0-11 index)
+            // Correction: Timeline is 11 years (Year 1 to Year 11). So index 0 is Year 1.
+            const labels = Array.from({length: 11}, (_, i) => `Year ${i + 1}`);
+
+            // Year 1 (Index 0): Const 1.20, Maint 0.50
+            const constructionData = [];
+            const maintenanceData = [];
+            
+            let currConst = 1.20;
+            let currMaint = 0.50;
+
+            for(let i=0; i<11; i++) {
+                constructionData.push(currConst);
+                maintenanceData.push(currMaint);
+                currConst *= 1.10; // +10%
+                currMaint *= 1.20; // +20%
+            }
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Construction (+10%)',
+                            data: constructionData,
+                            borderColor: '#ef6337',
+                            backgroundColor: 'transparent',
+                            borderWidth: 3,
+                            pointBackgroundColor: '#0f1419',
+                            pointBorderColor: '#ef6337',
+                            pointBorderWidth: 2,
+                            pointRadius: 4,
+                            tension: 0.4
+                        },
+                        {
+                            label: 'Maintenance (+20%)',
+                            data: maintenanceData,
+                            borderColor: '#4ECDC4',
+                            backgroundColor: 'transparent',
+                            borderWidth: 3,
+                            pointBackgroundColor: '#0f1419',
+                            pointBorderColor: '#4ECDC4',
+                            pointBorderWidth: 2,
+                            pointRadius: 4,
+                            tension: 0.4
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 20, 25, 0.95)',
+                            titleColor: '#fff',
+                            titleFont: { family: 'JetBrains Mono' },
+                            bodyColor: '#b0b8c1',
+                            bodyFont: { family: 'Inter' },
+                            padding: 10,
+                            borderColor: 'rgba(255,255,255,0.1)',
+                            borderWidth: 1,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label.split(' (')[0] + ': $' + context.raw.toFixed(2) + 'M';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        y: {
+                            beginAtZero: false,
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)',
+                                borderDash: [5, 5]
+                            },
+                            ticks: {
+                                color: '#b0b8c1',
+                                font: { family: 'JetBrains Mono' },
+                                callback: function(value) { return '$' + value + 'M'; }
+                            }
+                        },
+                        x: {
+                            grid: { display: false },
+                            ticks: {
+                                color: '#b0b8c1',
+                                font: { family: 'JetBrains Mono', size: 10 },
+                                maxTicksLimit: 6
+                            }
+                        }
+                    },
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutQuart'
+                    }
+                }
+            });
+        });
+    </script>
+
+
+<script src="./slide-inner.js"></script></body></html>

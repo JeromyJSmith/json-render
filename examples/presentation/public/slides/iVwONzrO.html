@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/iVwONzrO -->
+<html lang="en" data-chapter="Shared Leadership" data-chapter-number="4" data-slide-position="25"><head>
+<meta name="marpa-chapter" content="Shared Leadership" data-chapter-number="4" data-slide-position="25"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Multi-Principal Allocation</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(2)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 40px 60px;
+            box-sizing: border-box;
+        }
+
+        /* Table Styling */
+        .allocation-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 12px;
+            margin-top: 10px;
+        }
+
+        .row-card {
+            background: rgba(255, 255, 255, 0.02);
+            transition: all 0.3s ease;
+        }
+
+        .row-card td {
+            padding: 16px 24px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .row-card td:first-child {
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+            width: 40%;
+        }
+
+        .row-card td:last-child {
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+        }
+
+        /* Type specific accents */
+        .type-gifted {
+            background: rgba(141, 182, 176, 0.02); /* Teal tint but no gradient */
+        }
+        .type-gifted td:first-child { border-left: 4px solid var(--teal); }
+
+        .type-purchased {
+            background: rgba(255, 230, 109, 0.02); /* Yellow tint but no gradient */
+        }
+        .type-purchased td:first-child { border-left: 4px solid var(--yellow); }
+
+        .type-bodie {
+            background: rgba(239, 99, 55, 0.05); /* Coral tint but no gradient */
+            box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            transform: scale(1.01);
+        }
+        .type-bodie td { border-color: rgba(239, 99, 55, 0.3); }
+        .type-bodie td:first-child { border-left: 4px solid var(--coral); }
+
+        .stat-badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .badge-teal { background: rgba(141, 182, 176, 0.15); color: var(--teal); }
+        .badge-yellow { background: rgba(255, 230, 109, 0.15); color: var(--yellow); }
+        .badge-coral { background: rgba(239, 99, 55, 0.15); color: var(--coral); }
+
+        .share-count {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 28px;
+            font-weight: 700;
+        }
+
+        .insight-box {
+            background-color: var(--navy);
+            border-radius: 8px;
+            padding: 20px;
+            margin-top: auto;
+            display: flex;
+            align-items: center;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .insight-icon {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 20px;
+            color: var(--yellow);
+            margin-right: 20px;
+        }
+
+        .progress-bar-bg {
+            width: 100px;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+        .progress-fill {
+            height: 100%;
+            border-radius: 3px;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="flex justify-between items-end mb-6 border-b border-[#044c73] pb-4">
+<div>
+<div class="flex items-center mb-2">
+<span class="w-2 h-2 bg-[#FFE66D] rounded-full mr-2"></span>
+<p class="text-[#FFE66D] font-bold tracking-widest text-xs uppercase">Chapter 3: Shared Principals</p>
+</div>
+<h1 class="font-serif text-4xl text-[#f5f7fa]">MULTI-PRINCIPAL ALLOCATION</h1>
+</div>
+<div class="text-right">
+<p class="text-[#b0b8c1] text-sm font-mono">SCENARIO B STRUCTURE</p>
+</div>
+</div>
+<!-- Main Content -->
+<div class="flex-1 flex flex-col">
+<!-- Summary Header -->
+<div class="flex justify-between items-center bg-[#044c73] bg-opacity-20 p-4 rounded-lg mb-4 border border-[#044c73] border-opacity-50">
+<div class="flex items-center">
+<i class="fas fa-chart-pie text-[#FFE66D] mr-3 text-xl"></i>
+<div>
+<p class="text-[#b0b8c1] text-xs uppercase tracking-wider">Total Principal Pool</p>
+<p class="text-[#f5f7fa] font-bold text-xl">480 Shares <span class="text-[#b0b8c1] font-normal text-sm ml-2">(48% Equity)</span></p>
+</div>
+</div>
+<div class="h-8 w-px bg-white opacity-10"></div>
+<div>
+<p class="text-[#b0b8c1] text-xs uppercase tracking-wider text-right">Distribution Method</p>
+<p class="text-[#f5f7fa] font-bold text-right">Mixed (Gift + Purchase)</p>
+</div>
+</div>
+<!-- Allocation Table -->
+<table class="allocation-table">
+<thead>
+<tr>
+<th class="text-left text-[#b0b8c1] text-xs uppercase tracking-widest pb-2 pl-6">Category</th>
+<th class="text-left text-[#b0b8c1] text-xs uppercase tracking-widest pb-2">Allocation</th>
+<th class="text-left text-[#b0b8c1] text-xs uppercase tracking-widest pb-2">Strategic Purpose</th>
+</tr>
+</thead>
+<tbody>
+<!-- Gifted Row -->
+<tr class="row-card type-gifted">
+<td>
+<div class="flex items-center">
+<div class="w-10 h-10 rounded bg-[#8db6b0] bg-opacity-20 flex items-center justify-center mr-4">
+<i class="fas fa-gift text-[#8db6b0]"></i>
+</div>
+<div>
+<p class="text-[#f5f7fa] font-bold text-lg">Gifted to Pool</p>
+<p class="text-[#b0b8c1] text-xs mt-1">Seniority-based split</p>
+</div>
+</div>
+</td>
+<td>
+<p class="share-count text-[#8db6b0]">200</p>
+<div class="progress-bar-bg">
+<div class="progress-fill bg-[#8db6b0]" style="width: 41%"></div>
+</div>
+</td>
+<td>
+<div class="stat-badge badge-teal mb-2">Lower Cash Burden</div>
+<p class="text-[#b0b8c1] text-sm">Reduces immediate financing needs for junior partners.</p>
+</td>
+</tr>
+<!-- Purchased Row -->
+<tr class="row-card type-purchased">
+<td>
+<div class="flex items-center">
+<div class="w-10 h-10 rounded bg-[#FFE66D] bg-opacity-20 flex items-center justify-center mr-4">
+<i class="fas fa-coins text-[#FFE66D]"></i>
+</div>
+<div>
+<p class="text-[#f5f7fa] font-bold text-lg">Purchased by Pool</p>
+<p class="text-[#b0b8c1] text-xs mt-1">Investment-based split</p>
+</div>
+</div>
+</td>
+<td>
+<p class="share-count text-[#FFE66D]">290</p>
+<div class="progress-bar-bg">
+<div class="progress-fill bg-[#FFE66D]" style="width: 59%"></div>
+</div>
+</td>
+<td>
+<div class="stat-badge badge-yellow mb-2">Skin in the Game</div>
+<p class="text-[#b0b8c1] text-sm">Pro-rata distribution based on individual capital contribution.</p>
+</td>
+</tr>
+<!-- Bodie Highlight Row -->
+<tr class="row-card type-bodie">
+<td>
+<div class="flex items-center">
+<div class="w-10 h-10 rounded bg-[#ef6337] bg-opacity-20 flex items-center justify-center mr-4">
+<i class="fas fa-crown text-[#ef6337]"></i>
+</div>
+<div>
+<p class="text-[#f5f7fa] font-bold text-lg">Bodie's Share</p>
+<p class="text-[#ef6337] text-xs mt-1 font-bold">Lead Principal</p>
+</div>
+</div>
+</td>
+<td>
+<p class="share-count text-[#ef6337]">~150</p>
+<p class="text-[#b0b8c1] text-[10px] mt-1">Est. Individual Allocation</p>
+</td>
+<td>
+<div class="stat-badge badge-coral mb-2">Majority of Pool</div>
+<p class="text-[#b0b8c1] text-sm">Retains leadership position while distributing remaining shares to juniors.</p>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- Key Benefit Box -->
+<div class="insight-box mt-auto">
+<div class="insight-icon">
+<i class="fas fa-lightbulb"></i>
+</div>
+<div>
+<h3 class="text-[#f5f7fa] font-bold text-sm uppercase tracking-wider mb-1">Why 200 Gifted Shares?</h3>
+<p class="text-[#b0b8c1] text-sm leading-relaxed">
+                        Allocating <span class="text-[#8db6b0] font-bold">200 shares as gifts</span> (vs 245 in solo path) balances the lower financial capacity of junior principals with the need for buy-in, ensuring the deal remains accessible to the broader team.
+                    </p>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="mt-6 flex justify-between items-center border-t border-[#044c73] border-opacity-30 pt-4">
+<p class="text-[#4e5d6c] text-xs tracking-widest uppercase">Confidential · MARPA Equity Pathway 2026</p>
+<p class="text-[#4e5d6c] text-xs font-mono">CH3-S06</p>
+</div>
+</div>
+
+
+<script src="./slide-inner.js"></script></body></html>

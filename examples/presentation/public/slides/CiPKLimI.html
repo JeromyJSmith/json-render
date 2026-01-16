@@ -1,0 +1,521 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/CiPKLimI -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>2025 Revenue by Service Line</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<script src="./chart.js"></script>
+<script src="./chartjs-plugin-datalabels@2.0.0"></script>
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+            
+            /* High Contrast Colors */
+            --col-const: #044c73;
+            --col-design: #8db6b0;
+            --col-oversight: #FFE66D;
+            --col-total: #1e293b;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-light);
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 60px;
+            position: relative;
+            background-color: var(--bg-dark);
+            box-sizing: border-box;
+        }
+
+        /* Header */
+        .header {
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            flex-shrink: 0;
+        }
+
+        .title-tag {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--teal);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        h1.main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            font-weight: 900;
+            line-height: 1.1;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-top: 6px;
+        }
+
+        /* Layout */
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: row;
+            gap: 40px;
+            height: 100%;
+            overflow: hidden; /* Prevent spill */
+        }
+
+        /* Left Column: Chart */
+        .chart-section {
+            flex: 1.8;
+            position: relative;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 16px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            padding: 20px 20px 10px 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .chart-container {
+            flex: 1;
+            width: 100%;
+            position: relative;
+        }
+
+        /* Absolute Badge on Chart */
+        .chart-badge {
+            position: absolute;
+            top: 25%; /* Approximate position over 2nd bar */
+            left: 36%;
+            transform: translateX(-50%);
+            background-color: var(--coral);
+            color: white;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+            z-index: 10;
+            pointer-events: none;
+            white-space: nowrap;
+            border: 2px solid rgba(255,255,255,0.2);
+        }
+
+        /* Right Column: Info & Stats */
+        .sidebar {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            height: 100%;
+        }
+
+        /* Insight Box (Moved to Top Right) */
+        .insight-box {
+            background: rgba(239, 99, 55, 0.08);
+            border: 1px solid var(--coral);
+            padding: 20px;
+            border-radius: 12px;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .insight-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: var(--coral);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 13px;
+            margin-bottom: 8px;
+            text-transform: uppercase;
+        }
+
+        .insight-text {
+            font-size: 14px;
+            line-height: 1.5;
+            color: #ffdcd2;
+        }
+
+        /* Stat Cards Container */
+        .stat-cards {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            flex: 1;
+        }
+
+        /* Individual Stat Card */
+        .stat-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 0 12px 12px 0;
+            padding: 16px 20px;
+            display: flex;
+            flex-direction: column;
+            border-left: 5px solid transparent; /* Set in inline style */
+            transition: transform 0.2s;
+            position: relative;
+        }
+
+        .stat-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .stat-label-group {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .stat-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 14px;
+            background: rgba(255,255,255,0.05);
+            color: var(--text-light);
+        }
+
+        .stat-name {
+            font-weight: 600;
+            font-size: 15px;
+            color: var(--text-light);
+        }
+
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-light);
+        }
+
+        /* Weight Bar */
+        .weight-track {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 3px;
+            overflow: hidden;
+            margin-top: 4px;
+        }
+
+        .weight-fill {
+            height: 100%;
+            border-radius: 3px;
+        }
+
+        .stat-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 6px;
+            font-family: 'JetBrains Mono', monospace;
+        }
+
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<div class="header">
+<div>
+<p class="title-tag">Financial Performance</p>
+<h1 class="main-title">2025 Revenue by Service Line: $11.03M Total</h1>
+<p class="subtitle">Scenario 2: Full Year Actual + Forecast Analysis</p>
+</div>
+<div class="text-right">
+<p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Chart 2A</p>
+<p class="text-sm font-bold text-white">Revenue Waterfall</p>
+</div>
+</div>
+<div class="content-wrapper">
+<!-- Chart Section -->
+<div class="chart-section">
+<div class="chart-container">
+<canvas id="revenueChart" width="762" height="511" style="display: block; box-sizing: border-box; height: 465.1px; width: 693.1px;"></canvas>
+<!-- Manual Badge Overlay for Construction Bar -->
+<div class="chart-badge">
+<i class="fas fa-crown mr-1"></i> PRIMARY DRIVER
+                </div>
+</div>
+</div>
+<!-- Sidebar Section -->
+<div class="sidebar">
+<!-- Strategic Insight (Top Right) -->
+<div class="insight-box">
+<div class="insight-header">
+<i class="fas fa-lightbulb"></i> Strategic Insight
+                </div>
+<p class="insight-text">
+                    Construction is the core revenue engine (87%), providing the scale for the $17M valuation target. Design &amp; Oversight are critical for pipeline quality.
+                </p>
+</div>
+<!-- Stat Cards -->
+<div class="stat-cards">
+<!-- Construction Card -->
+<div class="stat-card" style="border-left-color: var(--col-const); background: linear-gradient(90deg, rgba(4,76,115,0.2) 0%, rgba(255,255,255,0.02) 100%);">
+<div class="stat-header">
+<div class="stat-label-group">
+<div class="stat-icon" style="color: var(--col-const); background: rgba(4,76,115,0.2);">
+<i class="fas fa-hard-hat"></i>
+</div>
+<span class="stat-name">Construction</span>
+</div>
+<span class="stat-value">$9.61M</span>
+</div>
+<div class="weight-track">
+<div class="weight-fill" style="width: 87.1%; background-color: var(--col-const);"></div>
+</div>
+<div class="stat-meta">
+<span>Services &amp; Build</span>
+<span>87.1% Contribution</span>
+</div>
+</div>
+<!-- Design Card -->
+<div class="stat-card" style="border-left-color: var(--col-design);">
+<div class="stat-header">
+<div class="stat-label-group">
+<div class="stat-icon" style="color: var(--col-design); background: rgba(141,182,176,0.15);">
+<i class="fas fa-pen-ruler"></i>
+</div>
+<span class="stat-name">Design</span>
+</div>
+<span class="stat-value">$805K</span>
+</div>
+<div class="weight-track">
+<div class="weight-fill" style="width: 7.3%; background-color: var(--col-design);"></div>
+</div>
+<div class="stat-meta">
+<span>Architecture</span>
+<span>7.3% Contribution</span>
+</div>
+</div>
+<!-- Oversight Card -->
+<div class="stat-card" style="border-left-color: var(--col-oversight);">
+<div class="stat-header">
+<div class="stat-label-group">
+<div class="stat-icon" style="color: var(--col-oversight); background: rgba(255,230,109,0.15);">
+<i class="fas fa-clipboard-check"></i>
+</div>
+<span class="stat-name">Oversight</span>
+</div>
+<span class="stat-value">$614K</span>
+</div>
+<div class="weight-track">
+<div class="weight-fill" style="width: 5.6%; background-color: var(--col-oversight);"></div>
+</div>
+<div class="stat-meta">
+<span>Management</span>
+<span>5.6% Contribution</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<script>
+        // Register plugins
+        Chart.register(ChartDataLabels);
+
+        const ctx = document.getElementById('revenueChart').getContext('2d');
+        
+        const data = {
+            labels: ['Total Revenue', 'Construction', 'Design', 'Oversight'],
+            datasets: [
+                {
+                    data: [11.03, 9.61, 0.81, 0.61],
+                    backgroundColor: [
+                        '#1e293b', // Total (Neutral/Dark)
+                        '#044c73', // Construction (Navy - Primary)
+                        '#8db6b0', // Design (Teal)
+                        '#FFE66D'  // Oversight (Yellow)
+                    ],
+                    borderColor: [
+                        'transparent',
+                        '#ef6337', // Coral border for Construction
+                        'transparent',
+                        'transparent'
+                    ],
+                    borderWidth: [0, 0, 0, 0], // Removed border width to keep it clean, handled by styling
+                    hoverBackgroundColor: [
+                        '#2d3a52',
+                        '#065b8a',
+                        '#9dc2bc',
+                        '#ffeb8f'
+                    ],
+                    barPercentage: 0.7,
+                    categoryPercentage: 0.8,
+                    borderRadius: 4
+                }
+            ]
+        };
+
+        const config = {
+            type: 'bar',
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                layout: {
+                    padding: {
+                        top: 40 // Space for hero labels
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 20, 25, 0.95)',
+                        titleFont: { family: 'Playfair Display', size: 14 },
+                        bodyFont: { family: 'JetBrains Mono', size: 12 },
+                        padding: 12,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: function(context) {
+                                return '$' + context.raw + 'M';
+                            }
+                        }
+                    },
+                    datalabels: {
+                        anchor: 'end',
+                        align: 'top',
+                        offset: 5,
+                        color: function(context) {
+                            // Highlight Construction
+                            return context.dataIndex === 1 ? '#ef6337' : '#f5f7fa';
+                        },
+                        font: function(context) {
+                            return {
+                                family: 'Playfair Display',
+                                weight: '900',
+                                size: context.dataIndex === 1 ? 36 : 24 // Hero size for Construction
+                            };
+                        },
+                        formatter: function(value, context) {
+                            if (context.dataIndex === 0) return ''; // Skip total label top
+                            if (context.dataIndex === 1) return '87%';
+                            if (context.dataIndex === 2) return '7%';
+                            if (context.dataIndex === 3) return '6%';
+                            return '';
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: {
+                            color: '#b0b8c1',
+                            font: { family: 'Inter', size: 12, weight: '600' }
+                        }
+                    },
+                    y: {
+                        display: true,
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.05)',
+                            drawBorder: false
+                        },
+                        ticks: {
+                            color: '#64748b',
+                            callback: function(value) { return '$' + value + 'M'; }
+                        },
+                        max: 13 // Headroom
+                    }
+                },
+                animation: {
+                    duration: 1500,
+                    easing: 'easeOutQuart'
+                }
+            },
+            plugins: [{
+                id: 'customTotalLabel',
+                afterDatasetsDraw(chart, args, options) {
+                    const { ctx } = chart;
+                    const meta = chart.getDatasetMeta(0);
+                    
+                    // Draw custom label for Total bar (Index 0)
+                    const bar = meta.data[0];
+                    if(bar) {
+                        ctx.save();
+                        ctx.font = 'bold 16px Inter';
+                        ctx.fillStyle = '#b0b8c1';
+                        ctx.textAlign = 'center';
+                        ctx.fillText('$11.03M', bar.x, bar.y - 15);
+                        ctx.restore();
+                    }
+                }
+            }]
+        };
+
+        new Chart(ctx, config);
+    </script>
+
+
+<script src="./slide-inner.js"></script></body></html>

@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/h8h4TzZ8 -->
+<html lang="en" data-chapter="Design-Build" data-chapter-number="4" data-slide-position="36"><head>
+<meta name="marpa-chapter" content="Design-Build" data-chapter-number="4" data-slide-position="36"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Construction + Maintenance Waterfall</title>
+<link href="./global-marpa-styles.css" rel="stylesheet">
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(2)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<script src="./chart.js"></script>
+<script src="./gsap.min.js"></script>
+<style>
+        :root {
+            /* Explicit hexes used in styles as requested */
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --text-light: #FFFFFF;
+            --text-muted: #b0b8c1;
+        }
+        
+        body {
+            background-color: #0f1419;
+            color: #FFFFFF;
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 25px 40px; /* Optimized padding */
+            box-sizing: border-box;
+            background-color: #0f1419;
+        }
+
+        /* Header Styles */
+        h1.main-title {
+            font-size: 40px !important;
+            line-height: 1.1;
+            color: #FFFFFF !important;
+        }
+
+        /* Chart Area */
+        .chart-wrapper {
+            flex: 1;
+            position: relative;
+            margin-top: 24px; /* mt-6 */
+            background-color: rgba(4, 76, 115, 0.05); /* Solid fallback for rgba */
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Legend/Stats Bar */
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 0 20px;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .legend-dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+        }
+
+        .growth-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            margin-left: 8px;
+            font-weight: 700;
+        }
+
+        /* Custom Value Callout */
+        .value-callout {
+            position: absolute;
+            right: 40px;
+            top: 80px;
+            background-color: #151a21; /* Solid fallback for rgba(15, 20, 25, 0.95) */
+            border: 1px solid #FFE66D;
+            border-radius: 8px;
+            padding: 16px;
+            width: 200px;
+            z-index: 10;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            border-left: 4px solid #FFE66D;
+        }
+
+        .callout-arrow {
+            position: absolute;
+            left: -8px;
+            top: 20px;
+            width: 16px;
+            height: 16px;
+            background-color: #0f1419;
+            border-bottom: 1px solid #FFE66D;
+            border-left: 1px solid #FFE66D;
+            transform: rotate(45deg);
+        }
+
+        /* Explicit Color Utilities */
+        .text-white { color: #FFFFFF !important; }
+        .text-muted { color: #b0b8c1 !important; }
+        .text-coral { color: #ef6337 !important; }
+        .text-turquoise { color: #4ECDC4 !important; }
+        .text-yellow { color: #FFE66D !important; }
+        .text-navy { color: #044c73 !important; }
+        
+        .bg-coral { background-color: #ef6337 !important; }
+        .bg-turquoise { background-color: #4ECDC4 !important; }
+        .bg-yellow { background-color: #FFE66D !important; }
+        .bg-navy { background-color: #044c73 !important; }
+
+        .border-navy { border-color: #044c73 !important; }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="flex justify-between items-end mb-5 border-b border-navy pb-4" style="border-bottom-color: #044c73;">
+<div class="header-content" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="flex items-center mb-2">
+<span class="w-2 h-2 bg-coral rounded-full mr-2"></span>
+<p class="text-coral font-bold tracking-widest text-xs uppercase">Strategic Growth Plan</p>
+</div>
+<h1 class="font-serif main-title tracking-tight">DUAL GROWTH WATERFALL</h1>
+<p class="text-muted text-sm mt-2 font-medium">11-Year Trajectory: Construction (10%) + Maintenance (20%)</p>
+</div>
+<div class="text-right header-tag">
+<div class="bg-navy text-turquoise text-xs font-bold px-3 py-1 rounded uppercase tracking-wider inline-block mb-1">Target $30M+ EV</div>
+<p class="text-muted text-sm font-mono">CH4-S11</p>
+</div>
+</div>
+<!-- Main Chart Area -->
+<div class="chart-wrapper" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<!-- Stats Legend -->
+<div class="stats-bar">
+<div class="stat-item">
+<span class="legend-dot bg-coral"></span>
+<div>
+<p class="text-sm font-bold text-white">Construction</p>
+<p class="text-xs text-muted font-mono">Starts $1.2M <span class="growth-badge text-coral" style="background-color: rgba(239, 99, 55, 0.2);">+10%/yr</span></p>
+</div>
+</div>
+<div class="stat-item">
+<span class="legend-dot bg-turquoise"></span>
+<div>
+<p class="text-sm font-bold text-white">Maintenance</p>
+<p class="text-xs text-muted font-mono">Starts $0.5M <span class="growth-badge text-turquoise" style="background-color: rgba(78, 205, 196, 0.2);">+20%/yr</span></p>
+</div>
+</div>
+<div class="stat-item border-l border-gray-700 pl-6">
+<span class="legend-dot bg-yellow"></span>
+<div>
+<p class="text-sm font-bold text-yellow">Total EBITDA</p>
+<p class="text-xs text-muted font-mono">$1.7M → $7.14M (+320%)</p>
+</div>
+</div>
+</div>
+<!-- Chart Canvas -->
+<div style="flex: 1; position: relative; width: 100%;">
+<canvas id="waterfallChart" width="1274" height="370" style="display: block; box-sizing: border-box; height: 336.6px; width: 1158.2px;"></canvas>
+<!-- EV Projection Box -->
+<div class="value-callout" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="callout-arrow"></div>
+<p class="text-xs text-muted uppercase tracking-widest mb-1 font-bold">Year 11 Enterprise Value</p>
+<p class="font-serif font-bold text-white" style="font-size: 28px;">$30.6M</p>
+<p class="text-[10px] text-muted mt-1 font-mono">@ 4.28x Conservative Multiple</p>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="mt-4 flex justify-between items-center border-t border-navy border-opacity-30 pt-2" style="border-top-color: rgba(4, 76, 115, 0.3);">
+<p class="text-muted text-xs tracking-widest uppercase font-bold" style="color: #4e5d6c;">Confidential · MARPA Equity Pathway 2026</p>
+<div class="flex gap-4">
+<p class="text-muted text-xs" style="color: #4e5d6c;"><i class="fas fa-circle text-[6px] mr-2 align-middle"></i>Compound Growth Power</p>
+<p class="text-muted text-xs" style="color: #4e5d6c;"><i class="fas fa-circle text-[6px] mr-2 align-middle"></i>Recurring Revenue Focus</p>
+</div>
+</div>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Header Animation
+            gsap.from(".header-content", {
+                y: -20,
+                opacity: 0,
+                duration: 0.8,
+                ease: "power3.out"
+            });
+
+            // Chart Animation
+            gsap.from(".chart-wrapper", {
+                y: 20,
+                opacity: 0,
+                duration: 0.8,
+                delay: 0.3,
+                ease: "power3.out"
+            });
+
+            // Callout Animation
+            gsap.from(".value-callout", {
+                x: 20,
+                opacity: 0,
+                duration: 0.8,
+                delay: 1.5,
+                ease: "back.out(1.7)"
+            });
+
+            // Chart Data
+            const years = Array.from({length: 12}, (_, i) => `Y${i}`);
+            
+            // Construction: Start $1.2M, +10% annually
+            const constructionData = [];
+            let currentConst = 1.2;
+            for(let i=0; i<12; i++) {
+                constructionData.push(parseFloat(currentConst.toFixed(2)));
+                currentConst *= 1.10;
+            }
+
+            // Maintenance: Start $0.5M, +20% annually
+            const maintenanceData = [];
+            let currentMaint = 0.5;
+            for(let i=0; i<12; i++) {
+                maintenanceData.push(parseFloat(currentMaint.toFixed(2)));
+                currentMaint *= 1.20;
+            }
+
+            // Total Line
+            const totalData = constructionData.map((val, i) => parseFloat((val + maintenanceData[i]).toFixed(2)));
+
+            const ctx = document.getElementById('waterfallChart').getContext('2d');
+            
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: years,
+                    datasets: [
+                        {
+                            type: 'line',
+                            label: 'Total EBITDA',
+                            data: totalData,
+                            borderColor: '#FFE66D',
+                            borderWidth: 3,
+                            pointBackgroundColor: '#0f1419',
+                            pointBorderColor: '#FFE66D',
+                            pointBorderWidth: 2,
+                            pointRadius: 4,
+                            pointHoverRadius: 6,
+                            tension: 0.4,
+                            yAxisID: 'y',
+                            order: 0
+                        },
+                        {
+                            label: 'Maintenance (+20%)',
+                            data: maintenanceData,
+                            backgroundColor: '#4ECDC4',
+                            stack: 'Stack 0',
+                            order: 1,
+                            barPercentage: 0.6
+                        },
+                        {
+                            label: 'Construction (+10%)',
+                            data: constructionData,
+                            backgroundColor: '#ef6337',
+                            stack: 'Stack 0',
+                            order: 2,
+                            barPercentage: 0.6
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: {
+                            display: false
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 20, 25, 0.95)',
+                            titleColor: '#FFFFFF',
+                            titleFont: { family: 'JetBrains Mono' },
+                            bodyColor: '#b0b8c1',
+                            bodyFont: { family: 'Inter' },
+                            borderColor: 'rgba(255,255,255,0.1)',
+                            borderWidth: 1,
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': $' + context.raw + 'M';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#b0b8c1',
+                                font: { family: 'JetBrains Mono' }
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)',
+                                borderDash: [5, 5]
+                            },
+                            ticks: {
+                                color: '#b0b8c1',
+                                callback: function(value) {
+                                    return '$' + value + 'M';
+                                }
+                            },
+                            suggestedMax: 8
+                        }
+                    },
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutQuart'
+                    }
+                }
+            });
+        });
+    </script>
+
+
+<script src="./slide-inner.js"></script></body></html>

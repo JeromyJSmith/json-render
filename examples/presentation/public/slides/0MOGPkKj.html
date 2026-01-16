@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/0MOGPkKj -->
+<html lang="en" data-chapter="Ownership Pathways" data-chapter-number="4" data-slide-position="28"><head>
+<meta name="marpa-chapter" content="Ownership Pathways" data-chapter-number="4" data-slide-position="28"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>How the Three Paths Compare</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(2)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<script src="./gsap.min.js"></script>
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --mint: #95E1D3;
+            --text-light: #FFFFFF;
+            --text-muted: #b0b8c1;
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 25px 40px; /* Reduced padding */
+            box-sizing: border-box;
+        }
+
+        /* Table Layout */
+        .comparison-table {
+            display: grid;
+            grid-template-columns: 220px 1fr 1fr 1fr;
+            width: 100%;
+            margin-top: 16px; /* Reduced margin */
+            border-top: 1px solid rgba(4, 76, 115, 0.5);
+        }
+
+        /* Headers */
+        .col-header {
+            padding: 12px 16px;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            text-transform: uppercase;
+            font-size: 14px;
+            letter-spacing: 1px;
+            border-bottom: 4px solid transparent;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            height: 56px; /* Reduced height */
+            opacity: 0; /* Initial state for animation */
+            transform: translateY(10px);
+        }
+
+        .header-factor { color: #b0b8c1; border-bottom-color: #044c73; }
+        .header-solo { color: #4ECDC4; border-bottom-color: #4ECDC4; background: rgba(78, 205, 196, 0.05); }
+        .header-shared { color: #FFE66D; border-bottom-color: #FFE66D; background: rgba(255, 230, 109, 0.05); }
+        .header-db { color: #ef6337; border-bottom-color: #ef6337; background: rgba(239, 99, 55, 0.05); }
+
+        /* Rows */
+        .table-row {
+            display: contents;
+        }
+
+        .cell {
+            padding: 12px 14px; /* Reduced padding */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            color: #FFFFFF;
+            opacity: 0; /* Initial state for animation */
+            transform: translateY(10px);
+        }
+
+        .cell-label {
+            font-weight: 600;
+            color: #b0b8c1;
+            background: rgba(255, 255, 255, 0.02);
+        }
+
+        .cell-data {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .cell-solo { background: rgba(78, 205, 196, 0.02); }
+        .cell-shared { background: rgba(255, 230, 109, 0.02); }
+        .cell-db { background: rgba(239, 99, 55, 0.02); }
+
+        /* Highlights & Badges */
+        .highlight-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 15px;
+        }
+
+        .text-turquoise { color: #4ECDC4; }
+        .text-yellow { color: #FFE66D; }
+        .text-coral { color: #ef6337; }
+        .text-red { color: #FF6B6B; }
+        .text-green { color: #4ECDC4; }
+
+        .risk-badge {
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: inline-block;
+        }
+        
+        .risk-high { background: rgba(255, 107, 107, 0.2); color: #FF6B6B; }
+        .risk-med { background: rgba(255, 230, 109, 0.2); color: #FFE66D; }
+        .risk-low { background: rgba(78, 205, 196, 0.2); color: #4ECDC4; }
+
+        /* Row Hover Effect */
+        .table-row:hover .cell {
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+
+        /* Icons */
+        .icon-cell {
+            margin-right: 8px;
+            opacity: 0.7;
+        }
+
+        .winner-border {
+            border: 1px solid #ef6337;
+            border-radius: 4px;
+            padding: 2px 6px;
+            box-shadow: 0 0 10px rgba(239, 99, 55, 0.2);
+        }
+
+        .header-animate { opacity: 0; transform: translateY(-20px); }
+        
+        .footer-box-main {
+            opacity: 0; 
+            transform: translateY(20px);
+            margin-top: 20px; /* mt-5 */
+            padding: 12px; /* p-3 */
+            background: rgba(4, 76, 115, 0.1);
+            border: 1px solid rgba(4, 76, 115, 0.3);
+        }
+
+        /* Explicit Header styling */
+        h1.main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 40px;
+            color: #FFFFFF;
+            margin-bottom: 0;
+            line-height: 1.1;
+        }
+
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="flex justify-between items-end mb-5 border-b border-[#044c73] pb-4">
+<div>
+<div class="flex items-center mb-2 header-animate" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<span class="w-2 h-2 bg-[#95E1D3] rounded-full mr-2"></span>
+<p class="text-[#95E1D3] font-bold tracking-widest text-xs uppercase">Chapter 5: Making the Decision</p>
+</div>
+<h1 class="main-title header-animate" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">HOW THE THREE PATHS COMPARE</h1>
+</div>
+<div class="text-right header-animate" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<p class="text-[#b0b8c1] text-sm font-mono">SIDE-BY-SIDE ANALYSIS</p>
+</div>
+</div>
+<!-- Main Table Content -->
+<div class="flex-1 relative">
+<div class="comparison-table">
+<!-- Headers -->
+<div class="col-header header-factor" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">Key Factor</div>
+<div class="col-header header-solo" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<span class="text-xs opacity-60 mb-1">Path A</span>
+                Solo Principal
+            </div>
+<div class="col-header header-shared" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<span class="text-xs opacity-60 mb-1">Path B</span>
+                Shared Principals
+            </div>
+<div class="col-header header-db" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<span class="text-xs opacity-60 mb-1">Path C</span>
+                Design-Build
+            </div>
+<!-- Row 1: Ownership -->
+<div class="table-row">
+<div class="cell cell-label" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">Bodie's Ownership</div>
+<div class="cell cell-solo cell-data" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<span class="highlight-val text-turquoise">49%</span>
+</div>
+<div class="cell cell-shared cell-data" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<span class="highlight-val text-yellow">24%</span>
+</div>
+<div class="cell cell-db cell-data" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<span class="highlight-val text-coral">24%</span>
+</div>
+</div>
+<!-- Row 2: Investment -->
+<div class="table-row">
+<div class="cell cell-label" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">Total Investment</div>
+<div class="cell cell-solo cell-data" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<span class="highlight-val">~$8.3M</span>
+</div>
+<div class="cell cell-shared cell-data" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<span class="highlight-val">~$5.1M</span>
+</div>
+<div class="cell cell-db cell-data" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<span class="highlight-val">Varies</span>
+<span class="text-xs text-[#b0b8c1] ml-2">(Integration costs)</span>
+</div>
+</div>
+<!-- Row 3: SBA Burden -->
+<div class="table-row">
+<div class="cell cell-label" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">SBA Burden</div>
+<div class="cell cell-solo cell-data" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<span class="risk-badge risk-high mr-2">HIGH</span>
+                    100% Bodie
+                </div>
+<div class="cell cell-shared cell-data" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<span class="risk-badge risk-low mr-2">LOW</span>
+                    Shared
+                </div>
+<div class="cell cell-db cell-data" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<span class="risk-badge risk-low mr-2">LOW</span>
+                    Shared
+                </div>
+</div>
+<!-- Row 4: Time to Control -->
+<div class="table-row">
+<div class="cell cell-label" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">Time to Control</div>
+<div class="cell cell-solo cell-data" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">11 Years</div>
+<div class="cell cell-shared cell-data" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">11 Years</div>
+<div class="cell cell-db cell-data" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">10+ Years</div>
+</div>
+<!-- Row 5: EBITDA Multiple -->
+<div class="table-row">
+<div class="cell cell-label" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">EBITDA Multiple</div>
+<div class="cell cell-solo cell-data font-mono" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">7–10×</div>
+<div class="cell cell-shared cell-data font-mono" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">7–10×</div>
+<div class="cell cell-db cell-data" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<span class="highlight-val text-coral">10×+</span>
+<i class="fas fa-arrow-up text-xs ml-1 text-coral"></i>
+</div>
+</div>
+<!-- Row 6: Risk Level -->
+<div class="table-row">
+<div class="cell cell-label" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">Risk Level</div>
+<div class="cell cell-solo cell-data" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<i class="fas fa-exclamation-triangle icon-cell text-red"></i> High
+                </div>
+<div class="cell cell-shared cell-data" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<i class="fas fa-shield-alt icon-cell text-yellow"></i> Medium
+                </div>
+<div class="cell cell-db cell-data" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<i class="fas fa-shield-alt icon-cell text-yellow"></i> Med-High
+                </div>
+</div>
+<!-- Row 7: Complexity -->
+<div class="table-row">
+<div class="cell cell-label" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">Complexity</div>
+<div class="cell cell-solo cell-data" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<span class="risk-badge risk-low">LOW</span>
+</div>
+<div class="cell cell-shared cell-data" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<span class="risk-badge risk-med">MEDIUM</span>
+</div>
+<div class="cell cell-db cell-data" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<span class="risk-badge risk-high" style="background: rgba(239,99,55,0.2); color: #ef6337;">HIGH</span>
+</div>
+</div>
+<!-- Row 8: Valuation Ceiling (UPDATED VALUES) -->
+<div class="table-row" style="border-bottom: none;">
+<div class="cell cell-label" style="border-bottom: none; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">Valuation Ceiling</div>
+<div class="cell cell-solo cell-data" style="border-bottom: none; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<span class="font-mono text-[#b0b8c1]">$17.0M</span>
+</div>
+<div class="cell cell-shared cell-data" style="border-bottom: none; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<span class="font-mono text-[#b0b8c1]">$17.0M</span>
+</div>
+<div class="cell cell-db cell-data" style="border-bottom: none; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<div class="winner-border" style="translate: none; rotate: none; scale: none; transform: translate3d(0px, 0px, 0px) scale(1.0443, 1.0443); box-shadow: rgba(239, 99, 55, 0.553) 0px 0px 18.8526px;">
+<span class="highlight-val text-coral font-mono">$17.0M+</span>
+<i class="fas fa-star text-xs text-coral ml-1"></i>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer / Key Takeaway -->
+<div class="flex items-center justify-between rounded-lg footer-box-main footer-box" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<div class="flex items-center">
+<i class="fas fa-lightbulb text-[#FFE66D] mr-3 text-lg"></i>
+<p class="text-sm text-[#b0b8c1]">
+<strong class="text-[#FFFFFF]">Key Takeaway:</strong> Design-Build offers the highest valuation ceiling and lowest individual burden, but requires managing the highest complexity.
+                </p>
+</div>
+<span class="text-xs font-mono text-[#044c73] bg-[#044c73] bg-opacity-20 px-2 py-1 rounded">CH5-S03</span>
+</div>
+</div>
+<!-- Slide Footer -->
+<div class="absolute bottom-4 left-0 w-full px-10 border-t border-[#044c73] border-opacity-30 pt-2 flex justify-between items-center footer-box" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<p class="text-[#4e5d6c] text-xs tracking-widest uppercase">Confidential · MARPA Equity Pathway 2026</p>
+</div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Timeline for sequential animation
+        const tl = gsap.timeline({ defaults: { ease: "power2.out" } });
+
+        // 1. Header elements fade in and slide down
+        tl.to(".header-animate", {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            stagger: 0.1
+        });
+
+        // 2. Column Headers fade in
+        tl.to(".col-header", {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            stagger: 0.1
+        }, "-=0.3");
+
+        // 3. Cells fade in with a "filling the grid" stagger effect
+        tl.to(".cell", {
+            opacity: 1,
+            y: 0,
+            duration: 0.4,
+            stagger: {
+                each: 0.03,
+                grid: [8, 4], // Approximate grid rows/cols for visual logic
+                from: "start"
+            }
+        }, "-=0.4");
+
+        // 4. Footer elements
+        tl.to(".footer-box", {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            stagger: 0.1
+        }, "-=0.2");
+        
+        // 5. Pulse animation on the winner value
+        tl.to(".winner-border", {
+            boxShadow: "0 0 20px rgba(239, 99, 55, 0.6)",
+            scale: 1.05,
+            duration: 0.8,
+            yoyo: true,
+            repeat: -1,
+            ease: "sine.inOut"
+        }, "+=0.2");
+    });
+</script>
+
+
+<script src="./slide-inner.js"></script></body></html>

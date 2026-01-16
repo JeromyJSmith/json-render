@@ -9,6 +9,7 @@ import {
 } from "@json-render/react";
 import type { UITree, UIElement } from "@json-render/core";
 import { slides, chapters, TOTAL_SLIDES } from "@/lib/slides";
+import { getSlideRegistry } from "@/lib/slide-registry";
 
 // Helper to get audio filename from slide index
 function getAudioFile(slideIndex: number): string {
@@ -16,8 +17,9 @@ function getAudioFile(slideIndex: number): string {
   return `/audio/slide_${num}.mp3`;
 }
 
-// Component registry for json-render
-const componentRegistry = {
+// Component registry for json-render - using loose typing for flexibility
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const componentRegistry: Record<string, any> = {
   SlideViewer: ({ element }: { element: UIElement }) => {
     const slideIndex = element.props.slideIndex as number;
     const slide = slides[slideIndex];
@@ -303,23 +305,28 @@ function buildUITree(
     root: "container",
     elements: {
       container: {
+        key: "container",
         type: "Stack",
         props: { direction: "column", gap: 0 },
         children: ["info", "chapterNav", "viewer", "controlsRow"],
       },
       info: {
+        key: "info",
         type: "SlideInfo",
         props: { title: slide.title, chapter: slide.chapter },
       },
       chapterNav: {
+        key: "chapterNav",
         type: "ChapterNav",
         props: { currentChapter: slide.chapter },
       },
       viewer: {
+        key: "viewer",
         type: "SlideViewer",
         props: { slideIndex },
       },
       controlsRow: {
+        key: "controlsRow",
         type: "ControlsRow",
         props: {
           current: slideIndex,
@@ -468,6 +475,12 @@ function PresentationContent() {
   const audioRef = useRef<HTMLAudioElement>(null);
 
   const [tree, setTree] = useState<UITree>(buildUITree(0, false, true));
+
+  // Track slide renders in registry
+  useEffect(() => {
+    const registry = getSlideRegistry();
+    registry.recordRender(slideIndex + 1, "viewer");
+  }, [slideIndex]);
 
   // Update tree when state changes
   useEffect(() => {

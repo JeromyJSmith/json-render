@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/b9WmZg1B -->
+<html lang="en" data-chapter="Valuation" data-chapter-number="2" data-slide-position="9"><head>
+<meta name="marpa-chapter" content="Valuation" data-chapter-number="2" data-slide-position="9"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Understanding Valuation Multiples</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(5)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --bg-card: #151a21;
+            --navy: #044c73;
+            --navy-light: #0a5d8a;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            min-height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            padding: 40px 60px;
+        }
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        /* Custom Card Styling */
+        .formula-card {
+            background-color: rgba(4, 76, 115, 0.15);
+            border: 1px solid var(--navy);
+        }
+        .example-card {
+            background-color: var(--bg-card);
+            transition: transform 0.2s ease;
+        }
+        .dotted-line {
+            border-bottom: 2px dotted var(--navy);
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header Section -->
+<header class="flex justify-between items-start mb-8">
+<div>
+<div class="flex items-center mb-2">
+<span class="text-[#ef6337] font-bold tracking-widest text-xs uppercase mr-3">Chapter 1: Valuation Foundation</span>
+<div class="h-px bg-[#044c73] w-12"></div>
+</div>
+<h1 class="font-serif text-5xl font-bold text-[#f5f7fa] leading-tight">
+                    Understanding Valuation Multiples
+                </h1>
+</div>
+<div class="w-16 h-16 flex items-center justify-center rounded-full bg-[#044c73] bg-opacity-20">
+<i class="fa-solid fa-calculator text-2xl text-[#ef6337]"></i>
+</div>
+</header>
+<!-- Content Grid -->
+<div class="flex flex-col flex-1 space-y-8">
+<!-- Definition & Formula Row -->
+<div class="grid grid-cols-12 gap-8 items-center">
+<!-- Definition Column -->
+<div class="col-span-5 pr-4">
+<div class="space-y-4">
+<div>
+<h3 class="text-[#8db6b0] text-sm font-bold uppercase tracking-wide mb-1">The Concept</h3>
+<p class="text-[#f5f7fa] text-lg font-light leading-relaxed">
+                                The "multiple" represents confidence. It indicates how many years of current earnings a buyer is willing to pay upfront for future ownership.
+                            </p>
+</div>
+<div>
+<h3 class="text-[#8db6b0] text-sm font-bold uppercase tracking-wide mb-1">Definition</h3>
+<p class="text-[#b0b8c1] text-sm leading-relaxed">
+<strong class="text-[#f5f7fa]">EBITDA</strong> = Earnings Before Interest, Taxes, Depreciation, &amp; Amortization.
+                            </p>
+</div>
+</div>
+</div>
+<!-- Formula Column -->
+<div class="col-span-7">
+<div class="formula-card rounded-xl p-8 flex items-center justify-center relative overflow-hidden">
+<!-- Background accent -->
+<div class="absolute right-0 top-0 w-20 h-20 bg-[#ef6337] opacity-5 rounded-bl-full"></div>
+<div class="flex items-center space-x-6 text-center z-10">
+<div class="flex flex-col items-center">
+<span class="text-[#b0b8c1] text-xs uppercase tracking-widest mb-2">Profit Metric</span>
+<span class="text-3xl font-bold text-[#f5f7fa]">EBITDA</span>
+</div>
+<div class="text-[#ef6337] text-3xl font-bold">×</div>
+<div class="flex flex-col items-center">
+<span class="text-[#b0b8c1] text-xs uppercase tracking-widest mb-2">Confidence Factor</span>
+<span class="text-3xl font-bold text-[#f5f7fa]">Multiple</span>
+</div>
+<div class="text-[#8db6b0] text-3xl font-bold">=</div>
+<div class="flex flex-col items-center">
+<span class="text-[#ef6337] text-xs uppercase tracking-widest mb-2 font-bold">Total Value</span>
+<span class="text-3xl font-bold text-[#ef6337]">Enterprise Value</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Examples Section -->
+<div class="flex-1 flex flex-col justify-center">
+<div class="flex items-center mb-4">
+<i class="fa-solid fa-flask text-[#8db6b0] mr-3"></i>
+<h3 class="text-[#f5f7fa] text-lg font-medium">Valuation Scenarios: Based on MARPA's $1.655M EBITDA</h3>
+</div>
+<div class="grid grid-cols-3 gap-6 h-full">
+<!-- Conservative Card -->
+<div class="example-card rounded-lg p-6 border-t-4 border-[#4ECDC4] flex flex-col relative">
+<div class="absolute top-4 right-4">
+<span class="bg-[#4ECDC4] bg-opacity-10 text-[#4ECDC4] text-xs font-bold px-2 py-1 rounded uppercase">Conservative</span>
+</div>
+<div class="mb-auto mt-2">
+<p class="text-[#b0b8c1] text-sm mb-1">Industry Standard</p>
+<p class="text-4xl font-bold text-[#4ECDC4]">4.28×</p>
+</div>
+<div class="dotted-line my-4 opacity-30"></div>
+<div class="flex justify-between items-end">
+<div class="text-xs text-[#b0b8c1] font-mono">$1.655M × 4.28</div>
+<div class="text-2xl font-bold text-[#f5f7fa]">$7.08M</div>
+</div>
+</div>
+<!-- Mid-Range Card -->
+<div class="example-card rounded-lg p-6 border-t-4 border-[#FFE66D] flex flex-col relative">
+<div class="absolute top-4 right-4">
+<span class="bg-[#FFE66D] bg-opacity-10 text-[#FFE66D] text-xs font-bold px-2 py-1 rounded uppercase">Mid-Range</span>
+</div>
+<div class="mb-auto mt-2">
+<p class="text-[#b0b8c1] text-sm mb-1">Strong Performance</p>
+<p class="text-4xl font-bold text-[#FFE66D]">7.14×</p>
+</div>
+<div class="dotted-line my-4 opacity-30"></div>
+<div class="flex justify-between items-end">
+<div class="text-xs text-[#b0b8c1] font-mono">$1.655M × 7.14</div>
+<div class="text-2xl font-bold text-[#f5f7fa]">$11.82M</div>
+</div>
+</div>
+<!-- Premium Card -->
+<div class="example-card rounded-lg p-6 border-t-4 border-[#ef6337] flex flex-col relative shadow-lg shadow-[rgba(239,99,55,0.05)]">
+<div class="absolute top-4 right-4">
+<span class="bg-[#ef6337] bg-opacity-10 text-[#ef6337] text-xs font-bold px-2 py-1 rounded uppercase">Premium</span>
+</div>
+<div class="mb-auto mt-2">
+<p class="text-[#b0b8c1] text-sm mb-1">MARPA Potential</p>
+<p class="text-4xl font-bold text-[#ef6337]">10.27×</p>
+</div>
+<div class="dotted-line my-4 opacity-30"></div>
+<div class="flex justify-between items-end">
+<div class="text-xs text-[#b0b8c1] font-mono">$1.655M × 10.27</div>
+<div class="text-2xl font-bold text-[#f5f7fa]">$17.0M</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Key Insight Footer -->
+<div class="mt-auto pt-4 border-t border-[#044c73] border-opacity-30">
+<div class="flex items-start">
+<i class="fa-solid fa-lightbulb text-[#FFE66D] mt-1 mr-3"></i>
+<p class="text-[#b0b8c1] text-sm italic">
+                        "A higher multiple reflects lower risk. MARPA's 95% win rate and recurring revenue justify moving from the left (4×) to the right (10×)."
+                    </p>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="absolute bottom-6 right-8 text-[#4e5d6c] text-xs tracking-widest uppercase">
+            MARPA EQUITY PATHWAY 2026 · CONFIDENTIAL
+        </div>
+</div>
+
+
+<script src="./slide-inner.js"></script></body></html>

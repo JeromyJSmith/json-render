@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/muJwpgDJ -->
+<html lang="en" data-chapter="Economics & Incentives" data-chapter-number="6" data-slide-position="45"><head>
+<meta name="marpa-chapter" content="Economics & Incentives" data-chapter-number="6" data-slide-position="45"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Deal Structure: Gifted Equity</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(5)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --bg-card: #151a21;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            min-height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 40px 60px;
+            box-sizing: border-box;
+        }
+
+        /* Comparison Cards */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            flex: 1;
+            margin-bottom: 30px;
+        }
+
+        .option-card {
+            background-color: rgba(4, 76, 115, 0.1);
+            border-radius: 12px;
+            padding: 30px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .card-gift {
+            border-top: 6px solid var(--teal);
+        }
+        
+        .card-parity {
+            border-top: 6px solid var(--coral);
+        }
+
+        .icon-circle {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .icon-gift {
+            background-color: rgba(141, 182, 176, 0.15);
+            color: var(--teal);
+            box-shadow: 0 0 20px rgba(141, 182, 176, 0.2);
+        }
+
+        .icon-parity {
+            background-color: rgba(239, 99, 55, 0.15);
+            color: var(--coral);
+            box-shadow: 0 0 20px rgba(239, 99, 55, 0.2);
+        }
+
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+        
+        .title-gift { color: var(--teal); }
+        .title-parity { color: var(--coral); }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 16px;
+            font-size: 15px;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        .feature-icon {
+            margin-right: 12px;
+            margin-top: 4px;
+            font-size: 12px;
+        }
+
+        /* Synthesis Box */
+        .synthesis-box {
+            background-color: var(--navy);
+            border-radius: 8px;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            border-left: 6px solid var(--yellow);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .vertical-divider {
+            position: absolute;
+            left: 50%;
+            top: 100px;
+            bottom: 120px;
+            width: 1px;
+            background: rgba(255,255,255,0.1);
+            transform: translateX(-50%);
+        }
+
+        .timeline-badge {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: var(--bg-dark);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: var(--text-muted);
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            font-size: 14px;
+        }
+
+        .highlight-percent {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 32px;
+            font-weight: 700;
+            margin-bottom: 4px;
+            display: block;
+        }
+
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="flex justify-between items-end mb-8 border-b border-[#044c73] pb-4">
+<div>
+<p class="text-[#ef6337] font-bold tracking-widest text-xs mb-1 uppercase">Chapter 4: Design-Build Expansion</p>
+<h1 class="font-serif text-4xl text-[#f5f7fa]">DEAL STRUCTURE: INITIAL GIFTING</h1>
+<p class="text-[#b0b8c1] text-lg mt-1">Foundation Phase (Years 1 &amp; 2)</p>
+</div>
+<div class="text-right">
+<p class="text-[#b0b8c1] text-sm font-mono">CH4-S14</p>
+</div>
+</div>
+<!-- Vertical Divider with Timeline Badge -->
+<div class="vertical-divider"></div>
+<div class="timeline-badge"><i class="fas fa-arrow-down text-[#8db6b0]"></i></div>
+<!-- Main Comparison Content -->
+<div class="comparison-grid">
+<!-- Left Card: Year 1 -->
+<div class="option-card card-gift">
+<div class="flex justify-between items-start">
+<div class="icon-circle icon-gift">
+<i class="fas fa-hand-holding-heart"></i>
+</div>
+<div class="text-right">
+<span class="highlight-percent text-[#8db6b0]">2.0%</span>
+<span class="text-xs font-bold uppercase tracking-widest text-[#8db6b0]">Ownership</span>
+</div>
+</div>
+<h2 class="card-title title-gift">YEAR 1: INITIAL TRANSFER</h2>
+<div class="text-sm font-bold text-[#8db6b0] uppercase tracking-wide mb-4 border-b border-[#8db6b0] border-opacity-30 pb-2">Immediate Foundation</div>
+<ul class="feature-list">
+<li class="feature-item">
+<i class="fas fa-check text-[#8db6b0] feature-icon"></i>
+<p><strong>100% Gifted:</strong> Zero cash cost to partners; establishes immediate legal ownership.</p>
+</li>
+<li class="feature-item">
+<i class="fas fa-user-check text-[#8db6b0] feature-icon"></i>
+<p><strong>Ownership Mindset:</strong> Partners move from "employees" to "owners" on Day 1.</p>
+</li>
+<li class="feature-item">
+<i class="fas fa-chart-line text-[#8db6b0] feature-icon"></i>
+<p><strong>Profit Participation:</strong> Immediate eligibility for quarterly distributions.</p>
+</li>
+<li class="feature-item">
+<i class="fas fa-file-signature text-[#8db6b0] feature-icon"></i>
+<p><strong>Risk-Free Entry:</strong> Allows partners to validate the model before capital commitment.</p>
+</li>
+</ul>
+</div>
+<!-- Right Card: Year 2 -->
+<div class="option-card card-parity">
+<div class="flex justify-between items-start">
+<div class="icon-circle icon-parity">
+<i class="fas fa-balance-scale"></i>
+</div>
+<div class="text-right">
+<span class="highlight-percent text-[#ef6337]">2.5%</span>
+<span class="text-xs font-bold uppercase tracking-widest text-[#ef6337]">Ownership</span>
+</div>
+</div>
+<h2 class="card-title title-parity">YEAR 2: STRATEGIC BALANCE</h2>
+<div class="text-sm font-bold text-[#ef6337] uppercase tracking-wide mb-4 border-b border-[#ef6337] border-opacity-30 pb-2">Equipment Parity</div>
+<ul class="feature-list">
+<li class="feature-item">
+<i class="fas fa-truck-pickup text-[#ef6337] feature-icon"></i>
+<p><strong>Asset Parity:</strong> Matches value of Pablo's equipment contribution (~$350k).</p>
+</li>
+<li class="feature-item">
+<i class="fas fa-users text-[#ef6337] feature-icon"></i>
+<p><strong>Equity Balance:</strong> Ensures Bodie and Pablo maintain equal stakes (4.5% total).</p>
+</li>
+<li class="feature-item">
+<i class="fas fa-gift text-[#ef6337] feature-icon"></i>
+<p><strong>Continued Gifting:</strong> Luke continues to absorb tax burden to facilitate transition.</p>
+</li>
+<li class="feature-item">
+<i class="fas fa-lock text-[#ef6337] feature-icon"></i>
+<p><strong>Vesting Checkpoint:</strong> Confirms successful integration before purchase phase begins.</p>
+</li>
+</ul>
+</div>
+</div>
+<!-- Synthesis Footer -->
+<div class="synthesis-box">
+<div class="mr-6 text-[#FFE66D] text-4xl">
+<i class="fas fa-lightbulb"></i>
+</div>
+<div>
+<h3 class="text-[#FFE66D] font-bold text-sm uppercase tracking-wider mb-1">Why Gift First?</h3>
+<p class="text-[#f5f7fa] text-lg leading-snug">
+                    It demonstrates unconditional commitment, de-risks the early decision, and aligns interests before capital requirements begin in Year 3.
+                </p>
+</div>
+</div>
+<!-- Confidential Footer -->
+<div class="mt-auto pt-4 flex justify-between items-center text-[#4e5d6c] text-[10px] uppercase tracking-widest">
+<p>MARPA Equity Pathway 2026</p>
+<p>Confidential Presentation</p>
+</div>
+</div>
+
+
+<script src="./slide-inner.js"></script></body></html>

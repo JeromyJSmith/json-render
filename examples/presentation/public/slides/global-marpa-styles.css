@@ -1,0 +1,49 @@
+/* MARPA Global Slide Styles
+   Ensures consistent rendering across all slides
+   Fixes scaling issues in iframe context */
+
+/* Prevent scrollbars - slides should NEVER scroll */
+html, body {
+    margin: 0;
+    padding: 0;
+    overflow: hidden !important;
+    width: 1280px;
+    height: 720px;
+    max-width: 1280px;
+    max-height: 720px;
+}
+
+/* Ensure slide container fills viewport and doesn't overflow */
+.slide-container {
+    width: 1280px !important;
+    height: 720px !important;
+    max-width: 1280px !important;
+    max-height: 720px !important;
+    overflow: hidden !important;
+    position: relative;
+    box-sizing: border-box;
+}
+
+/* Fix any potential overflow from child elements */
+.slide-container > * {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+/* Ensure text doesn't cause overflow */
+h1, h2, h3, p, span, div {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+}
+
+/* Common MARPA color variables */
+:root {
+    --marpa-bg-dark: #0f1419;
+    --marpa-navy: #044c73;
+    --marpa-coral: #ef6337;
+    --marpa-teal: #8db6b0;
+    --marpa-turquoise: #4ECDC4;
+    --marpa-gold: #D4AF37;
+    --marpa-text-light: #f5f7fa;
+    --marpa-text-muted: #b0b8c1;
+}

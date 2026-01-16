@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/zfVCXRqR -->
+<html lang="en" data-chapter="Decision Framework" data-chapter-number="6" data-slide-position="49"><head>
+<meta name="marpa-chapter" content="Decision Framework" data-chapter-number="6" data-slide-position="49"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Ownership Matrix — Three Path Comparison</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(2)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<script src="./gsap.min.js"></script>
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --mint: #95E1D3;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            min-height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 24px 60px; /* Reduced from 32px */
+            box-sizing: border-box;
+        }
+
+        /* Matrix Container */
+        .matrix-container {
+            display: flex;
+            gap: 24px;
+            flex: 1;
+            align-items: stretch;
+            justify-content: center;
+            padding-bottom: 0px;
+        }
+
+        /* Option Card */
+        .option-card {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            background: rgba(4, 76, 115, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+
+        .option-header {
+            padding: 16px; /* Reduced from 20px */
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            position: relative;
+        }
+
+        .option-body {
+            padding: 16px; /* Reduced from 20px */
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .option-footer {
+            padding: 12px 16px; /* Reduced from 16px 20px */
+            background: rgba(0, 0, 0, 0.2);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Color Variations */
+        .card-solo { border-top: 6px solid var(--turquoise); }
+        .card-shared { border-top: 6px solid var(--yellow); }
+        .card-db { border-top: 6px solid var(--coral); }
+
+        .text-solo { color: var(--turquoise); }
+        .text-shared { color: var(--yellow); }
+        .text-db { color: var(--coral); }
+        
+        .bg-solo-light { background: rgba(78, 205, 196, 0.1); }
+        .bg-shared-light { background: rgba(255, 230, 109, 0.1); }
+        .bg-db-light { background: rgba(239, 99, 55, 0.1); }
+
+        /* Partner Badge */
+        .partner-badge {
+            position: absolute;
+            top: 16px; /* Adjusted to match padding */
+            right: 16px; /* Adjusted to match padding */
+            width: 28px; /* Slightly reduced */
+            height: 28px; /* Slightly reduced */
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 12px; /* Reduced */
+        }
+
+        /* Ownership Stack */
+        .ownership-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+            margin-bottom: 12px; /* Reduced margin to pull up trade-off */
+        }
+
+        .share-row {
+            display: flex;
+            align-items: baseline;
+            justify-content: space-between;
+            padding: 4px 0; /* Reduced from 6px */
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+        }
+
+        .share-percent {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px; /* Reduced from 24px */
+            font-weight: 700;
+        }
+
+        .share-name {
+            font-size: 13px; /* Slightly reduced */
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        .share-role {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Strategy Label */
+        .strategy-label {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 10px; /* Reduced padding */
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 10px; /* Reduced from 11px */
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-bottom: 8px; /* Reduced from 12px */
+        }
+
+        /* Comparison Note */
+        .comparison-note {
+            background: rgba(4, 76, 115, 0.2);
+            border: 1px solid var(--navy);
+            border-radius: 8px;
+            padding: 8px 20px; /* Reduced from 10px 20px */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 12px;
+            margin-top: 8px; /* Reduced from 12px */
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="flex justify-between items-end mb-4 border-b border-[#044c73] pb-3"> <!-- mb-6 reduced to mb-4 -->
+<div>
+<div class="flex items-center mb-1">
+<span class="w-2 h-2 bg-[#ef6337] rounded-full mr-2"></span>
+<p class="text-[#ef6337] font-bold tracking-widest text-xs uppercase">Chapter 5: Making the Decision</p>
+</div>
+<h1 class="font-serif text-3xl text-[#f5f7fa]">OWNERSHIP MATRIX</h1> <!-- text-4xl reduced to text-3xl -->
+<p class="text-[#b0b8c1] text-base mt-1">Structural Comparison of Strategic Options</p> <!-- text-lg reduced to text-base -->
+</div>
+<div class="text-right">
+<p class="text-[#b0b8c1] text-xs font-mono">CHART 1B</p>
+</div>
+</div>
+<!-- Main Content -->
+<div class="matrix-container">
+<!-- Option A: Solo -->
+<div class="option-card card-solo" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="option-header">
+<h3 class="font-serif text-xl text-[#f5f7fa] mb-1">Option A</h3> <!-- text-2xl reduced to text-xl -->
+<p class="text-[#4ECDC4] font-bold text-xs tracking-widest uppercase">SOLO PATH</p>
+<div class="partner-badge bg-solo-light text-solo">2</div>
+</div>
+<div class="option-body">
+<div class="strategy-label bg-solo-light text-solo">
+<i class="fas fa-crown mr-2"></i> Principal Control
+            </div>
+<div class="ownership-stack">
+<div class="share-row" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div>
+<p class="share-name">Luke</p>
+<p class="share-role">Founder</p>
+</div>
+<span class="share-percent text-[#f5f7fa]">52%</span>
+</div>
+<div class="share-row" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div>
+<p class="share-name">Bodie</p>
+<p class="share-role">Successor</p>
+</div>
+<span class="share-percent text-solo">48%</span>
+</div>
+</div>
+<div class="mt-auto"></div>
+</div>
+<div class="option-footer">
+<div class="flex items-center gap-2 mb-1">
+<i class="fas fa-balance-scale-left text-solo"></i>
+<p class="text-[10px] font-bold uppercase text-[#b0b8c1]">Key Trade-off</p>
+</div>
+<p class="text-xs text-[#f5f7fa] leading-relaxed italic"> <!-- text-sm reduced to text-xs -->
+                    "Concentrated equity preserves control but limits scalability and concentrates risk."
+                </p>
+</div>
+</div>
+<!-- Option B: Shared -->
+<div class="option-card card-shared" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 26.0742px);">
+<div class="option-header">
+<h3 class="font-serif text-xl text-[#f5f7fa] mb-1">Option B</h3>
+<p class="text-[#FFE66D] font-bold text-xs tracking-widest uppercase">SHARED PATH</p>
+<div class="partner-badge bg-shared-light text-shared">3</div>
+</div>
+<div class="option-body">
+<div class="strategy-label bg-shared-light text-shared">
+<i class="fas fa-shield-alt mr-2"></i> Distributed Risk
+            </div>
+<div class="ownership-stack">
+<div class="share-row" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div>
+<p class="share-name">Luke</p>
+<p class="share-role">Founder</p>
+</div>
+<span class="share-percent text-[#f5f7fa]">52%</span>
+</div>
+<div class="share-row" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div>
+<p class="share-name">Bodie</p>
+<p class="share-role">Successor</p>
+</div>
+<span class="share-percent text-shared">24%</span>
+</div>
+<div class="share-row" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div>
+<p class="share-name">Pablo</p>
+<p class="share-role">Partner</p>
+</div>
+<span class="share-percent text-shared">24%</span>
+</div>
+</div>
+<div class="mt-auto"></div>
+</div>
+<div class="option-footer">
+<div class="flex items-center gap-2 mb-1">
+<i class="fas fa-balance-scale text-shared"></i>
+<p class="text-[10px] font-bold uppercase text-[#b0b8c1]">Key Trade-off</p>
+</div>
+<p class="text-xs text-[#f5f7fa] leading-relaxed italic">
+                    "Balanced structure reduces individual burden but increases governance complexity."
+                </p>
+</div>
+</div>
+<!-- Option C: Design-Build -->
+<div class="option-card card-db" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 30px);">
+<div class="option-header">
+<h3 class="font-serif text-xl text-[#f5f7fa] mb-1">Option C</h3>
+<p class="text-[#ef6337] font-bold text-xs tracking-widest uppercase">DESIGN-BUILD</p>
+<div class="partner-badge bg-db-light text-db">3</div>
+</div>
+<div class="option-body">
+<div class="strategy-label bg-db-light text-db">
+<i class="fas fa-chart-line mr-2"></i> Growth Optimized
+            </div>
+<div class="ownership-stack">
+<div class="share-row" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div>
+<p class="share-name">Luke</p>
+<p class="share-role">Founder</p>
+</div>
+<span class="share-percent text-[#f5f7fa]">52%</span>
+</div>
+<div class="share-row" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div>
+<p class="share-name">Bodie</p>
+<p class="share-role">Successor</p>
+</div>
+<span class="share-percent text-db">24%</span>
+</div>
+<div class="share-row" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div>
+<p class="share-name">Pablo</p>
+<p class="share-role">Const. Partner</p>
+</div>
+<span class="share-percent text-db">24%</span>
+</div>
+</div>
+<div class="mt-auto"></div>
+</div>
+<div class="option-footer">
+<div class="flex items-center gap-2 mb-1">
+<i class="fas fa-balance-scale-right text-db"></i>
+<p class="text-[10px] font-bold uppercase text-[#b0b8c1]">Strategic Fit</p>
+</div>
+<p class="text-xs text-[#f5f7fa] leading-relaxed italic">
+                    "Aligns equity with high-performance implementation and long-term valuation."
+                </p>
+</div>
+</div>
+</div>
+<!-- Comparison Note -->
+<div class="comparison-note" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<i class="fas fa-info-circle text-[#8db6b0] text-xs"></i>
+<p class="text-xs text-[#b0b8c1]">
+<span class="text-[#f5f7fa] font-bold">Note:</span> Options B &amp; C share identical <span class="font-mono text-[#FFE66D]">24/24/52</span> splits, but apply them to different business models (Standard vs. Integrated).
+        </p>
+</div>
+<!-- Footer -->
+<div class="mt-auto pt-3 flex justify-between items-center text-[#4e5d6c] text-[10px] uppercase tracking-widest border-t border-[#044c73] border-opacity-30"> <!-- pt-4 reduced to pt-3 -->
+<p>MARPA Equity Pathway 2026</p>
+<p>Confidential Presentation</p>
+</div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+        // Animate cards
+        tl.from(".option-card", {
+            y: 30,
+            opacity: 0,
+            duration: 0.8,
+            stagger: 0.2
+        });
+
+        // Animate content inside cards
+        tl.from(".share-row", {
+            x: -20,
+            opacity: 0,
+            duration: 0.5,
+            stagger: 0.1
+        }, "-=0.4");
+
+        // Animate note
+        tl.from(".comparison-note", {
+            y: 20,
+            opacity: 0,
+            duration: 0.6
+        }, "-=0.2");
+    });
+</script>
+
+
+<script src="./slide-inner.js"></script></body></html>

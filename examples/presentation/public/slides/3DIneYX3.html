@@ -1,0 +1,447 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/3DIneYX3 -->
+<html lang="en" data-chapter="Decision Framework" data-chapter-number="6" data-slide-position="51"><head>
+<meta name="marpa-chapter" content="Decision Framework" data-chapter-number="6" data-slide-position="51"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Path Comparison Visual</title>
+<link href="./global-marpa-styles.css" rel="stylesheet">
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(2)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<script src="./gsap.min.js"></script>
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            min-height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 25px 40px; /* Optimized padding */
+            box-sizing: border-box;
+        }
+
+        /* Comparison Container */
+        .comparison-wrapper {
+            display: flex;
+            gap: 30px;
+            flex: 1;
+            align-items: stretch;
+            justify-content: center;
+            padding-bottom: 20px;
+        }
+
+        /* Lane Styles */
+        .lane {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 20px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s ease;
+            opacity: 0; /* Animation start */
+            transform: translateY(20px);
+        }
+        
+        .lane-header {
+            text-align: center;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+
+        .lane-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 5px;
+        }
+        
+        .lane-subtitle {
+            font-family: 'Inter', sans-serif;
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Metric Blocks */
+        .metric-block {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .metric-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        /* Icons */
+        .icon-group {
+            display: flex;
+            gap: 8px;
+            align-items: center;
+            justify-content: center;
+            height: 30px;
+        }
+        
+        .icon-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Meters */
+        .meter-container {
+            width: 100%;
+            max-width: 180px;
+            margin-bottom: 6px;
+        }
+        .dots-wrapper {
+            display: flex;
+            justify-content: center;
+            gap: 4px;
+        }
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+        }
+
+        /* Valuation Bars */
+        .valuation-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            margin-top: auto;
+            position: relative;
+        }
+        
+        .v-bar {
+            width: 60px;
+            border-radius: 6px 6px 0 0;
+            position: relative;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding-top: 10px;
+            transition: height 0.5s ease;
+            margin-bottom: 0;
+            height: 0; /* Animation start */
+        }
+        
+        .v-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 16px;
+            font-weight: 700;
+            color: #fff;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.5);
+            opacity: 0;
+        }
+
+        /* Specific Colors */
+        .color-solo { color: var(--turquoise); }
+        .bg-solo { background-color: var(--turquoise); }
+        .dot-solo { background-color: var(--turquoise); }
+        
+        .color-shared { color: var(--yellow); }
+        .bg-shared { background-color: var(--yellow); }
+        .dot-shared { background-color: var(--yellow); }
+        
+        .color-db { color: var(--coral); }
+        .bg-db { background-color: var(--coral); }
+        .dot-db { background-color: var(--coral); }
+
+        /* Legend / Key Insight */
+        .insight-box {
+            position: absolute;
+            bottom: 30px;
+            right: 60px;
+            width: 280px;
+            background: rgba(4, 76, 115, 0.3);
+            border: 1px solid var(--navy);
+            padding: 15px;
+            border-radius: 8px;
+            backdrop-filter: blur(5px);
+            opacity: 0;
+            transform: translateX(20px);
+        }
+        
+        .winner-glow {
+            box-shadow: 0 0 20px rgba(239, 99, 55, 0.4);
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="flex justify-between items-end mb-6 border-b border-[#044c73] pb-4">
+<div>
+<div class="flex items-center mb-2">
+<span class="w-2 h-2 bg-[#95E1D3] rounded-full mr-2"></span>
+<p class="text-[#95E1D3] font-bold tracking-widest text-xs uppercase">Chapter 5: Making The Decision</p>
+</div>
+<h1 class="font-serif text-[#f5f7fa]" style="font-size: 40px;">PATH COMPARISON: VISUAL</h1>
+</div>
+<div class="text-right">
+<p class="text-[#b0b8c1] text-sm font-mono">TRADE-OFFS &amp; POTENTIAL</p>
+</div>
+</div>
+<!-- Main Content -->
+<div class="comparison-wrapper">
+<!-- Lane 1: Solo Path (Turquoise) -->
+<div class="lane" style="border-top: 4px solid var(--turquoise); translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="lane-header">
+<div class="lane-title color-solo">SOLO PATH</div>
+<div class="lane-subtitle">Maximum Control</div>
+</div>
+<!-- Ownership -->
+<div class="metric-block">
+<div class="metric-label">Bodie's Ownership</div>
+<div class="icon-group">
+<i class="fas fa-user fa-2x color-solo"></i>
+</div>
+<p class="font-mono text-lg font-bold mt-2">49%</p>
+</div>
+<!-- Investment -->
+<div class="metric-block">
+<div class="metric-label">Investment</div>
+<div class="icon-group">
+<i class="fas fa-dollar-sign text-lg color-solo"></i>
+<i class="fas fa-dollar-sign text-lg color-solo"></i>
+<i class="fas fa-dollar-sign text-lg color-solo"></i>
+</div>
+<p class="text-xs text-[#b0b8c1] mt-1">~$8.3M</p>
+</div>
+<!-- Risk -->
+<div class="metric-block">
+<div class="metric-label">Risk Level</div>
+<div class="meter-container">
+<div class="dots-wrapper">
+<div class="dot dot-solo"></div>
+<div class="dot dot-solo"></div>
+<div class="dot dot-solo"></div>
+<div class="dot dot-solo"></div>
+<div class="dot dot-solo"></div>
+</div>
+</div>
+<p class="text-xs font-bold color-solo">HIGH</p>
+</div>
+<!-- Valuation Ceiling -->
+<div class="valuation-container">
+<div class="metric-label mb-2">Valuation Ceiling</div>
+<div class="v-bar bg-solo" data-height="170px" style="height: 170px;">
+<span class="v-label" style="opacity: 1;">$17.0M</span>
+</div>
+</div>
+</div>
+<!-- Lane 2: Shared Path (Yellow) -->
+<div class="lane" style="border-top: 4px solid var(--yellow); translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="lane-header">
+<div class="lane-title color-shared">SHARED PATH</div>
+<div class="lane-subtitle">Distributed Risk</div>
+</div>
+<!-- Ownership -->
+<div class="metric-block">
+<div class="metric-label">Bodie's Ownership</div>
+<div class="icon-group">
+<i class="fas fa-user text-xl color-shared"></i>
+<i class="fas fa-user text-sm text-opacity-50 text-white"></i>
+<i class="fas fa-user text-sm text-opacity-50 text-white"></i>
+</div>
+<p class="font-mono text-lg font-bold mt-2">24%</p>
+</div>
+<!-- Investment -->
+<div class="metric-block">
+<div class="metric-label">Investment</div>
+<div class="icon-group">
+<i class="fas fa-dollar-sign text-lg color-shared"></i>
+<i class="fas fa-dollar-sign text-lg color-shared"></i>
+<i class="fas fa-dollar-sign text-lg text-[#333]"></i>
+</div>
+<p class="text-xs text-[#b0b8c1] mt-1">~$5.1M</p>
+</div>
+<!-- Risk -->
+<div class="metric-block">
+<div class="metric-label">Risk Level</div>
+<div class="meter-container">
+<div class="dots-wrapper">
+<div class="dot dot-shared"></div>
+<div class="dot dot-shared"></div>
+<div class="dot dot-shared"></div>
+<div class="dot"></div>
+<div class="dot"></div>
+</div>
+</div>
+<p class="text-xs font-bold color-shared">MEDIUM</p>
+</div>
+<!-- Valuation Ceiling -->
+<div class="valuation-container">
+<div class="metric-label mb-2">Valuation Ceiling</div>
+<div class="v-bar bg-shared" data-height="170px" style="height: 170px;">
+<span class="v-label" style="opacity: 1;">$17.0M</span>
+</div>
+</div>
+</div>
+<!-- Lane 3: Design-Build (Coral) -->
+<div class="lane" style="border-top: 4px solid var(--coral); translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="lane-header">
+<div class="lane-title color-db">DESIGN-BUILD</div>
+<div class="lane-subtitle">Highest Potential</div>
+</div>
+<!-- Ownership -->
+<div class="metric-block">
+<div class="metric-label">Bodie's Ownership</div>
+<div class="icon-group">
+<i class="fas fa-user text-xl color-db"></i>
+<i class="fas fa-user-hard-hat text-lg text-[#8db6b0]"></i>
+<i class="fas fa-user text-sm text-[#044c73]"></i>
+</div>
+<p class="font-mono text-lg font-bold mt-2">24%</p>
+</div>
+<!-- Investment -->
+<div class="metric-block">
+<div class="metric-label">Investment</div>
+<div class="icon-group">
+<i class="fas fa-dollar-sign text-lg color-db"></i>
+<i class="fas fa-question text-sm text-[#b0b8c1]"></i>
+</div>
+<p class="text-xs text-[#b0b8c1] mt-1">Varies</p>
+</div>
+<!-- Complexity -->
+<div class="metric-block">
+<div class="metric-label">Complexity</div>
+<div class="meter-container">
+<div class="dots-wrapper">
+<div class="dot dot-db"></div>
+<div class="dot dot-db"></div>
+<div class="dot dot-db"></div>
+<div class="dot dot-db"></div>
+<div class="dot"></div>
+</div>
+</div>
+<p class="text-xs font-bold color-db">MED-HIGH</p>
+</div>
+<!-- Valuation Ceiling -->
+<div class="valuation-container">
+<div class="metric-label mb-2">Valuation Ceiling</div>
+<div class="v-bar bg-db winner-glow" data-height="170px" style="height: 170px;">
+<span class="v-label" style="opacity: 1;">$17.0M+</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Insight -->
+<div class="insight-box" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<h4 class="text-[#f5f7fa] text-xs font-bold uppercase mb-2 border-b border-[#044c73] pb-1">Visual Takeaway</h4>
+<p class="text-[#b0b8c1] text-xs leading-relaxed">
+                All paths access the <strong>$17.0M ceiling</strong>, but <strong>Design-Build</strong> unlocks higher EBITDA growth to maximize the multiple's power.
+            </p>
+</div>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+            // Animate Lanes
+            tl.to(".lane", {
+                y: 0,
+                opacity: 1,
+                duration: 0.8,
+                stagger: 0.2
+            });
+
+            // Grow Bars
+            tl.add(() => {
+                document.querySelectorAll('.v-bar').forEach(bar => {
+                    bar.style.height = bar.dataset.height;
+                });
+            }, "-=0.4");
+
+            // Fade in labels
+            tl.to(".v-label", {
+                opacity: 1,
+                duration: 0.5,
+                stagger: 0.1
+            });
+
+            // Show insight
+            tl.to(".insight-box", {
+                x: 0,
+                opacity: 1,
+                duration: 0.8
+            }, "-=0.2");
+        });
+    </script>
+
+
+<script src="./slide-inner.js"></script></body></html>

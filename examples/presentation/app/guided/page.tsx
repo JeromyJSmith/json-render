@@ -11,6 +11,27 @@ import {
 } from "@/lib/presentation-script";
 import { COLORS } from "@/lib/schema";
 
+// Web Speech API types - use same names as presenter/page.tsx to avoid conflict
+interface SpeechRecognitionEventResult {
+  [index: number]: { transcript: string; confidence: number };
+}
+
+interface SpeechRecognitionEventLocal extends Event {
+  results: Array<SpeechRecognitionEventResult>;
+}
+
+interface SpeechRecognitionInstance extends EventTarget {
+  continuous: boolean;
+  interimResults: boolean;
+  lang: string;
+  onresult: ((event: SpeechRecognitionEventLocal) => void) | null;
+  onend: (() => void) | null;
+  onerror: (() => void) | null;
+  start(): void;
+  stop(): void;
+  abort(): void;
+}
+
 // Helper to get chapter info for a slide
 function getChapterForSlide(
   slideId: number,
@@ -144,16 +165,21 @@ function useSpeech() {
 // Speech recognition hook
 function useVoiceInput(onResult: (text: string) => void) {
   const [isListening, setIsListening] = useState(false);
-  const recognitionRef = useRef<SpeechRecognition | null>(null);
+  const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
 
   useEffect(() => {
     if (
       typeof window !== "undefined" &&
       ("SpeechRecognition" in window || "webkitSpeechRecognition" in window)
     ) {
-      const SpeechRecognition =
-        window.SpeechRecognition || window.webkitSpeechRecognition;
-      recognitionRef.current = new SpeechRecognition();
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const SpeechRecognitionClass =
+        (window as any).SpeechRecognition ??
+        (window as any).webkitSpeechRecognition;
+      if (!SpeechRecognitionClass) return;
+
+      recognitionRef.current =
+        new SpeechRecognitionClass() as SpeechRecognitionInstance;
       recognitionRef.current.continuous = false;
       recognitionRef.current.interimResults = false;
       recognitionRef.current.lang = "en-US";
@@ -741,8 +767,7 @@ export default function GuidedPresentationPage() {
               msg.parts
                 ?.filter((part: { type: string }) => part.type === "text")
                 .map((part: { type: string; text?: string }) => part.text)
-                .join("") ||
-              (typeof msg.content === "string" ? msg.content : "");
+                .join("") || "";
 
             return (
               <div

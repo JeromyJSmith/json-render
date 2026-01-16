@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/IXqI31c1 -->
+<html lang="en" data-chapter="Vision & Call to Action" data-chapter-number="7" data-slide-position="55"><head>
+<meta name="marpa-chapter" content="Vision & Call to Action" data-chapter-number="7" data-slide-position="55"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Growth Trajectory — Enterprise Value Curve</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(2)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<!-- Global Stylesheet Reference -->
+<link href="./global-marpa-styles.css" rel="stylesheet">
+<script src="./chart.js"></script>
+<script src="./gsap.min.js"></script>
+<style>
+        /* Explicit Color Definitions for Reliability */
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --text-light: #FFFFFF;
+            --text-muted: #b0b8c1;
+        }
+        
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        /* Optimized Container Layout */
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 25px 40px; /* Reduced from 40px 60px */
+            box-sizing: border-box;
+            background-color: var(--bg-dark);
+        }
+
+        /* Chart Area - Maximized vertical space */
+        .chart-wrapper {
+            flex: 1;
+            position: relative;
+            margin-top: 6px; /* Reduced from 10px */
+            background: rgba(4, 76, 115, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* Legend/Stats Bar */
+        .stats-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 0 10px;
+        }
+
+        .stat-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .legend-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        /* Assumptions Box */
+        .assumptions-box {
+            position: absolute;
+            top: 20px;
+            left: 70px;
+            background: rgba(15, 20, 25, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 10px 16px;
+            z-index: 10;
+        }
+
+        /* Exit Value Panel */
+        .exit-panel {
+            position: absolute;
+            top: 30px;
+            right: 30px;
+            background: rgba(15, 20, 25, 0.95);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 16px;
+            width: 260px;
+            z-index: 20;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.4);
+        }
+
+        .exit-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        .exit-row:last-child { margin-bottom: 0; padding-bottom: 0; border-bottom: none; }
+
+        .band-label {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .band-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 16px;
+            color: #FFFFFF !important;
+        }
+
+        /* Target Threshold Line Label */
+        .threshold-label {
+            position: absolute;
+            left: 10px;
+            top: 360px; /* Will be adjusted by JS */
+            background: #FFE66D;
+            color: #0f1419;
+            font-size: 10px;
+            font-weight: 800;
+            padding: 4px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            z-index: 15;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+            opacity: 1 !important; /* Force visibility */
+        }
+
+        /* Force Visibility Overrides */
+        h1, h2, h3, p, span, div {
+            opacity: 1; /* Ensure no hidden elements by default */
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="flex justify-between items-end mb-5 border-b border-[#044c73] pb-3" style="border-bottom-color: rgba(4, 76, 115, 0.3);">
+<div class="header-content" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="flex items-center mb-1">
+<span class="w-2 h-2 rounded-full mr-2" style="background-color: #ef6337;"></span>
+<p class="font-bold tracking-widest text-xs uppercase" style="color: #ef6337;">Strategic Growth Plan</p>
+</div>
+<h1 class="font-serif tracking-tight" style="font-size: 40px; color: #FFFFFF; line-height: 1.1;">GROWTH TRAJECTORY TO $20M+</h1>
+<p class="text-sm mt-1 font-medium" style="color: #b0b8c1;">Enterprise Value Path from $17M to Year 11 Target</p>
+</div>
+<div class="text-right header-tag">
+<div class="text-xs font-bold px-3 py-1 rounded uppercase tracking-wider inline-block mb-1" style="background-color: #FFE66D; color: #0f1419;">Target Exceeded</div>
+<p class="text-sm font-mono" style="color: #b0b8c1;">CH4-S13</p>
+</div>
+</div>
+<!-- Main Chart Area -->
+<div class="chart-wrapper">
+<!-- Stats Legend -->
+<div class="stats-bar justify-end">
+<div class="stat-item mr-6">
+<span class="legend-dot" style="background: #4ECDC4;"></span>
+<p class="text-xs font-mono" style="color: #b0b8c1;">Conservative (4.28x)</p>
+</div>
+<div class="stat-item mr-6">
+<span class="legend-dot" style="background: #FFE66D;"></span>
+<p class="text-xs font-mono" style="color: #b0b8c1;">Mid-Range (7.14x)</p>
+</div>
+<div class="stat-item">
+<span class="legend-dot" style="background: #ef6337;"></span>
+<p class="text-xs font-mono" style="color: #b0b8c1;">Premium (10.27x)</p>
+</div>
+</div>
+<!-- Assumptions Overlay -->
+<div class="assumptions-box" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<p class="text-[10px] uppercase tracking-widest font-bold mb-1" style="color: #b0b8c1;">Key Growth Drivers</p>
+<div class="flex gap-4">
+<p class="text-xs font-mono" style="color: #FFFFFF;"><i class="fas fa-arrow-up mr-1" style="color: #ef6337;"></i>Construction +10%</p>
+<p class="text-xs font-mono" style="color: #FFFFFF;"><i class="fas fa-arrow-up mr-1" style="color: #4ECDC4;"></i>Maintenance +20%</p>
+</div>
+</div>
+<!-- Threshold Label -->
+<div class="threshold-label pulsing-target" style="top: 271.05px; translate: none; rotate: none; scale: none; transform: translate3d(0px, 0px, 0px) scale(1.0108, 1.0108); opacity: 1;">
+<i class="fas fa-flag-checkered mr-1"></i> $20M TARGET THRESHOLD
+            </div>
+<!-- Exit Panel Overlay -->
+<div class="exit-panel" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<p class="text-[10px] uppercase tracking-widest font-bold mb-3 border-b pb-2" style="color: #b0b8c1; border-color: rgba(255,255,255,0.1);">Year 11 Projected Exit Values</p>
+<div class="exit-row">
+<span class="band-label" style="color: #ef6337;">Premium</span>
+<span class="band-value">$73.3M</span>
+</div>
+<div class="exit-row">
+<span class="band-label" style="color: #FFE66D;">Mid-Range</span>
+<span class="band-value">$51.0M</span>
+</div>
+<div class="exit-row">
+<span class="band-label" style="color: #4ECDC4;">Conservative</span>
+<span class="band-value">$30.6M</span>
+</div>
+<p class="text-[9px] mt-2 italic text-right" style="color: #b0b8c1;">*Based on $7.14M projected EBITDA</p>
+</div>
+<!-- Chart Canvas -->
+<div style="flex: 1; position: relative; width: 100%; height: 100%; min-height: 0;">
+<canvas id="growthChart" width="1274" height="441" style="display: block; box-sizing: border-box; height: 401.4px; width: 1158.2px;"></canvas>
+</div>
+</div>
+<!-- Footer -->
+<div class="mt-3 flex justify-between items-center border-t pt-2" style="border-top-color: rgba(4, 76, 115, 0.3);">
+<p class="text-xs tracking-widest uppercase font-bold" style="color: #4e5d6c;">Confidential · MARPA Equity Pathway 2026</p>
+<div class="flex gap-4">
+<p class="text-xs" style="color: #4e5d6c;"><i class="fas fa-chart-line text-[10px] mr-2 align-middle"></i>Compounding Effect</p>
+<p class="text-xs" style="color: #4e5d6c;"><i class="fas fa-shield-alt text-[10px] mr-2 align-middle"></i>Multiple Exit Scenarios</p>
+</div>
+</div>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Header Animation
+            gsap.from(".header-content", {
+                y: -10,
+                opacity: 0,
+                duration: 0.8,
+                ease: "power3.out"
+            });
+
+            // Panels Animation
+            gsap.from([".assumptions-box", ".exit-panel", ".threshold-label"], {
+                y: 10,
+                opacity: 0,
+                duration: 0.8,
+                delay: 1.0,
+                stagger: 0.2,
+                ease: "back.out(1.2)"
+            });
+            
+            // Pulse animation for target label
+            gsap.to(".pulsing-target", {
+                scale: 1.05,
+                duration: 0.8,
+                repeat: -1,
+                yoyo: true,
+                ease: "power1.inOut"
+            });
+
+            // Chart Data Generation
+            // Year 0 to 11 (12 points)
+            const labels = ['Y0', 'Y1', 'Y2', 'Y3', 'Y4', 'Y5', 'Y6', 'Y7', 'Y8', 'Y9', 'Y10', 'Y11'];
+            
+            // Calculate EBITDA growth matching Slide 38 waterfall logic
+            // Constr: 1.2 * 1.1^n, Maint: 0.5 * 1.2^n
+            const ebitdaData = [];
+            for(let i=0; i<12; i++) {
+                const constr = 1.2 * Math.pow(1.10, i);
+                const maint = 0.5 * Math.pow(1.20, i);
+                ebitdaData.push(parseFloat((constr + maint).toFixed(2)));
+            }
+            
+            // Calculate EV Bands
+            const conservativeData = ebitdaData.map(e => parseFloat((e * 4.28).toFixed(1))); // 4.28x
+            const midRangeData = ebitdaData.map(e => parseFloat((e * 7.14).toFixed(1)));    // 7.14x
+            const premiumData = ebitdaData.map(e => parseFloat((e * 10.27).toFixed(1)));     // 10.27x
+
+            const ctx = document.getElementById('growthChart').getContext('2d');
+            
+            // Target Threshold Line Plugin
+            const targetLinePlugin = {
+                id: 'targetLine',
+                beforeDraw: (chart) => {
+                    const ctx = chart.ctx;
+                    const yAxis = chart.scales.y;
+                    // Target is $20M
+                    const yValue = yAxis.getPixelForValue(20); 
+                    
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.moveTo(chart.chartArea.left, yValue);
+                    ctx.lineTo(chart.chartArea.right, yValue);
+                    ctx.lineWidth = 2;
+                    ctx.strokeStyle = '#FFE66D';
+                    ctx.setLineDash([10, 5]);
+                    ctx.stroke();
+                    ctx.restore();
+                    
+                    // Update label position based on chart rendering
+                    const label = document.querySelector('.threshold-label');
+                    if(label) {
+                        // Offset relative to the container. 
+                        // chart.chartArea.top is relative to canvas, need offset from .chart-wrapper/container
+                        // Simple approximation: canvas top is roughly chart-wrapper padding-top (20px) + legend (30px)
+                        // But canvas fills flex space.
+                        // Better to rely on fixed assumption for layout stability or exact math if needed.
+                        // Given fixed height canvas, relative position works well.
+                        
+                        // Just use the yValue + offset from top of chart area
+                        // Canvas is inside flex container.
+                        const chartTop = chart.canvas.offsetTop;
+                        label.style.top = `${yValue + chartTop - 12}px`; // Center label on line roughly
+                    }
+                }
+            };
+
+            new Chart(ctx, {
+                type: 'line',
+                data: {
+                    labels: labels,
+                    datasets: [
+                        {
+                            label: 'Premium (10.27x)',
+                            data: premiumData,
+                            borderColor: '#ef6337',
+                            backgroundColor: 'rgba(239, 99, 55, 0.1)',
+                            borderWidth: 3,
+                            pointBackgroundColor: '#0f1419',
+                            pointBorderColor: '#ef6337',
+                            pointRadius: 3,
+                            pointHoverRadius: 5,
+                            tension: 0.4,
+                            fill: '+1'
+                        },
+                        {
+                            label: 'Mid-Range (7.14x)',
+                            data: midRangeData,
+                            borderColor: '#FFE66D',
+                            backgroundColor: 'rgba(255, 230, 109, 0.1)',
+                            borderWidth: 3,
+                            pointBackgroundColor: '#0f1419',
+                            pointBorderColor: '#FFE66D',
+                            pointRadius: 3,
+                            pointHoverRadius: 5,
+                            tension: 0.4,
+                            fill: '+1'
+                        },
+                        {
+                            label: 'Conservative (4.28x)',
+                            data: conservativeData,
+                            borderColor: '#4ECDC4',
+                            backgroundColor: 'rgba(78, 205, 196, 0.05)',
+                            borderWidth: 3,
+                            pointBackgroundColor: '#0f1419',
+                            pointBorderColor: '#4ECDC4',
+                            pointRadius: 3,
+                            pointHoverRadius: 5,
+                            tension: 0.4,
+                            fill: 'origin'
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 20, 25, 0.95)',
+                            titleColor: '#FFFFFF',
+                            titleFont: { family: 'JetBrains Mono' },
+                            bodyColor: '#b0b8c1',
+                            bodyFont: { family: 'Inter' },
+                            borderColor: 'rgba(255,255,255,0.1)',
+                            borderWidth: 1,
+                            padding: 10,
+                            callbacks: {
+                                title: (context) => {
+                                    const index = context[0].dataIndex;
+                                    return `Year ${index} (EBITDA $${ebitdaData[index]}M)`;
+                                },
+                                label: function(context) {
+                                    return context.dataset.label + ': $' + context.raw + 'M';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#b0b8c1',
+                                font: { family: 'JetBrains Mono', size: 11 },
+                                maxRotation: 0
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)',
+                                borderDash: [5, 5]
+                            },
+                            ticks: {
+                                color: '#b0b8c1',
+                                font: { family: 'Inter', size: 11 },
+                                callback: function(value) {
+                                    return '$' + value + 'M';
+                                }
+                            },
+                            suggestedMax: 80
+                        }
+                    },
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutQuart'
+                    }
+                },
+                plugins: [targetLinePlugin]
+            });
+        });
+    </script>
+
+
+<script src="./slide-inner.js"></script></body></html>

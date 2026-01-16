@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/V7ByOWcI -->
+<html lang="en" data-chapter="Partnership Philosophy" data-chapter-number="5" data-slide-position="43"><head>
+<meta name="marpa-chapter" content="Partnership Philosophy" data-chapter-number="5" data-slide-position="43"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>EBITDA Impact - Bars</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(2)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<script src="./gsap.min.js"></script>
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 40px 60px;
+            box-sizing: border-box;
+        }
+
+        /* Chart Area */
+        .chart-container {
+            flex: 1;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            padding: 30px 0 50px 0;
+            gap: 64px;
+            position: relative;
+        }
+
+        .bar-group {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+            height: 100%;
+            width: 240px;
+            position: relative;
+        }
+
+        .bar {
+            width: 100%;
+            border-top-left-radius: 8px;
+            border-top-right-radius: 8px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transform-origin: bottom center;
+            transform: scaleY(0); /* Start collapsed for animation */
+        }
+
+        .bar-teal {
+            background-color: rgba(141, 182, 176, 0.8);
+            border: 1px solid var(--teal);
+            height: 137px; /* ~$1.1M proportional */
+        }
+
+        .bar-coral {
+            background-color: var(--coral);
+            border: 1px solid #ff8a65;
+            height: 437px; /* ~$3.5M proportional */
+            box-shadow: 0 0 30px rgba(239, 99, 55, 0.4);
+        }
+
+        .bar-label {
+            font-family: 'Playfair Display', serif;
+            font-weight: 700;
+            font-size: 38px;
+            color: #fff;
+            margin-bottom: 12px;
+            text-shadow: 0 4px 12px rgba(0,0,0,0.5);
+            opacity: 0;
+        }
+
+        .bar-sublabel {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 16px;
+            color: rgba(255,255,255,0.9);
+            font-weight: 700;
+            margin-top: 4px;
+            opacity: 0;
+        }
+
+        .axis-label {
+            text-align: center;
+            margin-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.2);
+            width: 100%;
+            padding-top: 16px;
+            opacity: 0;
+        }
+
+        /* Callout Badge */
+        .delta-badge {
+            position: absolute;
+            left: 50%;
+            top: 45%;
+            transform: translate(-50%, -50%) scale(0);
+            background-color: rgba(255, 230, 109, 0.15);
+            border: 2px solid var(--yellow);
+            border-radius: 12px;
+            padding: 16px 24px;
+            text-align: center;
+            backdrop-filter: blur(4px);
+            z-index: 10;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
+        }
+
+        /* Insight Box */
+        .insight-box {
+            position: absolute;
+            right: 0;
+            top: 20px;
+            width: 280px;
+            background: rgba(4, 76, 115, 0.3);
+            border-left: 4px solid var(--coral);
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            transform: translateX(20px);
+            opacity: 0;
+        }
+
+        .anchor-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: auto;
+            padding-top: 20px;
+            border-top: 1px solid rgba(4, 76, 115, 0.3);
+            opacity: 0;
+        }
+
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="flex justify-between items-end mb-8 border-b border-[#044c73] pb-4 header-anim" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div>
+<div class="flex items-center mb-2">
+<span class="w-2 h-2 bg-[#ef6337] rounded-full mr-2"></span>
+<p class="text-[#ef6337] font-bold tracking-widest text-xs uppercase">Chapter 4: Design-Build Expansion</p>
+</div>
+<h1 class="font-serif text-4xl text-[#f5f7fa]">WHY DESIGN-BUILD CHANGES EVERYTHING</h1>
+<p class="text-[#b0b8c1] text-sm mt-1 font-mono uppercase tracking-wider">EBITDA Margin Impact Analysis ($11.03M Revenue Base)</p>
+</div>
+<div class="text-right">
+<p class="text-[#b0b8c1] text-sm font-mono">CH4-S05</p>
+</div>
+</div>
+<!-- Main Content -->
+<div class="chart-container">
+<!-- Insight Overlay -->
+<div class="insight-box" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<p class="text-[#ef6337] font-bold text-xs uppercase tracking-widest mb-2">Key Insight</p>
+<p class="text-[#f5f7fa] text-sm leading-relaxed">
+                    This is the only path where Luke earns <span class="text-[#FFE66D] font-bold">more</span> than he gives up in profit share.
+                </p>
+</div>
+<!-- Bar 1: Design Only -->
+<div class="bar-group">
+<div class="bar bar-teal" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px);">
+<p class="bar-label" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">$1.1M</p>
+<p class="bar-sublabel" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">10% Margin</p>
+</div>
+<div class="axis-label" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<p class="text-[#f5f7fa] text-lg font-bold">Design-Only</p>
+<p class="text-[#b0b8c1] text-sm">Status Quo</p>
+</div>
+</div>
+<!-- Delta Badge -->
+<div class="delta-badge" style="translate: none; rotate: none; scale: none; transform: translate(0%, -50%) translate(-105.44px, -0.06px);">
+<i class="fas fa-arrow-trend-up text-[#FFE66D] text-3xl mb-2"></i>
+<p class="text-[#f5f7fa] font-bold text-2xl mb-1">+$2.43M</p>
+<p class="text-[#FFE66D] font-mono text-sm uppercase tracking-widest">Annual Profit</p>
+<div class="w-full h-px bg-white opacity-30 my-3"></div>
+<p class="text-[#f5f7fa] text-xs font-bold">+22 Margin Points</p>
+</div>
+<!-- Bar 2: Design Build -->
+<div class="bar-group">
+<div class="bar bar-coral" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px);">
+<p class="bar-label" style="font-size: 52px; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">$3.53M</p>
+<p class="bar-sublabel" style="font-size: 20px; translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">32% Margin</p>
+<div class="absolute -top-10 right-0 bg-[#FFE66D] text-[#0f1419] text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wider shadow-lg transform translate-y-2 opacity-0 badge-anim" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+                        Target State
+                    </div>
+</div>
+<div class="axis-label" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<p class="text-[#ef6337] text-lg font-bold">Design-Build</p>
+<p class="text-[#b0b8c1] text-sm">Integrated Model</p>
+</div>
+</div>
+</div>
+<!-- Emotional Anchor -->
+<div class="anchor-container" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<i class="fas fa-quote-left text-[#044c73] text-xl mr-4"></i>
+<p class="text-[#b0b8c1] font-serif italic text-lg">"Feels like building a bigger machine together."</p>
+<i class="fas fa-quote-right text-[#044c73] text-xl ml-4"></i>
+</div>
+<!-- Footer -->
+<div class="absolute bottom-4 left-0 right-0 px-14 flex justify-between items-center opacity-50 footer-anim" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<p class="text-[#4e5d6c] text-[10px] tracking-widest uppercase">Confidential · MARPA Equity Pathway 2026</p>
+</div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+        // Header
+        tl.from(".header-anim", { y: -20, opacity: 0, duration: 0.8 });
+
+        // Bars Grow
+        tl.to(".bar", { scaleY: 1, duration: 1.2, stagger: 0.2, ease: "elastic.out(1, 0.5)" }, "-=0.4");
+
+        // Labels Fade In
+        tl.to([".bar-label", ".bar-sublabel"], { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 }, "-=0.8");
+        tl.to(".axis-label", { opacity: 1, y: 0, duration: 0.5, stagger: 0.1 }, "-=0.8");
+
+        // Delta Badge Pop
+        tl.to(".delta-badge", { scale: 1, duration: 0.6, ease: "back.out(1.7)" }, "-=0.4");
+
+        // Badge & Insight
+        tl.to(".badge-anim", { opacity: 1, y: 0, duration: 0.4 }, "-=0.2");
+        tl.to(".insight-box", { opacity: 1, x: 0, duration: 0.6 }, "-=0.2");
+
+        // Footer & Anchor
+        tl.to([".anchor-container", ".footer-anim"], { opacity: 1, y: 0, duration: 0.8 }, "-=0.4");
+    });
+</script>
+
+
+<script src="./slide-inner.js"></script></body></html>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/r7HrBDlO -->
+<html lang="en" data-chapter="Economics & Incentives" data-chapter-number="6" data-slide-position="50"><head>
+<meta name="marpa-chapter" content="Economics & Incentives" data-chapter-number="6" data-slide-position="50"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>How the Group Funds Together</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(2)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            min-height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 40px 60px;
+            box-sizing: border-box;
+        }
+
+        /* Comparison Container */
+        .comparison-wrapper {
+            display: flex;
+            gap: 60px;
+            flex: 1;
+            align-items: flex-end; /* Align bars to bottom */
+            justify-content: center;
+            padding-bottom: 0px; /* Removed padding */
+            margin-bottom: 130px; /* Added margin for benefit box */
+            position: relative;
+            max-height: 480px; /* Constrained height */
+        }
+
+        /* Lane Styles */
+        .lane {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 20px; /* Reduced padding from 30px */
+            height: 100%;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .lane-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* Bar Visuals */
+        .bar-container {
+            flex: 1;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            width: 100%;
+            padding: 10px 0; /* Reduced padding */
+            gap: 15px;
+        }
+
+        .bar {
+            width: 80px;
+            border-radius: 6px 6px 0 0;
+            position: relative;
+            transition: height 1s ease-out;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-end;
+            align-items: center;
+            padding-bottom: 10px;
+        }
+
+        .bar-solo {
+            height: 240px; /* Reduced from 320px */
+            background-color: var(--coral);
+            box-shadow: 0 0 20px rgba(239, 99, 55, 0.3);
+            width: 140px; /* Wider bar for solo heavy load */
+        }
+
+        .bar-shared {
+            height: 85px; /* Reduced from 110px */
+            background-color: var(--teal);
+            box-shadow: 0 0 15px rgba(141, 182, 176, 0.2);
+        }
+
+        /* Data Labels on Bars */
+        .bar-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            color: var(--bg-dark);
+            background: rgba(255, 255, 255, 0.9);
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 14px;
+            margin-bottom: 10px;
+        }
+
+        .top-label {
+            position: absolute;
+            top: -30px; /* Adjusted position */
+            color: var(--text-light);
+            font-size: 13px; /* Slightly reduced font size */
+            font-weight: 600;
+            background: rgba(15, 20, 25, 0.8);
+            padding: 4px 8px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        /* Risk Meters */
+        .risk-meter {
+            margin-top: 15px; /* Reduced margin */
+            width: 100%;
+            text-align: center;
+        }
+        .risk-dots {
+            display: flex;
+            justify-content: center;
+            gap: 6px;
+            margin-top: 8px;
+        }
+        .dot {
+            width: 10px; /* Slightly reduced size */
+            height: 10px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+        }
+        .dot.active-high { background: var(--coral); }
+        .dot.active-med { background: var(--teal); }
+
+        /* Benefit Box */
+        .benefit-box {
+            position: absolute;
+            bottom: 120px; /* Moved up to clear footer area */
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: var(--navy);
+            border: 1px solid var(--yellow);
+            border-left: 6px solid var(--yellow);
+            padding: 15px 30px;
+            border-radius: 8px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            width: 70%;
+            z-index: 10;
+        }
+
+        .icon-user-circle {
+            width: 36px; /* Slightly reduced */
+            height: 36px;
+            border-radius: 50%;
+            background: rgba(255,255,255,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 10px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        /* Arrow connecting logic */
+        .arrow-logic {
+            position: absolute;
+            top: 40%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: var(--text-muted);
+            font-size: 24px;
+            opacity: 0.5;
+            z-index: 5;
+        }
+
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="flex justify-between items-end mb-4 border-b border-[#044c73] pb-3">
+<div>
+<div class="flex items-center mb-1">
+<span class="w-2 h-2 bg-[#FFE66D] rounded-full mr-2"></span>
+<p class="text-[#FFE66D] font-bold tracking-widest text-xs uppercase">Chapter 3: Shared Leadership</p>
+</div>
+<h1 class="font-serif text-3xl text-[#f5f7fa]">HOW THE GROUP FUNDS TOGETHER</h1>
+</div>
+<div class="text-right">
+<p class="text-[#b0b8c1] text-xs font-mono">SCENARIO B: FUNDING COMPARISON</p>
+</div>
+</div>
+<!-- Main Comparison Content -->
+<div class="comparison-wrapper">
+<!-- Left Lane: Solo -->
+<div class="lane" style="border-top: 4px solid var(--coral);">
+<div class="lane-title text-[#ef6337]">Solo Path</div>
+<p class="text-[#b0b8c1] text-sm mb-2">Single Point of Failure</p>
+<div class="icon-user-circle">
+<i class="fas fa-user text-[#ef6337]"></i>
+</div>
+<div class="bar-container">
+<div class="bar bar-solo">
+<div class="top-label">Total Risk Concentration</div>
+<span class="bar-label">~$2.9M</span>
+<p class="text-[10px] text-white opacity-80 uppercase tracking-widest mb-2 font-bold">1 Loan</p>
+</div>
+</div>
+<div class="risk-meter">
+<p class="text-xs uppercase tracking-widest text-[#ef6337] font-bold">Risk Level: HIGH</p>
+<div class="risk-dots">
+<div class="dot active-high"></div>
+<div class="dot active-high"></div>
+<div class="dot active-high"></div>
+<div class="dot active-high"></div>
+<div class="dot active-high"></div>
+</div>
+<p class="text-[#b0b8c1] text-xs mt-2 px-4">If Bodie cannot close, the entire deal collapses.</p>
+</div>
+</div>
+<!-- VS Icon -->
+<div class="arrow-logic">
+<i class="fas fa-exchange-alt"></i>
+</div>
+<!-- Right Lane: Shared -->
+<div class="lane" style="border-top: 4px solid var(--teal);">
+<div class="lane-title text-[#8db6b0]">Shared Path</div>
+<p class="text-[#b0b8c1] text-sm mb-2">Distributed Resilience</p>
+<div class="flex gap-2 mb-1">
+<div class="icon-user-circle">
+<i class="fas fa-user text-[#8db6b0]"></i>
+</div>
+<div class="icon-user-circle">
+<i class="fas fa-user text-[#8db6b0]"></i>
+</div>
+<div class="icon-user-circle">
+<i class="fas fa-user text-[#8db6b0]"></i>
+</div>
+</div>
+<div class="bar-container">
+<div class="bar bar-shared">
+<div class="top-label" style="top: -25px;">~960K</div>
+</div>
+<div class="bar bar-shared">
+<div class="top-label" style="top: -25px;">~960K</div>
+</div>
+<div class="bar bar-shared">
+<div class="top-label" style="top: -25px;">~960K</div>
+</div>
+</div>
+<p class="text-[10px] text-[#8db6b0] uppercase tracking-widest font-bold -mt-2 mb-2">Smaller Loans per Person</p>
+<div class="risk-meter">
+<p class="text-xs uppercase tracking-widest text-[#8db6b0] font-bold">Risk Level: DISTRIBUTED</p>
+<div class="risk-dots">
+<div class="dot active-med"></div>
+<div class="dot active-med"></div>
+<div class="dot"></div>
+<div class="dot"></div>
+<div class="dot"></div>
+</div>
+<p class="text-[#b0b8c1] text-xs mt-2 px-4">If one principal falters, others can still proceed.</p>
+</div>
+</div>
+</div>
+<!-- Key Benefit Box -->
+<div class="benefit-box">
+<div class="mr-6">
+<i class="fas fa-shield-alt text-[#FFE66D] text-3xl"></i>
+</div>
+<div>
+<h3 class="text-[#FFE66D] font-bold uppercase tracking-wider text-sm mb-1">Structural Advantage</h3>
+<p class="text-[#f5f7fa] text-base leading-snug">
+                    By distributing the SBA burden across multiple principals, the deal becomes resilient to individual financial setbacks, protecting the succession plan itself.
+                </p>
+</div>
+</div>
+<!-- Footer -->
+<div class="mt-auto pt-4 border-t border-[#044c73] border-opacity-30 flex justify-between items-center text-[#4e5d6c] text-[10px] uppercase tracking-widest">
+<p>Chapter 3: Shared Leadership</p>
+<p>Confidential · MARPA Equity Pathway 2026</p>
+</div>
+</div>
+
+
+<script src="./slide-inner.js"></script></body></html>

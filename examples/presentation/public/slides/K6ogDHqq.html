@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/K6ogDHqq -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Ownership Path Options - Matrix View</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<script src="./chart.js"></script>
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+            
+            /* Ownership Colors */
+            --luke-green: #2ECC71;
+            --bodie-blue: #3498DB;
+            --pablo-orange: #E67E22;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-light);
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            padding: 30px 50px;
+            position: relative;
+            background-color: var(--bg-dark);
+            box-sizing: border-box;
+        }
+
+        /* Header */
+        .header {
+            margin-bottom: 15px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .title-tag {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--coral);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 4px;
+        }
+
+        h1.main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            font-weight: 900;
+            line-height: 1.1;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Matrix Grid */
+        .matrix-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            flex: 1;
+            height: 100%;
+        }
+
+        .option-column {
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px;
+            position: relative;
+            transition: transform 0.3s ease;
+            height: 100%;
+        }
+
+        /* Column Specific Styles */
+        .col-solo {
+            background-color: rgba(52, 152, 219, 0.05);
+            border: 1px solid rgba(52, 152, 219, 0.2);
+        }
+        
+        .col-shared {
+            background-color: rgba(255, 230, 109, 0.05);
+            border: 1px solid rgba(255, 230, 109, 0.2);
+        }
+
+        .col-db {
+            background-color: rgba(239, 99, 55, 0.08);
+            border: 2px solid var(--coral);
+            box-shadow: 0 0 25px rgba(239, 99, 55, 0.15);
+            transform: scale(1.02);
+            z-index: 10;
+        }
+
+        .column-header {
+            text-align: center;
+            margin-bottom: 15px;
+            width: 100%;
+        }
+
+        .option-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+            opacity: 0.9;
+        }
+
+        .option-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 22px;
+            font-weight: 700;
+            margin: 0 0 8px 0;
+        }
+
+        /* Complexity Badge */
+        .complexity-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 10px;
+        }
+
+        /* Chart Wrapper */
+        .chart-wrapper {
+            position: relative;
+            width: 160px;
+            height: 160px;
+            margin-bottom: 20px;
+        }
+
+        .chart-center-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .center-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-light);
+            line-height: 1;
+        }
+
+        .center-label {
+            font-size: 9px;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Stakeholder List */
+        .stakeholder-list {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            flex: 1;
+        }
+
+        .stakeholder-item {
+            display: flex;
+            flex-direction: column;
+            padding: 10px 12px;
+            background-color: rgba(0, 0, 0, 0.2);
+            border-radius: 8px;
+        }
+
+        .stakeholder-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 6px;
+        }
+
+        .stakeholder-name {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        
+        .name-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+        }
+
+        .stakeholder-percent {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 24px;
+            font-weight: 700;
+            line-height: 1;
+        }
+
+        /* Weight Bar */
+        .weight-track {
+            width: 100%;
+            height: 4px;
+            background-color: rgba(255,255,255,0.1);
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .weight-fill {
+            height: 100%;
+            border-radius: 2px;
+        }
+
+        /* Insight Box */
+        .insight-box {
+            margin-top: auto;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 11px;
+            line-height: 1.4;
+            display: flex;
+            gap: 8px;
+            align-items: flex-start;
+        }
+
+        .insight-icon {
+            font-size: 14px;
+            margin-top: 2px;
+        }
+
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="header">
+<div>
+<p class="title-tag">Ownership Comparison Matrix</p>
+<h1 class="main-title">Ownership Path Options</h1>
+<p class="subtitle">Side-by-side evaluation of equity distribution models</p>
+</div>
+<div class="text-right">
+<p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Chart 1B</p>
+<p class="text-sm font-bold text-white">Matrix View</p>
+</div>
+</div>
+<!-- Matrix Content -->
+<div class="matrix-container">
+<!-- Option A: Solo -->
+<div class="option-column col-solo">
+<div class="column-header">
+<p class="option-label text-blue-400">Option A</p>
+<h3 class="option-title">Solo Path</h3>
+<div class="complexity-badge" style="background: rgba(52, 152, 219, 0.15); color: #3498DB; border: 1px solid rgba(52, 152, 219, 0.3);">
+<i class="fas fa-shield-alt"></i>
+<p>Principal Control</p>
+</div>
+</div>
+<div class="chart-wrapper">
+<canvas id="chartSolo" width="176" height="176" style="display: block; box-sizing: border-box; height: 160px; width: 160px;"></canvas>
+<div class="chart-center-text">
+<p class="center-value">2</p>
+<p class="center-label">Partners</p>
+</div>
+</div>
+<div class="stakeholder-list">
+<div class="stakeholder-item">
+<div class="stakeholder-top">
+<span class="stakeholder-name"><div class="name-dot" style="background: var(--luke-green)"></div>LUKE</span>
+<span class="stakeholder-percent" style="color: var(--luke-green);">52%</span>
+</div>
+<div class="weight-track"><div class="weight-fill" style="width: 52%; background: var(--luke-green)"></div></div>
+</div>
+<div class="stakeholder-item">
+<div class="stakeholder-top">
+<span class="stakeholder-name"><div class="name-dot" style="background: var(--bodie-blue)"></div>BODIE</span>
+<span class="stakeholder-percent" style="color: var(--bodie-blue);">48%</span>
+</div>
+<div class="weight-track"><div class="weight-fill" style="width: 48%; background: var(--bodie-blue)"></div></div>
+</div>
+</div>
+<div class="insight-box" style="background: rgba(52, 152, 219, 0.1); color: #81cdf5;">
+<i class="fas fa-info-circle insight-icon"></i>
+<p><strong>Trade-off:</strong> Concentrated equity preserves control but limits scalability and shared risk.</p>
+</div>
+</div>
+<!-- Option B: Shared -->
+<div class="option-column col-shared">
+<div class="column-header">
+<p class="option-label text-yellow-400">Option B</p>
+<h3 class="option-title">Shared Path</h3>
+<div class="complexity-badge" style="background: rgba(255, 230, 109, 0.15); color: #FFE66D; border: 1px solid rgba(255, 230, 109, 0.3);">
+<i class="fas fa-handshake"></i>
+<p>Distributed Risk</p>
+</div>
+</div>
+<div class="chart-wrapper">
+<canvas id="chartShared" width="176" height="176" style="display: block; box-sizing: border-box; height: 160px; width: 160px;"></canvas>
+<div class="chart-center-text">
+<p class="center-value">3</p>
+<p class="center-label">Partners</p>
+</div>
+</div>
+<div class="stakeholder-list">
+<div class="stakeholder-item">
+<div class="stakeholder-top">
+<span class="stakeholder-name"><div class="name-dot" style="background: var(--luke-green)"></div>LUKE</span>
+<span class="stakeholder-percent" style="color: var(--luke-green);">52%</span>
+</div>
+<div class="weight-track"><div class="weight-fill" style="width: 52%; background: var(--luke-green)"></div></div>
+</div>
+<div class="stakeholder-item">
+<div class="stakeholder-top">
+<span class="stakeholder-name"><div class="name-dot" style="background: var(--bodie-blue)"></div>BODIE</span>
+<span class="stakeholder-percent" style="color: var(--bodie-blue);">24%</span>
+</div>
+<div class="weight-track"><div class="weight-fill" style="width: 24%; background: var(--bodie-blue)"></div></div>
+</div>
+<div class="stakeholder-item">
+<div class="stakeholder-top">
+<span class="stakeholder-name"><div class="name-dot" style="background: var(--pablo-orange)"></div>PABLO</span>
+<span class="stakeholder-percent" style="color: var(--pablo-orange);">24%</span>
+</div>
+<div class="weight-track"><div class="weight-fill" style="width: 24%; background: var(--pablo-orange)"></div></div>
+</div>
+</div>
+<div class="insight-box" style="background: rgba(255, 230, 109, 0.1); color: #fff3cd;">
+<i class="fas fa-scale-balanced insight-icon"></i>
+<p><strong>Trade-off:</strong> Balanced structure reduces individual burden but increases governance complexity.</p>
+</div>
+</div>
+<!-- Option C: Design Build -->
+<div class="option-column col-db">
+<div class="column-header">
+<p class="option-label text-red-400">Option C</p>
+<h3 class="option-title" style="color: var(--coral);">Design Build</h3>
+<div class="complexity-badge" style="background: rgba(239, 99, 55, 0.15); color: var(--coral); border: 1px solid rgba(239, 99, 55, 0.4);">
+<i class="fas fa-rocket"></i>
+<p>Growth Optimized</p>
+</div>
+</div>
+<div class="chart-wrapper">
+<canvas id="chartDB" width="176" height="176" style="display: block; box-sizing: border-box; height: 160px; width: 160px;"></canvas>
+<div class="chart-center-text">
+<p class="center-value">3</p>
+<p class="center-label">Partners</p>
+</div>
+</div>
+<div class="stakeholder-list">
+<div class="stakeholder-item">
+<div class="stakeholder-top">
+<span class="stakeholder-name"><div class="name-dot" style="background: var(--luke-green)"></div>LUKE</span>
+<span class="stakeholder-percent" style="color: var(--luke-green);">52%</span>
+</div>
+<div class="weight-track"><div class="weight-fill" style="width: 52%; background: var(--luke-green)"></div></div>
+</div>
+<div class="stakeholder-item">
+<div class="stakeholder-top">
+<span class="stakeholder-name"><div class="name-dot" style="background: var(--bodie-blue)"></div>BODIE</span>
+<span class="stakeholder-percent" style="color: var(--bodie-blue);">24%</span>
+</div>
+<div class="weight-track"><div class="weight-fill" style="width: 24%; background: var(--bodie-blue)"></div></div>
+</div>
+<div class="stakeholder-item">
+<div class="stakeholder-top">
+<span class="stakeholder-name"><div class="name-dot" style="background: var(--pablo-orange)"></div>PABLO</span>
+<span class="stakeholder-percent" style="color: var(--pablo-orange);">24%</span>
+</div>
+<div class="weight-track"><div class="weight-fill" style="width: 24%; background: var(--pablo-orange)"></div></div>
+</div>
+</div>
+<div class="insight-box" style="background: rgba(239, 99, 55, 0.15); color: #ffb8a1; border: 1px solid rgba(239, 99, 55, 0.2);">
+<i class="fas fa-chart-line insight-icon"></i>
+<p><strong>Strategic Fit:</strong> Aligns equity with high-performance implementation and long-term valuation.</p>
+</div>
+</div>
+</div>
+</div>
+<script>
+        // Colors
+        const lukeColor = '#2ECC71';
+        const bodieColor = '#3498DB';
+        const pabloColor = '#E67E22';
+        const emptyColor = 'rgba(255, 255, 255, 0.05)';
+
+        const chartOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '65%',
+            plugins: {
+                legend: { display: false },
+                tooltip: { enabled: false }
+            },
+            animation: {
+                animateScale: true,
+                animateRotate: true,
+                duration: 1500
+            },
+            borderWidth: 0
+        };
+
+        // Chart 1: Solo
+        new Chart(document.getElementById('chartSolo'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Luke', 'Bodie'],
+                datasets: [{
+                    data: [52, 48],
+                    backgroundColor: [lukeColor, bodieColor],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: chartOptions
+        });
+
+        // Chart 2: Shared
+        new Chart(document.getElementById('chartShared'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Luke', 'Bodie', 'Pablo'],
+                datasets: [{
+                    data: [52, 24, 24],
+                    backgroundColor: [lukeColor, bodieColor, pabloColor],
+                    borderWidth: 0,
+                    hoverOffset: 4
+                }]
+            },
+            options: chartOptions
+        });
+
+        // Chart 3: Design Build
+        new Chart(document.getElementById('chartDB'), {
+            type: 'doughnut',
+            data: {
+                labels: ['Luke', 'Bodie', 'Pablo'],
+                datasets: [{
+                    data: [52, 24, 24],
+                    backgroundColor: [lukeColor, bodieColor, pabloColor],
+                    borderWidth: 0,
+                    hoverOffset: 10
+                }]
+            },
+            options: chartOptions
+        });
+    </script>
+
+
+<script src="./slide-inner.js"></script></body></html>

@@ -49,7 +49,6 @@ export async function POST(req: Request) {
     model: gateway("anthropic/claude-sonnet-4-20250514"),
     system: SYSTEM_PROMPT,
     messages: modelMessages,
-    maxTokens: 1024,
   });
 
   // Return streaming response

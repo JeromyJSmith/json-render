@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/TkynBRAR -->
+<html lang="en" data-chapter="Ownership Pathways" data-chapter-number="4" data-slide-position="34"><head>
+<meta name="marpa-chapter" content="Ownership Pathways" data-chapter-number="4" data-slide-position="34"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Equity Vesting: 4-Year Cliff Schedule</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(2)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<script src="./gsap.min.js"></script>
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+            --card-bg: rgba(4, 76, 115, 0.15);
+        }
+        
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 40px 60px;
+            box-sizing: border-box;
+            background-color: var(--bg-dark);
+        }
+
+        /* Progress Bar Section */
+        .progress-section {
+            width: 80px;
+            margin-right: 40px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .progress-track {
+            width: 12px;
+            flex: 1;
+            background: rgba(255, 255, 255, 0.05);
+            border-radius: 6px;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            height: 0%; /* Animate to 100% */
+            background-color: var(--coral);
+            border-radius: 6px;
+            box-shadow: 0 0 20px rgba(239, 99, 55, 0.5);
+        }
+
+        .milestone-marker {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            background: var(--bg-dark);
+            border: 2px solid var(--text-muted);
+            z-index: 10;
+            transition: all 0.5s ease;
+        }
+        
+        .marker-active {
+            background: var(--coral);
+            border-color: var(--coral);
+            box-shadow: 0 0 15px rgba(239, 99, 55, 0.6);
+        }
+
+        /* Cards Layout */
+        .milestones-grid {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            flex: 1;
+            padding: 20px 0;
+        }
+
+        .milestone-card {
+            background-color: var(--card-bg);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            position: relative;
+            transition: transform 0.3s ease, background-color 0.3s ease;
+            margin-bottom: 20px;
+            flex: 1;
+        }
+
+        .milestone-card:last-child {
+            margin-bottom: 0;
+            background-color: rgba(239, 99, 55, 0.1);
+            border-color: rgba(239, 99, 55, 0.3);
+        }
+        
+        .card-connector {
+            position: absolute;
+            left: -46px; /* Connect to progress bar */
+            top: 50%;
+            width: 40px;
+            height: 2px;
+            background: rgba(255, 255, 255, 0.1);
+        }
+        
+        .connector-active {
+            background: var(--coral);
+        }
+
+        .percent-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--coral);
+            width: 120px;
+            text-align: right;
+            margin-right: 30px;
+            line-height: 1;
+        }
+
+        .vested-pill {
+            background: rgba(4, 76, 115, 0.5);
+            color: var(--turquoise);
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-top: 6px;
+            display: inline-block;
+        }
+
+        .card-content {
+            flex: 1;
+        }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 4px;
+        }
+
+        .year-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-light);
+        }
+        
+        .cliff-indicator {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-muted);
+        }
+        
+        .cliff-value {
+            color: var(--yellow);
+        }
+
+        .card-desc {
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* Right Panel: Logic */
+        .logic-panel {
+            width: 300px;
+            margin-left: 40px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .logic-card {
+            background-color: var(--navy);
+            border-radius: 12px;
+            padding: 25px;
+            margin-top: auto;
+            border-top: 4px solid var(--turquoise);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+        
+        .stat-item {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 15px;
+            text-align: center;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        
+        .stat-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            color: var(--text-light);
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+        
+        .stat-label {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+        }
+
+        /* Footer */
+        .footer-bar {
+            margin-top: 20px;
+            border-top: 1px solid rgba(4, 76, 115, 0.3);
+            padding-top: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            width: 100%;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="flex justify-between items-end mb-6 border-b border-[#044c73] pb-4 header-section" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div>
+<p class="text-[#ef6337] font-bold tracking-widest text-xs mb-1 uppercase">Chapter 4: Design-Build Expansion</p>
+<h1 class="font-serif text-4xl text-[#f5f7fa]">EQUITY VESTING SCHEDULE</h1>
+<p class="text-[#b0b8c1] text-sm mt-1">4-Year Cliff Structure to 24% Minority Ownership</p>
+</div>
+<div class="text-right">
+<p class="text-[#b0b8c1] text-xs font-mono uppercase">Chart 5A</p>
+<div class="bg-[#044c73] text-[#4ECDC4] text-[10px] font-bold px-2 py-1 rounded inline-block mt-1">PARTNERSHIP MECHANICS</div>
+</div>
+</div>
+<!-- Main Content -->
+<div class="flex-1 flex overflow-hidden">
+<!-- Progress Bar -->
+<div class="progress-section">
+<div class="text-[#ef6337] font-bold text-lg mb-2">24%</div>
+<div class="progress-track">
+<div class="progress-fill" style="height: 100%;"></div>
+<!-- Markers positioned via absolute percentages -->
+<div class="milestone-marker marker-4 marker-active" style="bottom: 85%; translate: none; rotate: none; scale: none; opacity: 1; transform: translate(-50%, 0%) translate(0.0043px, 0px); border-color: rgb(239, 99, 55); background-color: rgb(239, 99, 55);"></div>
+<div class="milestone-marker marker-3 marker-active" style="bottom: 60%; translate: none; rotate: none; scale: none; opacity: 1; transform: translate(-50%, 0%) translate(0.0043px, 0px); border-color: rgb(239, 99, 55); background-color: rgb(239, 99, 55);"></div>
+<div class="milestone-marker marker-2 marker-active" style="bottom: 35%; translate: none; rotate: none; scale: none; opacity: 1; transform: translate(-50%, 0%) translate(0.0043px, 0px); border-color: rgb(239, 99, 55); background-color: rgb(239, 99, 55);"></div>
+<div class="milestone-marker marker-1 marker-active" style="bottom: 10%; translate: none; rotate: none; scale: none; opacity: 1; transform: translate(-50%, 0%) translate(0.0043px, 0px); border-color: rgb(239, 99, 55); background-color: rgb(239, 99, 55);"></div>
+</div>
+<div class="text-[#b0b8c1] font-bold text-sm mt-2">0%</div>
+</div>
+<!-- Milestones Column -->
+<div class="milestones-grid">
+<!-- Year 4 -->
+<div class="milestone-card card-4" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="card-connector connector-4 connector-active" style="translate: none; rotate: none; scale: none; transform-origin: 100% 50%; transform: translate(0px, 0px);"></div>
+<div class="text-right mr-6">
+<div class="percent-badge">24%</div>
+<div class="vested-pill">Full Vesting</div>
+</div>
+<div class="card-content">
+<div class="card-header">
+<h3 class="year-title">Year 4: Full Partnership</h3>
+<span class="cliff-indicator">Cliff Remaining: <span class="cliff-value font-bold">0%</span></span>
+</div>
+<p class="card-desc">Minority partner achieves full 24% equity stake. All restrictions lifted. Full voting and distribution rights secured.</p>
+</div>
+</div>
+<!-- Year 3 -->
+<div class="milestone-card card-3" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="card-connector connector-3 connector-active" style="translate: none; rotate: none; scale: none; transform-origin: 100% 50%; transform: translate(0px, 0px);"></div>
+<div class="text-right mr-6">
+<div class="percent-badge text-[#8db6b0]">18%</div>
+<div class="vested-pill bg-opacity-30">+6% Vested</div>
+</div>
+<div class="card-content">
+<div class="card-header">
+<h3 class="year-title">Year 3: Third Tranche</h3>
+<span class="cliff-indicator">Cliff Remaining: <span class="cliff-value">6%</span></span>
+</div>
+<p class="card-desc">Significant milestone unlocking majority of equity value. Only final 6% tranche remains subject to vesting conditions.</p>
+</div>
+</div>
+<!-- Year 2 -->
+<div class="milestone-card card-2" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="card-connector connector-2 connector-active" style="translate: none; rotate: none; scale: none; transform-origin: 100% 50%; transform: translate(0px, 0px);"></div>
+<div class="text-right mr-6">
+<div class="percent-badge text-[#8db6b0]">12%</div>
+<div class="vested-pill bg-opacity-30">+6% Vested</div>
+</div>
+<div class="card-content">
+<div class="card-header">
+<h3 class="year-title">Year 2: Halfway Point</h3>
+<span class="cliff-indicator">Cliff Remaining: <span class="cliff-value">12%</span></span>
+</div>
+<p class="card-desc">Second tranche unlocks. Cumulative ownership reaches double digits. Partners demonstrate sustained commitment.</p>
+</div>
+</div>
+<!-- Year 1 -->
+<div class="milestone-card card-1" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="card-connector connector-1 connector-active" style="translate: none; rotate: none; scale: none; transform-origin: 100% 50%; transform: translate(0px, 0px);"></div>
+<div class="text-right mr-6">
+<div class="percent-badge text-[#8db6b0]">6%</div>
+<div class="vested-pill bg-opacity-30">Initial Cliff</div>
+</div>
+<div class="card-content">
+<div class="card-header">
+<h3 class="year-title">Year 1: Foundation</h3>
+<span class="cliff-indicator">Cliff Remaining: <span class="cliff-value">18%</span></span>
+</div>
+<p class="card-desc">First 6% vests after initial cliff period. 18% remains in lock-up to ensure long-term alignment and retention.</p>
+</div>
+</div>
+</div>
+<!-- Right Logic Panel -->
+<div class="logic-panel">
+<div class="stat-grid">
+<div class="stat-item" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="stat-value text-[#ef6337]">4 Yrs</div>
+<div class="stat-label">Vesting Period</div>
+</div>
+<div class="stat-item" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="stat-value text-[#turquoise]">+6%</div>
+<div class="stat-label">Annual Increment</div>
+</div>
+<div class="stat-item" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="stat-value text-[#yellow]">Cliff</div>
+<div class="stat-label">Retention Mechanism</div>
+</div>
+</div>
+<div class="logic-card" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="flex items-center mb-4">
+<i class="fas fa-shield-alt text-[#4ECDC4] text-2xl mr-3"></i>
+<h3 class="text-[#f5f7fa] font-bold uppercase tracking-wide text-sm">Structure Logic</h3>
+</div>
+<p class="text-[#b0b8c1] text-sm leading-relaxed mb-4">
+<strong class="text-[#f5f7fa]">Operational Continuity:</strong> The 6% annual cliff protects the firm against early departure while providing meaningful equity accumulation.
+                </p>
+<p class="text-[#b0b8c1] text-sm leading-relaxed">
+                    This stacked model ensures partners are incentivized for the long haul, aligning ownership with sustained value creation.
+                </p>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="footer-bar">
+<div>
+<p class="text-[#ef6337] font-bold text-xs tracking-widest uppercase mb-1">MARPA Equity Pathway 2026</p>
+<p class="text-[#b0b8c1] text-xs">Deal Structure Analysis</p>
+</div>
+<div class="text-right">
+<p class="text-[#b0b8c1] text-xs font-mono uppercase">Confidential</p>
+<p class="text-[#4e5d6c] text-[10px] mt-1">CH4-S15</p>
+</div>
+</div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+        
+        // Initial setup
+        gsap.set(".milestone-card", { x: 50, opacity: 0 });
+        gsap.set(".stat-item", { y: 20, opacity: 0 });
+        gsap.set(".logic-card", { y: 30, opacity: 0 });
+        gsap.set(".card-connector", { scaleX: 0, transformOrigin: "right center" });
+        gsap.set(".milestone-marker", { scale: 0, opacity: 0 });
+        
+        // Header animation
+        tl.from(".header-section", { y: -20, opacity: 0, duration: 0.8 })
+        
+        // Progress bar fills up
+        .to(".progress-fill", { height: "100%", duration: 1.5, ease: "power2.inOut" }, "-=0.4")
+        
+        // Markers appear as bar passes them
+        .to(".marker-1", { scale: 1, opacity: 1, backgroundColor: "#ef6337", borderColor: "#ef6337", duration: 0.3 }, "-=1.4")
+        .to(".marker-2", { scale: 1, opacity: 1, backgroundColor: "#ef6337", borderColor: "#ef6337", duration: 0.3 }, "-=1.1")
+        .to(".marker-3", { scale: 1, opacity: 1, backgroundColor: "#ef6337", borderColor: "#ef6337", duration: 0.3 }, "-=0.8")
+        .to(".marker-4", { scale: 1, opacity: 1, backgroundColor: "#ef6337", borderColor: "#ef6337", duration: 0.3 }, "-=0.5")
+        
+        // Cards slide in from bottom to top order to match visual flow
+        .to(".card-1", { x: 0, opacity: 1, duration: 0.5 }, "-=1.3")
+        .to(".connector-1", { scaleX: 1, duration: 0.3 }, "-=1.0")
+        
+        .to(".card-2", { x: 0, opacity: 1, duration: 0.5 }, "-=1.0")
+        .to(".connector-2", { scaleX: 1, duration: 0.3 }, "-=0.7")
+        
+        .to(".card-3", { x: 0, opacity: 1, duration: 0.5 }, "-=0.7")
+        .to(".connector-3", { scaleX: 1, duration: 0.3 }, "-=0.4")
+        
+        .to(".card-4", { x: 0, opacity: 1, duration: 0.5 }, "-=0.4")
+        .to(".connector-4", { scaleX: 1, duration: 0.3 }, "-=0.1")
+        
+        // Stats and Logic panel
+        .to(".stat-item", { y: 0, opacity: 1, stagger: 0.1, duration: 0.6 }, "-=0.8")
+        .to(".logic-card", { y: 0, opacity: 1, duration: 0.8 }, "-=0.4");
+        
+        // Add active class to markers for glow effect
+        setTimeout(() => {
+            document.querySelectorAll('.milestone-marker').forEach(el => el.classList.add('marker-active'));
+            document.querySelectorAll('.card-connector').forEach(el => el.classList.add('connector-active'));
+        }, 2000);
+    });
+</script>
+
+
+<script src="./slide-inner.js"></script></body></html>

@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/L0YKY1Go -->
+<html lang="en" data-chapter="Financial Analysis" data-chapter-number="3" data-slide-position="20"><head>
+<meta name="marpa-chapter" content="Financial Analysis" data-chapter-number="3" data-slide-position="20"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>How The Numbers Work - Share Math</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(2)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<script src="./gsap.min.js"></script>
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            min-height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 40px 60px;
+            box-sizing: border-box;
+        }
+
+        /* Calculation Banner */
+        .calc-banner {
+            background: rgba(4, 76, 115, 0.2);
+            border: 1px solid rgba(4, 76, 115, 0.5);
+            border-radius: 8px;
+            padding: 15px 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            opacity: 0; /* Hidden for animation */
+        }
+
+        /* Data Table Styling */
+        .math-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0 12px;
+        }
+
+        .math-row {
+            transition: transform 0.2s ease;
+            opacity: 0; /* Hidden for animation */
+        }
+
+        .math-cell {
+            padding: 20px 25px;
+            background-color: rgba(255, 255, 255, 0.03);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .math-cell:first-child {
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
+            width: 40%;
+        }
+
+        .math-cell:last-child {
+            border-top-right-radius: 8px;
+            border-bottom-right-radius: 8px;
+            border-right: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: right;
+        }
+
+        /* Specific Row Styles */
+        .row-total .math-cell {
+            background-color: rgba(15, 20, 25, 0.5);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .row-target .math-cell {
+            background-color: rgba(239, 99, 55, 0.1);
+            border-color: rgba(239, 99, 55, 0.3);
+            position: relative;
+        }
+        .row-target .math-cell::before {
+            content: '';
+            position: absolute;
+            left: 0;
+            top: 0;
+            bottom: 0;
+            width: 4px;
+            background-color: var(--coral);
+            border-top-left-radius: 8px;
+            border-bottom-left-radius: 8px;
+        }
+
+        .row-gift .math-cell {
+            background-color: rgba(141, 182, 176, 0.08);
+            border-color: rgba(141, 182, 176, 0.2);
+        }
+        
+        .row-purchase .math-cell {
+            background-color: rgba(255, 230, 109, 0.08);
+            border-color: rgba(255, 230, 109, 0.2);
+        }
+
+        .indent-line {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border-left: 2px solid var(--text-muted);
+            border-bottom: 2px solid var(--text-muted);
+            margin-right: 10px;
+            margin-left: 10px;
+            opacity: 0.3;
+            transform: translateY(-5px);
+        }
+
+        .highlight-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+        }
+
+        .bottom-note {
+            opacity: 0; /* Hidden for animation */
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="flex justify-between items-end mb-6 border-b border-[#044c73] border-opacity-50 pb-4 header-section" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<div>
+<p class="text-[#ef6337] font-bold tracking-widest text-xs mb-1 uppercase">Chapter 2: Solo Principal Path</p>
+<h1 class="font-serif text-4xl text-[#f5f7fa]">HOW THE NUMBERS WORK</h1>
+</div>
+<div class="text-right">
+<p class="text-[#b0b8c1] text-xs font-mono">SCENARIO A: SHARE BREAKDOWN</p>
+</div>
+</div>
+<!-- Main Content -->
+<div class="flex-1 flex flex-col">
+<!-- Top Banner: Price Per Share Calculation -->
+<div class="calc-banner" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<div class="flex items-center">
+<div class="w-10 h-10 rounded-full bg-[#044c73] flex items-center justify-center mr-4">
+<i class="fas fa-calculator text-[#4ECDC4]"></i>
+</div>
+<div>
+<p class="text-[#b0b8c1] text-xs uppercase tracking-wider">Price Per Share Basis</p>
+<p class="text-[#f5f7fa] font-serif text-xl font-bold">$17,000 / Share</p>
+</div>
+</div>
+<div class="h-8 w-px bg-white opacity-10 mx-6"></div>
+<div class="text-right">
+<p class="text-[#b0b8c1] text-xs">Derived from:</p>
+<p class="font-mono text-sm text-[#4ECDC4]">$17.0M Valuation (10.27×) ÷ 1,000 Total Shares</p>
+</div>
+</div>
+<!-- The Math Table -->
+<table class="math-table">
+<thead>
+<tr>
+<th class="text-left pl-6 text-[#b0b8c1] text-xs uppercase tracking-widest pb-2">Component</th>
+<th class="text-center text-[#b0b8c1] text-xs uppercase tracking-widest pb-2">Share Count</th>
+<th class="text-right pr-6 text-[#b0b8c1] text-xs uppercase tracking-widest pb-2">Financial Value</th>
+</tr>
+</thead>
+<tbody>
+<!-- Row 1: Total -->
+<tr class="math-row row-total" style="">
+<td class="math-cell">
+<div class="flex items-center">
+<i class="fas fa-building text-[#b0b8c1] mr-3 opacity-50"></i>
+<span class="font-bold text-[#f5f7fa]">Total Company Shares</span>
+</div>
+</td>
+<td class="math-cell text-center">
+<span class="highlight-number text-[#f5f7fa] text-lg">1,000</span>
+</td>
+<td class="math-cell">
+<span class="highlight-number text-[#f5f7fa] text-lg">$17,000,000</span>
+<p class="text-[10px] text-[#b0b8c1] mt-1">Enterprise Value</p>
+</td>
+</tr>
+<!-- Row 2: Bodie's Target -->
+<tr class="math-row row-target" style="">
+<td class="math-cell">
+<div class="flex items-center pl-2">
+<i class="fas fa-bullseye text-[#ef6337] mr-3"></i>
+<div>
+<span class="font-bold text-[#f5f7fa] text-lg">Bodie's Target (49%)</span>
+<p class="text-xs text-[#ef6337] mt-1">Full ownership goal by Year 11</p>
+</div>
+</div>
+</td>
+<td class="math-cell text-center">
+<span class="highlight-number text-[#ef6337] text-2xl">490</span>
+</td>
+<td class="math-cell">
+<span class="highlight-number text-[#ef6337] text-2xl">~$8,330,000</span>
+<p class="text-[10px] text-[#b0b8c1] mt-1">Total Value of Stake</p>
+</td>
+</tr>
+<!-- Row 3: Gifted -->
+<tr class="math-row row-gift" style="">
+<td class="math-cell">
+<div class="flex items-center">
+<span class="indent-line"></span>
+<div class="w-8 h-8 rounded bg-[#8db6b0] bg-opacity-20 flex items-center justify-center mr-3">
+<i class="fas fa-gift text-[#8db6b0] text-xs"></i>
+</div>
+<span class="font-medium text-[#8db6b0]">Gifted Portion</span>
+</div>
+</td>
+<td class="math-cell text-center">
+<span class="highlight-number text-[#8db6b0]">245</span>
+</td>
+<td class="math-cell">
+<span class="highlight-number text-[#f5f7fa]">$0</span>
+<span class="text-xs text-[#b0b8c1] ml-1">(Cash from Bodie)</span>
+<p class="text-[10px] text-[#8db6b0] mt-1">Luke absorbs gift tax</p>
+</td>
+</tr>
+<!-- Row 4: Purchased -->
+<tr class="math-row row-purchase" style="">
+<td class="math-cell">
+<div class="flex items-center">
+<span class="indent-line"></span>
+<div class="w-8 h-8 rounded bg-[#FFE66D] bg-opacity-20 flex items-center justify-center mr-3">
+<i class="fas fa-coins text-[#FFE66D] text-xs"></i>
+</div>
+<span class="font-medium text-[#FFE66D]">Purchased Portion</span>
+</div>
+</td>
+<td class="math-cell text-center">
+<span class="highlight-number text-[#FFE66D]">245</span>
+</td>
+<td class="math-cell">
+<span class="highlight-number text-[#f5f7fa]">~$4,165,000</span>
+<span class="text-xs text-[#b0b8c1] ml-1">+ SBA Loan</span>
+<p class="text-[10px] text-[#FFE66D] mt-1">Requires financing</p>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- Bottom Note -->
+<div class="mt-auto flex items-start p-4 bg-[#0f1419] border border-[#044c73] rounded bottom-note" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<i class="fas fa-info-circle text-[#4ECDC4] mt-1 mr-3"></i>
+<p class="text-[#b0b8c1] text-xs leading-relaxed">
+<span class="text-[#f5f7fa] font-bold">Why this split?</span> The 50/50 balance between gifted and purchased shares is designed to limit Luke's immediate tax exposure while ensuring Bodie has significant "skin in the game" through the purchased portion.
+                </p>
+</div>
+</div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Animation Sequence
+        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+        // Header fade in
+        tl.from(".header-section", {
+            opacity: 0,
+            y: -20,
+            duration: 0.8
+        });
+
+        // Banner slides in
+        tl.to(".calc-banner", {
+            opacity: 1,
+            y: 0,
+            duration: 0.6
+        }, "-=0.4");
+        
+        // Table rows stagger in
+        tl.to(".math-row", {
+            opacity: 1,
+            x: 0,
+            duration: 0.6,
+            stagger: 0.15,
+            clearProps: "all" // Remove GSAP styles after animation to allow hover effects if added later
+        }, "-=0.2");
+
+        // Bottom note fade up
+        tl.to(".bottom-note", {
+            opacity: 1,
+            y: 0,
+            duration: 0.8
+        }, "-=0.2");
+    });
+</script>
+
+
+<script src="./slide-inner.js"></script></body></html>

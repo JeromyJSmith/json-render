@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/CJfKSMJH -->
+<html lang="en" data-chapter="Foundation" data-chapter-number="1" data-slide-position="6"><head>
+<meta name="marpa-chapter" content="Foundation" data-chapter-number="1" data-slide-position="6"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>What Is Design-Build?</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(2)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --navy-light: #1a3a52;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            min-height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 40px 60px;
+            box-sizing: border-box;
+        }
+
+        /* Flow Containers */
+        .model-container {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 12px;
+            padding: 24px 30px;
+            margin-bottom: 20px;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .model-label {
+            position: absolute;
+            top: -12px;
+            left: 24px;
+            background: var(--bg-dark);
+            padding: 0 10px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .flow-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: 10px;
+            position: relative;
+        }
+
+        /* Nodes */
+        .node {
+            background: var(--navy-light);
+            border: 1px solid var(--navy);
+            border-radius: 8px;
+            padding: 16px 20px;
+            width: 200px;
+            height: 100px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+            z-index: 2;
+        }
+
+        .node-icon {
+            font-size: 24px;
+            margin-bottom: 8px;
+        }
+
+        .node-title {
+            font-weight: 700;
+            font-size: 16px;
+            line-height: 1.2;
+            color: var(--text-light);
+        }
+
+        .node-subtitle {
+            font-size: 11px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        .profit-badge {
+            margin-top: 6px;
+            font-size: 10px;
+            padding: 2px 8px;
+            border-radius: 4px;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        /* Traditional Styles */
+        .traditional .node {
+            border-color: #4a5568;
+            background: rgba(74, 85, 104, 0.1);
+        }
+        .traditional .profit-badge.marpa {
+            background: rgba(141, 182, 176, 0.1);
+            color: var(--teal);
+            border: 1px solid rgba(141, 182, 176, 0.3);
+        }
+        .traditional .profit-badge.contractor {
+            background: rgba(255, 255, 255, 0.05);
+            color: #718096;
+            border: 1px dashed #718096;
+        }
+
+        /* DB Styles */
+        .db .node {
+            border-color: var(--coral);
+            background: rgba(239, 99, 55, 0.05);
+            box-shadow: 0 0 20px rgba(239, 99, 55, 0.1);
+        }
+        .db .profit-badge {
+            background: var(--yellow);
+            color: #000;
+            font-weight: 700;
+            box-shadow: 0 2px 10px rgba(255, 230, 109, 0.3);
+        }
+
+        /* Arrows */
+        .arrow-connector {
+            flex: 1;
+            height: 2px;
+            background-color: #2d3748;
+            margin: 0 10px;
+            position: relative;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .arrow-connector::after {
+            content: '\f061';
+            font-family: 'Font Awesome 6 Free';
+            font-weight: 900;
+            position: absolute;
+            right: -5px;
+            color: #2d3748;
+            font-size: 14px;
+        }
+
+        .db .arrow-connector {
+            background-color: var(--coral); /* Solid color as fallback/base */
+            /* Removed gradient to comply with requirements */
+        }
+        .db .arrow-connector::after {
+            color: var(--coral);
+        }
+
+        /* Benefit Box */
+        .benefit-callout {
+            background-color: rgba(4, 76, 115, 0.3); /* Solid-ish background */
+            border-left: 4px solid var(--yellow);
+            padding: 20px 30px;
+            border-radius: 0 8px 8px 0;
+            display: flex;
+            align-items: center;
+            margin-top: auto;
+        }
+        
+        /* Merge Icon for DB */
+        .merge-circle {
+            width: 40px;
+            height: 40px;
+            background: var(--bg-dark);
+            border: 2px solid var(--coral);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 5;
+            color: var(--yellow);
+        }
+
+        .x-mark {
+            position: absolute;
+            top: -10px;
+            right: -10px;
+            background: #e53e3e;
+            color: white;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 10px;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="flex justify-between items-end mb-8 border-b border-[#044c73] pb-4">
+<div>
+<div class="flex items-center mb-2">
+<span class="w-2 h-2 bg-[#ef6337] rounded-full mr-2"></span>
+<p class="text-[#ef6337] font-bold tracking-widest text-xs uppercase">Chapter 4: Design-Build Expansion</p>
+</div>
+<h1 class="font-serif text-4xl text-[#f5f7fa]">WHAT IS DESIGN-BUILD?</h1>
+</div>
+<div class="text-right">
+<p class="text-[#b0b8c1] text-sm font-mono">CH4-S04</p>
+</div>
+</div>
+<!-- Content -->
+<div class="flex-1 flex flex-col">
+<!-- Traditional Model -->
+<div class="model-container traditional">
+<div class="model-label text-[#b0b8c1]">TRADITIONAL (DESIGN-BID-BUILD)</div>
+<div class="flow-diagram">
+<!-- Node 1: Client -->
+<div class="node">
+<i class="fas fa-user node-icon text-[#b0b8c1]"></i>
+<div class="node-title">Client</div>
+<div class="node-subtitle">Project Owner</div>
+</div>
+<div class="arrow-connector"></div>
+<!-- Node 2: MARPA -->
+<div class="node">
+<i class="fas fa-pencil-ruler node-icon text-[#8db6b0]"></i>
+<div class="node-title">MARPA</div>
+<div class="node-subtitle">Design Only</div>
+<div class="profit-badge marpa">Earns Design Fee</div>
+</div>
+<div class="arrow-connector">
+<div class="absolute -top-6 text-[10px] text-[#b0b8c1] uppercase tracking-widest">Handoff Gap</div>
+</div>
+<!-- Node 3: Contractor -->
+<div class="node">
+<i class="fas fa-hard-hat node-icon text-[#718096]"></i>
+<div class="node-title">Contractor</div>
+<div class="node-subtitle">Separate Entity</div>
+<div class="profit-badge contractor">Profit Goes Here</div>
+<!-- Loss Indicator -->
+<div class="x-mark"><i class="fas fa-times"></i></div>
+</div>
+<div class="arrow-connector"></div>
+<!-- Node 4: Build -->
+<div class="node" style="width: 140px; border-style: dashed;">
+<i class="fas fa-building node-icon text-[#4a5568]"></i>
+<div class="node-title">Build</div>
+<div class="node-subtitle">Completion</div>
+</div>
+</div>
+</div>
+<!-- Design-Build Model -->
+<div class="model-container db" style="margin-bottom: 0; flex: 1;">
+<div class="model-label text-[#ef6337]">DESIGN-BUILD (INTEGRATED)</div>
+<div class="flow-diagram h-full">
+<!-- Node 1: Client -->
+<div class="node">
+<i class="fas fa-user-check node-icon text-[#ef6337]"></i>
+<div class="node-title">Client</div>
+<div class="node-subtitle">Single Contract</div>
+</div>
+<div class="arrow-connector"></div>
+<!-- Node 2: Unified Team -->
+<div class="node" style="width: 320px;">
+<div class="flex justify-center gap-4 mb-2">
+<i class="fas fa-pencil-ruler text-[#8db6b0]"></i>
+<i class="fas fa-plus text-[#ef6337] text-xs pt-1"></i>
+<i class="fas fa-truck-pickup text-[#FFE66D]"></i>
+</div>
+<div class="node-title text-xl">MARPA + Pablo</div>
+<div class="node-subtitle text-[#ef6337]">Unified Team</div>
+<div class="profit-badge mt-3">Earns Design Fee + Construction Margin</div>
+</div>
+<div class="arrow-connector"></div>
+<!-- Node 3: Build -->
+<div class="node" style="width: 140px; background: rgba(255, 230, 109, 0.1); border-color: var(--yellow);">
+<i class="fas fa-check-circle node-icon text-[#FFE66D]"></i>
+<div class="node-title">Build</div>
+<div class="node-subtitle">Faster Delivery</div>
+</div>
+</div>
+</div>
+<!-- Benefit Callout -->
+<div class="benefit-callout mt-6">
+<div class="mr-6">
+<div class="w-12 h-12 rounded-full bg-[#FFE66D] flex items-center justify-center text-[#0f1419] text-2xl">
+<i class="fas fa-coins"></i>
+</div>
+</div>
+<div>
+<h3 class="text-[#FFE66D] font-bold text-sm uppercase tracking-wider mb-1">Why It Matters</h3>
+<p class="text-[#f5f7fa] text-lg leading-snug font-serif italic">
+                        "Design-build is the only path where MARPA captures construction profits instead of handing them away."
+                    </p>
+</div>
+</div>
+<!-- Footer -->
+<div class="mt-auto pt-4 flex justify-between items-center border-t border-[#044c73] border-opacity-30">
+<p class="text-[#4e5d6c] text-xs tracking-widest uppercase">MARPA Equity Pathway 2026</p>
+<p class="text-[#4e5d6c] text-xs uppercase">Confidential Presentation</p>
+</div>
+</div>
+</div>
+
+
+<script src="./slide-inner.js"></script></body></html>

@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/KhTsxWlv -->
+<html lang="en" data-chapter="Design-Build" data-chapter-number="4" data-slide-position="38"><head>
+<meta name="marpa-chapter" content="Design-Build" data-chapter-number="4" data-slide-position="38"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Construction Growth — 4-Year Projection Table</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(2)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<script src="./chart.js"></script>
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+        }
+        
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 40px 60px;
+            box-sizing: border-box;
+            background-color: var(--bg-dark);
+        }
+
+        /* Content Layout */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            flex: 1;
+            margin-top: 20px;
+        }
+
+        /* Chart Section */
+        .chart-container {
+            background-color: rgba(4, 76, 115, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        /* Table Section */
+        .table-container {
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+
+        .growth-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-bottom: 30px;
+        }
+
+        .growth-table th {
+            text-align: left;
+            padding: 16px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 2px solid var(--navy);
+        }
+
+        .growth-table td {
+            padding: 20px 16px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .growth-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .col-year { font-weight: 700; color: var(--coral); }
+        .col-revenue { font-family: 'JetBrains Mono', monospace; font-weight: 700; font-size: 18px; }
+        .col-growth { color: var(--turquoise); }
+        .col-pct { 
+            background-color: rgba(255, 230, 109, 0.1); 
+            color: var(--yellow); 
+            font-weight: 700;
+            text-align: center;
+            border-radius: 4px;
+        }
+
+        /* Performance Summary Box */
+        .summary-box {
+            background-color: var(--navy);
+            border-left: 4px solid var(--coral);
+            border-radius: 0 8px 8px 0;
+            padding: 24px;
+            position: relative;
+        }
+
+        .summary-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 12px;
+        }
+
+        .summary-icon {
+            font-size: 20px;
+            color: var(--coral);
+            margin-right: 12px;
+        }
+
+        .summary-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-light);
+        }
+
+        .summary-stat {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 36px;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 4px;
+        }
+
+        .summary-sub {
+            color: var(--text-muted);
+            font-size: 14px;
+        }
+
+        /* Badge */
+        .rate-badge {
+            background-color: var(--coral);
+            color: white;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 700;
+            display: inline-block;
+            margin-left: 12px;
+        }
+        
+        /* Footer */
+        .footer-bar {
+            margin-top: auto;
+            border-top: 1px solid rgba(4, 76, 115, 0.3);
+            padding-top: 16px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="flex justify-between items-end mb-8 border-b border-[#044c73] pb-6">
+<div>
+<div class="flex items-center mb-2">
+<span class="w-2 h-2 bg-[#ef6337] rounded-full mr-2"></span>
+<p class="text-[#ef6337] font-bold tracking-widest text-xs uppercase">Chapter 4: Design-Build Expansion</p>
+</div>
+<div class="flex items-center">
+<h1 class="font-serif text-4xl text-[#f5f7fa] mr-4">Construction Growth Outlook</h1>
+<span class="rate-badge">10% CAGR</span>
+</div>
+</div>
+<div class="text-right">
+<p class="text-[#b0b8c1] text-sm font-mono">4-YEAR PROJECTION</p>
+</div>
+</div>
+<!-- Main Content Grid -->
+<div class="content-grid">
+<!-- Left Column: Data Table & Summary -->
+<div class="table-container">
+<table class="growth-table">
+<thead>
+<tr>
+<th width="20%">Year</th>
+<th width="30%">Revenue</th>
+<th width="30%">Growth ($)</th>
+<th style="text-align: center;" width="20%">YoY %</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="col-year">Year 1</td>
+<td class="col-revenue">$1.20M</td>
+<td class="col-growth text-gray-500">—</td>
+<td style="text-align: center;"><span class="text-gray-500">—</span></td>
+</tr>
+<tr>
+<td class="col-year">Year 2</td>
+<td class="col-revenue">$1.32M</td>
+<td class="col-growth">+$120K</td>
+<td style="text-align: center;"><span class="col-pct">+10%</span></td>
+</tr>
+<tr>
+<td class="col-year">Year 3</td>
+<td class="col-revenue">$1.45M</td>
+<td class="col-growth">+$132K</td>
+<td style="text-align: center;"><span class="col-pct">+10%</span></td>
+</tr>
+<tr>
+<td class="col-year">Year 4</td>
+<td class="col-revenue">$1.60M</td>
+<td class="col-growth">+$145K</td>
+<td style="text-align: center;"><span class="col-pct">+10%</span></td>
+</tr>
+</tbody>
+</table>
+<!-- Performance Summary -->
+<div class="summary-box">
+<div class="summary-header">
+<i class="fas fa-chart-line summary-icon"></i>
+<h3 class="summary-title">Performance Summary</h3>
+</div>
+<div class="flex justify-between items-end">
+<div>
+<p class="summary-stat text-[#ef6337]">+33%</p>
+<p class="summary-sub">Total Revenue Increase</p>
+</div>
+<div class="text-right">
+<p class="summary-stat text-[#4ECDC4]">+$397K</p>
+<p class="summary-sub">New Annual Revenue</p>
+</div>
+</div>
+<p class="mt-4 text-sm text-[#b0b8c1] italic border-t border-[#ffffff20] pt-3">
+                    "Consistent 10% compounding growth adds nearly $400K in top-line revenue without requiring major operational restructuring."
+                </p>
+</div>
+</div>
+<!-- Right Column: Visual Chart -->
+<div class="chart-container">
+<div class="flex justify-between items-center mb-4">
+<h3 class="text-lg font-bold text-white">Revenue Trajectory</h3>
+<div class="flex items-center gap-3">
+<div class="flex items-center">
+<span class="w-3 h-3 rounded-full bg-[#ef6337] mr-2"></span>
+<span class="text-xs text-[#b0b8c1]">Revenue</span>
+</div>
+<div class="flex items-center">
+<span class="w-3 h-3 rounded-full bg-[#4ECDC4] mr-2"></span>
+<span class="text-xs text-[#b0b8c1]">Growth</span>
+</div>
+</div>
+</div>
+<div style="flex: 1; min-height: 0;">
+<canvas id="growthChart" width="561" height="593" style="display: block; box-sizing: border-box; height: 539.6px; width: 510.2px;"></canvas>
+</div>
+<!-- Annotation -->
+<div class="absolute top-1/2 right-8 transform -translate-y-1/2 bg-[#0f1419] border border-[#ef6337] p-3 rounded shadow-lg">
+<p class="text-xs text-[#ef6337] font-bold uppercase mb-1">Target</p>
+<p class="font-mono text-xl font-bold text-white">$1.60M</p>
+<p class="text-[10px] text-[#b0b8c1]">By Year 4</p>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="footer-bar">
+<p class="text-[#4e5d6c] text-xs tracking-widest uppercase font-bold">Confidential · MARPA Equity Pathway 2026</p>
+<p class="text-[#4e5d6c] text-xs font-mono">CH4-S06</p>
+</div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const ctx = document.getElementById('growthChart').getContext('2d');
+        
+        // Gradient for Area Chart
+        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, 'rgba(239, 99, 55, 0.5)');   // Coral top
+        gradient.addColorStop(1, 'rgba(239, 99, 55, 0.05)');  // Coral bottom faded
+
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: ['Year 1', 'Year 2', 'Year 3', 'Year 4'],
+                datasets: [{
+                    label: 'Projected Revenue',
+                    data: [1.20, 1.32, 1.45, 1.60],
+                    borderColor: '#ef6337',
+                    backgroundColor: gradient,
+                    borderWidth: 3,
+                    pointBackgroundColor: '#0f1419',
+                    pointBorderColor: '#ef6337',
+                    pointBorderWidth: 2,
+                    pointRadius: 6,
+                    pointHoverRadius: 8,
+                    fill: true,
+                    tension: 0.4
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 20, 25, 0.95)',
+                        titleColor: '#fff',
+                        titleFont: { family: 'JetBrains Mono' },
+                        bodyColor: '#b0b8c1',
+                        bodyFont: { family: 'Inter' },
+                        padding: 12,
+                        borderColor: 'rgba(255,255,255,0.1)',
+                        borderWidth: 1,
+                        callbacks: {
+                            label: function(context) {
+                                return '$' + context.raw.toFixed(2) + 'M';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: false,
+                        min: 1.0,
+                        max: 1.8,
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.05)',
+                            borderDash: [5, 5]
+                        },
+                        ticks: {
+                            color: '#b0b8c1',
+                            font: { family: 'JetBrains Mono' },
+                            callback: function(value) {
+                                return '$' + value + 'M';
+                            }
+                        }
+                    },
+                    x: {
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: '#b0b8c1',
+                            font: { family: 'Inter', weight: '600' }
+                        }
+                    }
+                },
+                animation: {
+                    duration: 2000,
+                    easing: 'easeOutQuart'
+                }
+            }
+        });
+    });
+</script>
+
+
+<script src="./slide-inner.js"></script></body></html>

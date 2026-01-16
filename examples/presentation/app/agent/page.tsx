@@ -1,40 +1,87 @@
 "use client";
 
 import { useChat } from "@ai-sdk/react";
-import { useState, useRef, useEffect } from "react";
+import { DefaultChatTransport } from "ai";
+import { useState, useRef, useEffect, useMemo } from "react";
 import { SlideRenderer } from "@/components/slides";
 import { SlideData, COLORS } from "@/lib/schema";
+
+// Helper to extract text content from AI SDK v3 messages
+function getMessageContent(message: {
+  parts?: Array<{ type: string; text?: string }>;
+}): string {
+  if (!message.parts) return "";
+  return message.parts
+    .filter((part) => part.type === "text" && part.text)
+    .map((part) => part.text)
+    .join("");
+}
+
+// Helper to get tool invocations from AI SDK v3 messages
+function getToolParts(message: {
+  parts?: Array<{
+    type: string;
+    toolCallId?: string;
+    toolName?: string;
+    state?: string;
+  }>;
+}) {
+  if (!message.parts) return [];
+  return message.parts.filter((part) => part.type?.startsWith("tool-"));
+}
 
 export default function AgentPage() {
   const [slides, setSlides] = useState<SlideData[]>([]);
   const [currentSlide, setCurrentSlide] = useState(0);
   const [scale, setScale] = useState(1);
   const [model, setModel] = useState<"anthropic" | "google">("anthropic");
+  const [inputValue, setInputValue] = useState("");
   const containerRef = useRef<HTMLDivElement>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
-  const { messages, input, handleInputChange, handleSubmit, isLoading } =
-    useChat({
-      api: "/api/chat",
-      body: { model },
-      onFinish: (message) => {
-        // Extract tool results from the message
-        if (message.toolInvocations) {
-          for (const invocation of message.toolInvocations) {
-            if (invocation.state === "result" && invocation.result) {
-              const slide = invocation.result as SlideData;
-              if (slide.type && slide.title) {
-                setSlides((prev) => {
-                  const newSlides = [...prev, slide];
-                  setCurrentSlide(newSlides.length - 1);
-                  return newSlides;
-                });
-              }
-            }
+  // AI SDK v3: Use DefaultChatTransport to configure endpoint
+  const transport = useMemo(
+    () =>
+      new DefaultChatTransport({
+        api: "/api/chat",
+        body: { model },
+      }),
+    [model],
+  );
+
+  const chatHelpers = useChat({
+    transport,
+    onFinish: ({ message }) => {
+      // Extract tool results from the message
+      // In AI SDK v3, tool invocations are in message.parts with type starting with "tool-"
+      if (!message.parts) return;
+
+      for (const part of message.parts) {
+        // Check if this is a tool part with output
+        if (part.type?.startsWith("tool-") && "output" in part && part.output) {
+          const slide = part.output as SlideData;
+          if (slide.type && slide.title) {
+            setSlides((prev) => {
+              const newSlides = [...prev, slide];
+              setCurrentSlide(newSlides.length - 1);
+              return newSlides;
+            });
           }
         }
-      },
-    });
+      }
+    },
+  });
+
+  const { messages, sendMessage, status } = chatHelpers;
+  const isLoading = status === "streaming" || status === "submitted";
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!inputValue.trim() || isLoading) return;
+    // AI SDK v3: sendMessage expects { text: string } format
+    sendMessage({ text: inputValue.trim() });
+    setInputValue("");
+  };
 
   // Auto-scroll messages
   useEffect(() => {
@@ -190,11 +237,11 @@ export default function AgentPage() {
               <div
                 style={{ color: COLORS.text, fontSize: 14, lineHeight: 1.5 }}
               >
-                {message.content}
+                {getMessageContent(message)}
               </div>
 
               {/* Show tool invocations */}
-              {message.toolInvocations?.map((tool, i) => (
+              {getToolParts(message).map((part, i) => (
                 <div
                   key={i}
                   style={{
@@ -206,9 +253,10 @@ export default function AgentPage() {
                   }}
                 >
                   <span style={{ color: COLORS.teal }}>
-                    {tool.state === "result" ? "✓" : "⏳"} {tool.toolName}
+                    {part.type?.includes("output") ? "✓" : "⏳"}{" "}
+                    {part.toolName || "Tool"}
                   </span>
-                  {tool.state === "result" && (
+                  {part.type?.includes("output") && (
                     <span style={{ color: COLORS.muted, marginLeft: 8 }}>
                       → Slide created
                     </span>
@@ -247,8 +295,8 @@ export default function AgentPage() {
           }}
         >
           <input
-            value={input}
-            onChange={handleInputChange}
+            value={inputValue}
+            onChange={(e) => setInputValue(e.target.value)}
             placeholder="Ask me to create a slide..."
             disabled={isLoading}
             style={{

@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/HaOyxEyP -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Revenue Growth by Service: Construction vs Maintenance</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<script src="./chart.js"></script>
+<script src="./chartjs-plugin-datalabels@2.0.0"></script>
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+            
+            /* Chart Colors */
+            --color-const: #044c73;
+            --color-maint: #ef6337;
+            --color-total: #FFE66D;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-light);
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 60px;
+            position: relative;
+            background-color: var(--bg-dark);
+            box-sizing: border-box;
+        }
+
+        /* Header */
+        .header {
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .title-tag {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--yellow);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        h1.main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            font-weight: 900;
+            line-height: 1.1;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        /* Content Layout */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 40px;
+            flex: 1;
+            height: 100%;
+            position: relative;
+        }
+
+        /* Chart Area */
+        .chart-wrapper {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 20px 30px 10px 20px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Sidebar Stats */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .legend-card {
+            background: rgba(255, 255, 255, 0.03);
+            border-radius: 8px;
+            padding: 16px;
+            display: flex;
+            align-items: center;
+            border-left: 4px solid;
+        }
+
+        .card-const { border-color: var(--color-const); }
+        .card-maint { border-color: var(--color-maint); }
+
+        .legend-icon {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 12px;
+            background: rgba(255,255,255,0.05);
+        }
+
+        .legend-title {
+            font-size: 14px;
+            font-weight: 700;
+            color: var(--text-light);
+        }
+
+        .legend-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 2px;
+        }
+
+        /* Insight Box */
+        .insight-box {
+            margin-top: auto;
+            background: linear-gradient(135deg, rgba(239, 99, 55, 0.15) 0%, rgba(239, 99, 55, 0.05) 100%);
+            border: 1px solid rgba(239, 99, 55, 0.3);
+            padding: 24px;
+            border-radius: 12px;
+            position: relative;
+        }
+
+        .insight-header {
+            color: var(--coral);
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .insight-text {
+            font-size: 15px;
+            line-height: 1.5;
+            color: var(--text-light);
+        }
+
+        .highlight-val {
+            color: var(--yellow);
+            font-weight: 700;
+        }
+
+        /* Table Overlay in Sidebar */
+        .growth-table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .growth-table td {
+            padding: 8px 0;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+        
+        .growth-table tr:last-child td { border-bottom: none; }
+        .growth-table .val { text-align: right; color: var(--text-light); font-family: 'JetBrains Mono', monospace; }
+
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="header">
+<div>
+<p class="title-tag">Revenue Composition</p>
+<h1 class="main-title">Revenue Growth by Service</h1>
+<p class="subtitle">Construction (10%) vs Maintenance (20%) - 4 Year Outlook</p>
+</div>
+<div class="text-right">
+<p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Chart 4B</p>
+<p class="text-sm font-bold text-white">Stacked Area View</p>
+</div>
+</div>
+<!-- Content -->
+<div class="content-grid">
+<!-- Chart -->
+<div class="chart-wrapper">
+<canvas id="stackedAreaChart" width="867" height="583" style="display: block; box-sizing: border-box; height: 530.6px; width: 788.2px;"></canvas>
+</div>
+<!-- Sidebar -->
+<div class="sidebar">
+<!-- Legend Items -->
+<div class="legend-card card-maint">
+<div class="legend-icon text-[#ef6337]">
+<i class="fas fa-tools"></i>
+</div>
+<div>
+<p class="legend-title">Maintenance</p>
+<p class="legend-value">20% Annual Growth</p>
+</div>
+</div>
+<div class="legend-card card-const">
+<div class="legend-icon text-[#044c73]">
+<i class="fas fa-hard-hat"></i>
+</div>
+<div>
+<p class="legend-title">Construction</p>
+<p class="legend-value">10% Annual Growth</p>
+</div>
+</div>
+<!-- Growth Table -->
+<div class="bg-[#0b0f13] p-4 rounded-lg border border-gray-800">
+<table class="growth-table">
+<tbody><tr>
+<td>Year 1 Total</td>
+<td class="val">$1.70M</td>
+</tr>
+<tr>
+<td>Year 4 Total</td>
+<td class="val">$2.46M</td>
+</tr>
+<tr>
+<td class="text-[#FFE66D]">Total Growth</td>
+<td class="val text-[#FFE66D]">+45%</td>
+</tr>
+</tbody></table>
+</div>
+<!-- Insight -->
+<div class="insight-box">
+<div class="insight-header">
+<i class="fas fa-rocket mr-2"></i> Strategic Opportunity
+                </div>
+<p class="insight-text">
+                    Maintenance revenue grows <span class="highlight-val">2x faster</span> than Construction. By Year 4, it represents 35% of total revenue (up from 29%), creating increasing margin opportunity.
+                </p>
+</div>
+</div>
+</div>
+</div>
+<script>
+        // Register plugins
+        Chart.register(ChartDataLabels);
+
+        const ctx = document.getElementById('stackedAreaChart').getContext('2d');
+
+        // Data
+        const labels = ['Year 1', 'Year 2', 'Year 3', 'Year 4'];
+        
+        // Construction: $1.2M -> $1.32M -> $1.45M -> $1.60M
+        const constData = [1.2, 1.32, 1.452, 1.597];
+        
+        // Maintenance: $0.5M -> $0.6M -> $0.72M -> $0.864M
+        const maintData = [0.5, 0.6, 0.72, 0.864];
+
+        // Total Line (calculated for drawing line on top)
+        const totalData = constData.map((v, i) => v + maintData[i]);
+
+        const config = {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Combined Total',
+                        data: totalData,
+                        borderColor: '#FFE66D',
+                        borderWidth: 2,
+                        borderDash: [5, 5],
+                        pointBackgroundColor: '#FFE66D',
+                        pointBorderColor: '#fff',
+                        pointRadius: 4,
+                        fill: false,
+                        tension: 0.4,
+                        order: 0,
+                        datalabels: {
+                            align: 'top',
+                            anchor: 'end',
+                            color: '#FFE66D',
+                            font: { weight: 'bold', family: 'JetBrains Mono', size: 12 },
+                            formatter: (value) => '$' + value.toFixed(2) + 'M'
+                        }
+                    },
+                    {
+                        label: 'Maintenance (20%)',
+                        data: maintData,
+                        borderColor: '#ef6337',
+                        backgroundColor: 'rgba(239, 99, 55, 0.8)', // Coral
+                        borderWidth: 0,
+                        fill: '-1', // Fill to dataset below
+                        tension: 0.4,
+                        pointRadius: 0,
+                        order: 1,
+                        datalabels: { display: false }
+                    },
+                    {
+                        label: 'Construction (10%)',
+                        data: constData,
+                        borderColor: '#044c73',
+                        backgroundColor: 'rgba(4, 76, 115, 0.8)', // Navy
+                        borderWidth: 0,
+                        fill: 'origin', // Fill to bottom
+                        tension: 0.4,
+                        pointRadius: 0,
+                        order: 2,
+                        datalabels: { display: false }
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        backgroundColor: 'rgba(15, 20, 25, 0.95)',
+                        titleFont: { family: 'Playfair Display', size: 14 },
+                        bodyFont: { family: 'JetBrains Mono', size: 12 },
+                        padding: 12,
+                        itemSort: (a, b) => b.datasetIndex - a.datasetIndex, // Sort matches stack order
+                        callbacks: {
+                            label: function(context) {
+                                return context.dataset.label + ': $' + context.raw.toFixed(2) + 'M';
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.05)',
+                            drawBorder: false
+                        },
+                        ticks: {
+                            color: '#b0b8c1',
+                            font: { family: 'Inter', size: 13 },
+                            padding: 10
+                        }
+                    },
+                    y: {
+                        stacked: true, // Key for stacking the areas
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.05)',
+                            borderDash: [5, 5]
+                        },
+                        ticks: {
+                            color: '#b0b8c1',
+                            callback: function(value) { return '$' + value + 'M'; }
+                        },
+                        min: 0,
+                        suggestedMax: 3.0
+                    }
+                },
+                animation: {
+                    duration: 2000,
+                    easing: 'easeOutQuart'
+                }
+            }
+        };
+
+        new Chart(ctx, config);
+    </script>
+
+
+<script src="./slide-inner.js"></script></body></html>

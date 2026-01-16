@@ -1,0 +1,270 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/d6IYESRy -->
+<html lang="en" data-chapter="Ownership Pathways" data-chapter-number="4" data-slide-position="33"><head>
+<meta name="marpa-chapter" content="Ownership Pathways" data-chapter-number="4" data-slide-position="33"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Ownership Distribution</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(2)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<script src="./chart.js"></script>
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 40px 60px;
+            box-sizing: border-box;
+        }
+
+        .chart-wrapper {
+            position: relative;
+            height: 450px;
+            width: 450px;
+            margin-right: 60px;
+        }
+
+        .legend-card {
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 20px;
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            transition: transform 0.2s;
+        }
+
+        .legend-card:last-child {
+            margin-bottom: 0;
+        }
+
+        .legend-card-luke { border-left: 4px solid var(--navy); }
+        .legend-card-bodie { border-left: 4px solid var(--yellow); }
+        .legend-card-junior { border-left: 4px solid var(--teal); }
+
+        .percentage-box {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 28px;
+            font-weight: 700;
+            min-width: 80px;
+            text-align: right;
+            margin-left: auto;
+        }
+
+        .color-luke { color: #5B8FA6; } /* Lighter navy for visibility */
+        .color-bodie { color: var(--yellow); }
+        .color-junior { color: var(--teal); }
+
+        .role-badge {
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background-color: rgba(0, 0, 0, 0.3);
+            margin-top: 4px;
+            display: inline-block;
+        }
+
+        .center-label {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+            pointer-events: none;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="flex justify-between items-end mb-8 border-b border-[#044c73] pb-4">
+<div>
+<div class="flex items-center mb-2">
+<span class="w-2 h-2 bg-[#FFE66D] rounded-full mr-2"></span>
+<p class="text-[#FFE66D] font-bold tracking-widest text-xs uppercase">Chapter 3: Shared Leadership</p>
+</div>
+<h1 class="font-serif text-4xl text-[#f5f7fa]">OWNERSHIP DISTRIBUTION</h1>
+</div>
+<div class="text-right">
+<p class="text-[#b0b8c1] text-sm font-mono">SCENARIO B STRUCTURE</p>
+</div>
+</div>
+<!-- Main Content -->
+<div class="flex-1 flex items-center justify-center">
+<!-- Left: Chart -->
+<div class="chart-wrapper">
+<canvas id="ownershipChart" width="495" height="495" style="display: block; box-sizing: border-box; height: 450px; width: 450px;"></canvas>
+<div class="center-label">
+<p class="text-[#f5f7fa] font-serif text-5xl font-bold">100%</p>
+<p class="text-[#b0b8c1] text-xs uppercase tracking-widest mt-2">Total Equity</p>
+</div>
+</div>
+<!-- Right: Breakdown -->
+<div class="flex-1 max-w-xl">
+<p class="text-[#b0b8c1] text-sm mb-6 font-medium">PROPOSED EQUITY SPLIT</p>
+<!-- Luke -->
+<div class="legend-card legend-card-luke">
+<div class="mr-4">
+<div class="w-12 h-12 rounded-full bg-[#044c73] flex items-center justify-center text-white text-xl">
+<i class="fas fa-user-tie"></i>
+</div>
+</div>
+<div>
+<h3 class="text-[#f5f7fa] font-bold text-xl">Luke Sanzone</h3>
+<span class="role-badge text-[#b0b8c1]">Principal & Owner</span>
+</div>
+<div class="percentage-box color-luke">52%</div>
+</div>
+<!-- Bodie -->
+<div class="legend-card legend-card-bodie">
+<div class="mr-4">
+<div class="w-12 h-12 rounded-full bg-[#FFE66D] bg-opacity-20 flex items-center justify-center text-[#FFE66D] text-xl border border-[#FFE66D] border-opacity-30">
+<i class="fas fa-user"></i>
+</div>
+</div>
+<div>
+<h3 class="text-[#f5f7fa] font-bold text-xl">Bodie Hultin</h3>
+<span class="role-badge text-[#FFE66D]">Partner</span>
+</div>
+<div class="percentage-box color-bodie">24%</div>
+</div>
+<!-- Juniors -->
+<div class="legend-card legend-card-junior">
+<div class="mr-4">
+<div class="w-12 h-12 rounded-full bg-[#8db6b0] bg-opacity-20 flex items-center justify-center text-[#8db6b0] text-xl border border-[#8db6b0] border-opacity-30">
+<i class="fas fa-users"></i>
+</div>
+</div>
+<div>
+<h3 class="text-[#f5f7fa] font-bold text-xl">Pablo Banuelos</h3>
+<span class="role-badge text-[#8db6b0]">Partner</span>
+</div>
+<div class="percentage-box color-junior">24%</div>
+</div>
+<!-- Note -->
+<div class="mt-6 flex items-start">
+<i class="fas fa-info-circle text-[#044c73] mt-1 mr-3"></i>
+<p class="text-[#b0b8c1] text-xs leading-relaxed">
+                        Luke retains majority control (52%) to protect firm culture and direction during the 4-year transition period, while Bodie holds the largest individual minority stake.
+                    </p>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="mt-auto pt-4 border-t border-[#044c73] border-opacity-30 flex justify-between items-center">
+<p class="text-[#4e5d6c] text-xs tracking-widest uppercase">Confidential · MARPA Equity Pathway 2026</p>
+<p class="text-[#4e5d6c] text-xs font-mono">CH3-S05</p>
+</div>
+</div>
+<script>
+        const ctx = document.getElementById('ownershipChart').getContext('2d');
+        
+        // Custom plugin to draw lines could be added here, but keeping it simple for stability
+        
+        const chart = new Chart(ctx, {
+            type: 'doughnut',
+            data: {
+                labels: ['Luke', 'Bodie', 'Juniors'],
+                datasets: [{
+                    data: [52, 24, 24],
+                    backgroundColor: [
+                        '#044c73', // Navy
+                        '#FFE66D', // Yellow
+                        '#8db6b0'  // Teal
+                    ],
+                    borderColor: '#0f1419',
+                    borderWidth: 6,
+                    hoverOffset: 10
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                cutout: '70%',
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 20, 25, 0.9)',
+                        titleColor: '#f5f7fa',
+                        bodyColor: '#b0b8c1',
+                        padding: 12,
+                        cornerRadius: 8,
+                        displayColors: true,
+                        callbacks: {
+                            label: function(context) {
+                                return ' ' + context.label + ': ' + context.raw + '%';
+                            }
+                        }
+                    }
+                },
+                animation: {
+                    animateScale: true,
+                    animateRotate: true
+                }
+            }
+        });
+    </script>
+
+
+<script src="./slide-inner.js"></script></body></html>

@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/Jjq9kVlp -->
+<html lang="en" data-chapter="Valuation" data-chapter-number="2" data-slide-position="12"><head>
+<meta name="marpa-chapter" content="Valuation" data-chapter-number="2" data-slide-position="12"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Valuation Recap - Key Numbers</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(5)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<link href="./global-marpa-styles.css" rel="stylesheet">
+<script src="./gsap.min.js"></script>
+<style>
+        /* ==========================================
+           COLOR PRESERVATION BLOCK
+           ========================================== */
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --mint: #95E1D3;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+            --text-gray: #4e5d6c;
+            --bg-card: #151a21; /* Specific to this slide */
+        }
+
+        /* Tailwind color preservation - Overrides global styles */
+        .text-\[\#ef6337\] { color: #ef6337 !important; }
+        .text-\[\#f5f7fa\] { color: #f5f7fa !important; }
+        .text-\[\#8db6b0\] { color: #8db6b0 !important; }
+        .text-\[\#b0b8c1\] { color: #b0b8c1 !important; }
+        .text-\[\#4e5d6c\] { color: #4e5d6c !important; }
+        .text-\[\#044c73\] { color: #044c73 !important; }
+        .text-\[\#4ECDC4\] { color: #4ECDC4 !important; }
+        .text-\[\#FFE66D\] { color: #FFE66D !important; }
+        .text-\[\#95E1D3\] { color: #95E1D3 !important; }
+        .text-\[\#0f1419\] { color: #0f1419 !important; }
+
+        .bg-\[\#0f1419\] { background-color: #0f1419 !important; }
+        .bg-\[\#044c73\] { background-color: #044c73 !important; }
+        .bg-\[\#ef6337\] { background-color: #ef6337 !important; }
+        .bg-\[\#0b0f13\] { background-color: #0b0f13 !important; }
+        .bg-\[\#FFE66D\] { background-color: #FFE66D !important; }
+
+        .border-\[\#044c73\] { border-color: #044c73 !important; }
+        .border-\[\#ef6337\] { border-color: #ef6337 !important; }
+
+        /* Slide-specific styles */
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            min-height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 25px 40px; /* Reduced from 40px 60px */
+            background-color: #0f1419;
+            overflow: hidden;
+        }
+        
+        .metric-card {
+            background-color: rgba(4, 76, 115, 0.1);
+            border: 1px solid rgba(4, 76, 115, 0.3);
+            border-radius: 12px;
+            padding: 20px 24px; /* Reduced from 25px 30px */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+        
+        .metric-card:hover {
+            border-color: var(--coral);
+            background-color: rgba(4, 76, 115, 0.2);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+
+        .metric-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 3.25rem; /* Reduced from 3.5rem */
+            font-weight: 700;
+            color: var(--coral);
+            line-height: 1;
+            margin-bottom: 10px;
+            white-space: nowrap;
+        }
+
+        .metric-label {
+            font-size: 1.125rem;
+            font-weight: 600;
+            color: var(--text-light);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            margin-bottom: 6px;
+        }
+
+        .metric-sub {
+            font-size: 0.875rem;
+            color: var(--teal);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .takeaway-box {
+            background-color: var(--bg-card);
+            border-left: 4px solid var(--teal);
+            padding: 20px 32px;
+            border-radius: 0 8px 8px 0;
+            margin-top: auto;
+            position: relative;
+            opacity: 0;
+        }
+
+        .corner-accent {
+            position: absolute;
+            width: 36px;
+            height: 36px;
+            border-top: 2px solid var(--coral);
+            border-right: 2px solid var(--coral);
+            top: 0;
+            right: 0;
+            border-top-right-radius: 12px;
+            opacity: 0.5;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<header class="flex justify-between items-end mb-6 border-b border-[#044c73] pb-4"> <!-- Margin reduced to mb-6 -->
+<div>
+<div class="flex items-center mb-2">
+<span class="text-[#ef6337] font-bold tracking-widest text-xs uppercase mr-3">Chapter 1 Summary</span>
+<div class="h-px bg-[#044c73] w-12"></div>
+</div>
+<h1 class="font-serif text-4xl text-[#f5f7fa]">VALUATION RECAP: KEY NUMBERS</h1>
+</div>
+<div class="text-right">
+<p class="text-[#b0b8c1] text-sm font-mono">CH1-S11</p>
+</div>
+</header>
+<!-- Main Grid Content -->
+<div class="grid grid-cols-2 gap-6 mb-6 flex-1"> <!-- Margin reduced to mb-6 -->
+<!-- Metric 1: EBITDA -->
+<div class="metric-card" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="corner-accent"></div>
+<div class="mb-2">
+<i class="fas fa-chart-line text-[#044c73] text-2xl opacity-50"></i>
+</div>
+<p class="metric-value">$<span class="count-up" data-decimals="3" data-val="1.655">1.655</span>M</p>
+<p class="metric-label">Trailing EBITDA</p>
+<p class="metric-sub">Base for all valuation multiples</p>
+</div>
+<!-- Metric 2: Valuation Range -->
+<div class="metric-card" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="corner-accent"></div>
+<div class="mb-2">
+<i class="fas fa-balance-scale text-[#044c73] text-2xl opacity-50"></i>
+</div>
+<!-- Font size reduced to 2.75rem per request -->
+<p class="metric-value" style="font-size: 2.75rem;">
+                $<span class="count-up" data-decimals="2" data-val="7.08">7.08</span>M – $<span class="count-up" data-decimals="1" data-val="17.0">17.0</span>M
+            </p>
+<p class="metric-label">Valuation Range</p>
+<p class="metric-sub">Depending on path chosen</p>
+</div>
+<!-- Metric 3: Win Rate -->
+<div class="metric-card" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="corner-accent"></div>
+<div class="mb-2">
+<i class="fas fa-trophy text-[#044c73] text-2xl opacity-50"></i>
+</div>
+<!-- Removed count-up class and data attributes to prevent animation rendering issues - Static 95% -->
+<p class="metric-value">95%</p>
+<p class="metric-label">Win Rate</p>
+<p class="metric-sub">Elite conversion rate (2× industry)</p>
+</div>
+<!-- Metric 4: Pipeline -->
+<div class="metric-card" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="corner-accent"></div>
+<div class="mb-2">
+<i class="fas fa-filter text-[#044c73] text-2xl opacity-50"></i>
+</div>
+<p class="metric-value">$<span class="count-up" data-decimals="1" data-val="5.5">5.5</span>M</p>
+<p class="metric-label">Current Pipeline</p>
+<p class="metric-sub">Strong revenue visibility</p>
+</div>
+</div>
+<!-- Takeaway Section -->
+<div class="takeaway-box flex items-center shadow-lg" style="opacity: 1;">
+<div class="w-12 h-12 bg-[#044c73] rounded-full flex items-center justify-center mr-6 flex-shrink-0">
+<i class="fas fa-lightbulb text-[#ef6337] text-xl"></i>
+</div>
+<div>
+<p class="text-[#8db6b0] text-xs font-bold uppercase tracking-wider mb-1">Chapter 1 Takeaway</p>
+<p class="text-[#f5f7fa] text-lg font-medium leading-snug">
+                MARPA is a premium-performing firm with significant value ($17.0M potential). The exact price depends on which succession path is chosen.
+            </p>
+</div>
+</div>
+<!-- Footer -->
+<footer class="mt-4 flex justify-between items-center text-[#4e5d6c] text-xs uppercase tracking-widest">
+<p>MARPA Equity Pathway 2026</p>
+<p>Confidential · For Review</p>
+</footer>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Animate Cards Entrance
+        gsap.to(".metric-card", {
+            duration: 0.8,
+            y: 0,
+            opacity: 1,
+            stagger: 0.15,
+            ease: "power3.out"
+        });
+
+        // Animate Numbers Counting Up - selectively targets only elements with class 'count-up'
+        const counters = document.querySelectorAll('.count-up');
+        counters.forEach(counter => {
+            const target = parseFloat(counter.getAttribute('data-val'));
+            const decimals = parseInt(counter.getAttribute('data-decimals') || 0);
+            
+            let obj = { val: 0 };
+            
+            // Delay start slightly to match card entrance
+            gsap.to(obj, {
+                val: target,
+                duration: 2,
+                delay: 0.3,
+                ease: "power2.out",
+                onUpdate: function() {
+                    counter.textContent = obj.val.toFixed(decimals);
+                }
+            });
+        });
+
+        // Animate Takeaway Box
+        gsap.to(".takeaway-box", {
+            duration: 0.8,
+            opacity: 1,
+            delay: 1.0,
+            ease: "power2.out"
+        });
+    });
+</script>
+
+
+<script src="./slide-inner.js"></script></body></html>

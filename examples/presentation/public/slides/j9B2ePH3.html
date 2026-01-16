@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/j9B2ePH3 -->
+<html lang="en" data-chapter="Economics & Incentives" data-chapter-number="6" data-slide-position="48"><head>
+<meta name="marpa-chapter" content="Economics & Incentives" data-chapter-number="6" data-slide-position="48"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Understanding Gift vs Purchase (Solo)</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(5)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --bg-card: #151a21;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            min-height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 40px 60px;
+            box-sizing: border-box;
+        }
+
+        /* Comparison Cards */
+        .comparison-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            flex: 1;
+            margin-bottom: 30px;
+        }
+
+        .option-card {
+            background-color: rgba(4, 76, 115, 0.1);
+            border-radius: 12px;
+            padding: 30px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            transition: transform 0.3s ease;
+        }
+
+        .card-gift {
+            border-top: 6px solid var(--teal);
+        }
+        
+        .card-purchase {
+            border-top: 6px solid var(--coral);
+        }
+
+        .icon-circle {
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 20px;
+            font-size: 28px;
+        }
+
+        .icon-gift {
+            background-color: rgba(141, 182, 176, 0.15);
+            color: var(--teal);
+            box-shadow: 0 0 20px rgba(141, 182, 176, 0.2);
+        }
+
+        .icon-purchase {
+            background-color: rgba(239, 99, 55, 0.15);
+            color: var(--coral);
+            box-shadow: 0 0 20px rgba(239, 99, 55, 0.2);
+        }
+
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: 0.5px;
+        }
+        
+        .title-gift { color: var(--teal); }
+        .title-purchase { color: var(--coral); }
+
+        .feature-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+            margin-bottom: 16px;
+            font-size: 15px;
+            color: var(--text-light);
+            line-height: 1.5;
+        }
+
+        .feature-icon {
+            margin-right: 12px;
+            margin-top: 4px;
+            font-size: 12px;
+        }
+
+        /* Synthesis Box */
+        .synthesis-box {
+            background-color: var(--navy);
+            border-radius: 8px;
+            padding: 20px 30px;
+            display: flex;
+            align-items: center;
+            border-left: 6px solid var(--yellow);
+            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+        }
+
+        .vertical-divider {
+            position: absolute;
+            left: 50%;
+            top: 100px;
+            bottom: 120px;
+            width: 1px;
+            background: rgba(255,255,255,0.1);
+            transform: translateX(-50%);
+        }
+
+        .vs-badge {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            transform: translate(-50%, -50%);
+            background-color: var(--bg-dark);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: var(--text-muted);
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 10;
+            font-size: 14px;
+        }
+
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="flex justify-between items-end mb-8 border-b border-[#044c73] pb-4">
+<div>
+<p class="text-[#ef6337] font-bold tracking-widest text-xs mb-1 uppercase">Chapter 2: Bodie's Solo Path</p>
+<h1 class="font-serif text-4xl text-[#f5f7fa]">UNDERSTANDING GIFT VS PURCHASE</h1>
+<p class="text-[#b0b8c1] text-lg mt-1">Two Mechanisms for Acquiring Equity</p>
+</div>
+<div class="text-right">
+<p class="text-[#b0b8c1] text-sm font-mono">CH2-S07</p>
+</div>
+</div>
+<!-- Vertical Divider with VS -->
+<div class="vertical-divider"></div>
+<div class="vs-badge">vs</div>
+<!-- Main Comparison Content -->
+<div class="comparison-grid">
+<!-- Left Card: Gifted -->
+<div class="option-card card-gift">
+<div class="icon-circle icon-gift">
+<i class="fas fa-gift"></i>
+</div>
+<h2 class="card-title title-gift">GIFTED SHARES</h2>
+<ul class="feature-list">
+<li class="feature-item">
+<i class="fas fa-check text-[#8db6b0] feature-icon"></i>
+<p><strong>No cash cost</strong> to Bodie (Luke transfers ownership for $0)</p>
+</li>
+<li class="feature-item">
+<i class="fas fa-exclamation-circle text-[#8db6b0] feature-icon"></i>
+<p>Luke incurs <strong>gift tax exposure</strong> on the transfer value</p>
+</li>
+<li class="feature-item">
+<i class="fas fa-clock text-[#8db6b0] feature-icon"></i>
+<p>Vests immediately, no claw-back provisions</p>
+</li>
+<li class="feature-item">
+<i class="fas fa-layer-group text-[#8db6b0] feature-icon"></i>
+<p>Builds ownership percentage without requiring capital</p>
+</li>
+</ul>
+</div>
+<!-- Right Card: Purchased -->
+<div class="option-card card-purchase">
+<div class="icon-circle icon-purchase">
+<i class="fas fa-file-invoice-dollar"></i>
+</div>
+<h2 class="card-title title-purchase">PURCHASED SHARES</h2>
+<ul class="feature-list">
+<li class="feature-item">
+<i class="fas fa-money-bill-wave text-[#ef6337] feature-icon"></i>
+<p>Bodie pays <strong>Fair Market Value</strong> (FMV)</p>
+</li>
+<li class="feature-item">
+<i class="fas fa-university text-[#ef6337] feature-icon"></i>
+<p>Requires Bodie to take on debt/cash outlay (SBA Loan)</p>
+</li>
+<li class="feature-item">
+<i class="fas fa-link text-[#ef6337] feature-icon"></i>
+<p>Directly tied to loan repayment schedule</p>
+</li>
+<li class="feature-item">
+<i class="fas fa-handshake text-[#ef6337] feature-icon"></i>
+<p>Demonstrates meaningful <strong>"skin in the game"</strong></p>
+</li>
+</ul>
+</div>
+</div>
+<!-- Synthesis Footer -->
+<div class="synthesis-box">
+<div class="mr-6 text-[#FFE66D] text-4xl">
+<i class="fas fa-balance-scale"></i>
+</div>
+<div>
+<h3 class="text-[#FFE66D] font-bold text-sm uppercase tracking-wider mb-1">Why Use Both?</h3>
+<p class="text-[#f5f7fa] text-lg leading-snug">
+                    A balanced mix limits Luke's immediate tax exposure while ensuring Bodie has a real financial commitment to the firm's success.
+                </p>
+</div>
+</div>
+<!-- Confidential Footer -->
+<div class="mt-auto pt-4 flex justify-between items-center text-[#4e5d6c] text-[10px] uppercase tracking-widest">
+<p>MARPA Equity Pathway 2026</p>
+<p>Confidential Presentation</p>
+</div>
+</div>
+
+
+<script src="./slide-inner.js"></script></body></html>

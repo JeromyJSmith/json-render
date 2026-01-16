@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/MR6dkXle -->
+<html lang="en" data-chapter="Valuation" data-chapter-number="2" data-slide-position="13"><head>
+<meta name="marpa-chapter" content="Valuation" data-chapter-number="2" data-slide-position="13"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Valuation Foundation &amp; Methods</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(5)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --bg-card: #151a21;
+            --navy: #044c73;
+            --navy-light: #0a5d8a;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            min-height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            padding: 32px 60px; /* Reduced from 40px */
+        }
+        .font-serif {
+            font-family: 'Playfair Display', serif;
+        }
+        .font-mono {
+            font-family: 'JetBrains Mono', monospace;
+        }
+        /* Custom Card Styling */
+        .formula-card {
+            background-color: rgba(4, 76, 115, 0.15);
+            border: 1px solid var(--navy);
+        }
+        .example-card {
+            background-color: var(--bg-card);
+            transition: transform 0.2s ease;
+        }
+        .dotted-line {
+            border-bottom: 2px dotted var(--navy);
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header Section -->
+<header class="flex justify-between items-start mb-6"> <!-- Reduced from mb-8 -->
+<div>
+<div class="flex items-center mb-1"> <!-- Reduced from mb-2 -->
+<span class="text-[#ef6337] font-bold tracking-widest text-xs uppercase mr-3">Appendix: Valuation Methodology</span>
+<div class="h-px bg-[#044c73] w-12"></div>
+</div>
+<h1 class="font-serif text-4xl font-bold text-[#f5f7fa] leading-tight"> <!-- Reduced text-5xl to text-4xl -->
+                    Valuation Foundation &amp; Methods
+                </h1>
+</div>
+<div class="w-14 h-14 flex items-center justify-center rounded-full bg-[#044c73] bg-opacity-20"> <!-- Reduced from w-16 h-16 -->
+<i class="fa-solid fa-scale-balanced text-xl text-[#ef6337]"></i> <!-- Reduced from text-2xl -->
+</div>
+</header>
+<!-- Content Grid -->
+<div class="flex flex-col flex-1 space-y-6"> <!-- Reduced from space-y-8 -->
+<!-- Definition & Formula Row -->
+<div class="grid grid-cols-12 gap-8 items-center">
+<!-- Definition Column -->
+<div class="col-span-5 pr-4">
+<div class="space-y-3"> <!-- Reduced from space-y-4 -->
+<div>
+<h3 class="text-[#8db6b0] text-xs font-bold uppercase tracking-wide mb-1">Dual Methodology</h3> <!-- Reduced text-sm to text-xs -->
+<p class="text-[#f5f7fa] text-base font-light leading-relaxed"> <!-- Reduced text-lg to text-base -->
+                                Our valuation triangulates value using two distinct approaches: Market Multiples (benchmarked against AEC industry) and Discounted Cash Flow (based on projected growth).
+                            </p>
+</div>
+<div>
+<h3 class="text-[#8db6b0] text-xs font-bold uppercase tracking-wide mb-1">Core Inputs</h3> <!-- Reduced text-sm to text-xs -->
+<p class="text-[#b0b8c1] text-xs leading-relaxed"> <!-- Reduced text-sm to text-xs -->
+<strong class="text-[#f5f7fa]">Construction Growth</strong> (+10%) and <strong class="text-[#f5f7fa]">Maintenance Growth</strong> (+20%) drive the financial model inputs.
+                            </p>
+</div>
+</div>
+</div>
+<!-- Formula Column -->
+<div class="col-span-7">
+<div class="formula-card rounded-xl p-6 flex items-center justify-center relative overflow-hidden"> <!-- Reduced from p-8 -->
+<!-- Background accent -->
+<div class="absolute right-0 top-0 w-16 h-16 bg-[#ef6337] opacity-5 rounded-bl-full"></div> <!-- Reduced from w-20 h-20 -->
+<div class="flex items-center space-x-6 text-center z-10">
+<div class="flex flex-col items-center">
+<span class="text-[#b0b8c1] text-[10px] uppercase tracking-widest mb-1">Growth Model</span> <!-- Reduced text-xs mb-2 -->
+<span class="text-2xl font-bold text-[#f5f7fa]">DCF</span> <!-- Reduced text-3xl -->
+</div>
+<div class="text-[#ef6337] text-2xl font-bold">+</div> <!-- Reduced text-3xl -->
+<div class="flex flex-col items-center">
+<span class="text-[#b0b8c1] text-[10px] uppercase tracking-widest mb-1">Market Data</span> <!-- Reduced text-xs mb-2 -->
+<span class="text-2xl font-bold text-[#f5f7fa]">Multiples</span> <!-- Reduced text-3xl -->
+</div>
+<div class="text-[#8db6b0] text-2xl font-bold">=</div> <!-- Reduced text-3xl -->
+<div class="flex flex-col items-center">
+<span class="text-[#ef6337] text-[10px] uppercase tracking-widest mb-1 font-bold">Validated Value</span> <!-- Reduced text-xs mb-2 -->
+<span class="text-2xl font-bold text-[#ef6337]">$17.0M</span> <!-- Reduced text-3xl -->
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Examples Section -->
+<div class="flex-1 flex flex-col justify-center">
+<div class="flex items-center mb-3"> <!-- Reduced from mb-4 -->
+<i class="fa-solid fa-microscope text-[#8db6b0] mr-2 text-sm"></i> <!-- Reduced mr-3 -->
+<h3 class="text-[#f5f7fa] text-base font-medium">Cross-Check Analysis Components</h3> <!-- Reduced text-lg -->
+</div>
+<div class="grid grid-cols-3 gap-4 h-full"> <!-- Reduced gap-6 -->
+<!-- DCF Card -->
+<div class="example-card rounded-lg p-4 border-t-2 border-[#4ECDC4] flex flex-col relative"> <!-- Reduced p-6, border-t-4 to border-t-2 -->
+<div class="absolute top-3 right-3"> <!-- Reduced top-4 right-4 -->
+<span class="bg-[#4ECDC4] bg-opacity-10 text-[#4ECDC4] text-[10px] font-bold px-1.5 py-0.5 rounded uppercase">Intrinsic</span> <!-- Reduced text-xs px-2 py-1 -->
+</div>
+<div class="mb-auto mt-1"> <!-- Reduced mt-2 -->
+<p class="text-[#b0b8c1] text-xs mb-0.5">Discounted Cash Flow</p> <!-- Reduced text-sm mb-1 -->
+<p class="text-lg font-bold text-[#f5f7fa]">Projected Earnings</p> <!-- Reduced text-xl -->
+</div>
+<div class="dotted-line my-2 opacity-30"></div> <!-- Reduced my-4 -->
+<div class="text-[10px] text-[#b0b8c1] leading-relaxed"> <!-- Reduced text-xs -->
+<p>Net present value of future cash flows derived from construction and maintenance growth engines over 10 years.</p>
+</div>
+</div>
+<!-- Multiples Card -->
+<div class="example-card rounded-lg p-4 border-t-2 border-[#FFE66D] flex flex-col relative"> <!-- Reduced p-6, border-t-4 to border-t-2 -->
+<div class="absolute top-3 right-3"> <!-- Reduced top-4 right-4 -->
+<span class="bg-[#FFE66D] bg-opacity-10 text-[#FFE66D] text-[10px] font-bold px-1.5 py-0.5 rounded uppercase">Market</span> <!-- Reduced text-xs px-2 py-1 -->
+</div>
+<div class="mb-auto mt-1"> <!-- Reduced mt-2 -->
+<p class="text-[#b0b8c1] text-xs mb-0.5">Trailing Multiples</p> <!-- Reduced text-sm mb-1 -->
+<p class="text-lg font-bold text-[#f5f7fa]">Industry Comps</p> <!-- Reduced text-xl -->
+</div>
+<div class="dotted-line my-2 opacity-30"></div> <!-- Reduced my-4 -->
+<div class="text-[10px] text-[#b0b8c1] leading-relaxed"> <!-- Reduced text-xs -->
+<p>Benchmarked against AEC firm transactions. Adjusted for MARPA's premium win rates (95%) and zero CAC.</p>
+</div>
+</div>
+<!-- Weighting Card -->
+<div class="example-card rounded-lg p-4 border-t-2 border-[#ef6337] flex flex-col relative shadow-lg shadow-[rgba(239,99,55,0.05)]"> <!-- Reduced p-6, border-t-4 to border-t-2 -->
+<div class="absolute top-3 right-3"> <!-- Reduced top-4 right-4 -->
+<span class="bg-[#ef6337] bg-opacity-10 text-[#ef6337] text-[10px] font-bold px-1.5 py-0.5 rounded uppercase">Result</span> <!-- Reduced text-xs px-2 py-1 -->
+</div>
+<div class="mb-auto mt-1"> <!-- Reduced mt-2 -->
+<p class="text-[#b0b8c1] text-xs mb-0.5">Final Valuation</p> <!-- Reduced text-sm mb-1 -->
+<p class="text-lg font-bold text-[#f5f7fa]">Weighted Average</p> <!-- Reduced text-xl -->
+</div>
+<div class="dotted-line my-2 opacity-30"></div> <!-- Reduced my-4 -->
+<div class="text-[10px] text-[#b0b8c1] leading-relaxed"> <!-- Reduced text-xs -->
+<p>Reconciliation of both methods confirms the $17.0M anchor value, ensuring fairness for both buyer and seller.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Key Insight Footer -->
+<div class="mt-auto pt-3 border-t border-[#044c73] border-opacity-30"> <!-- Reduced pt-4 -->
+<div class="flex items-start">
+<i class="fa-solid fa-check-double text-[#4ECDC4] mt-0.5 mr-2 text-xs"></i> <!-- Reduced mt-1 mr-3 -->
+<p class="text-[#b0b8c1] text-xs italic"> <!-- Reduced text-sm -->
+                        "Using two independent valuation methods reduces bias. The convergence of DCF and Market Multiples provides high confidence in the $17.0M valuation anchor."
+                    </p>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="absolute bottom-4 right-8 text-[#4e5d6c] text-[10px] tracking-widest uppercase"> <!-- Reduced bottom-6 text-xs -->
+            MARPA EQUITY PATHWAY 2026 · CONFIDENTIAL
+        </div>
+</div>
+
+
+<script src="./slide-inner.js"></script></body></html>

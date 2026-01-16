@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/C6asQUEe -->
+<html lang="en" data-chapter="Decision Framework" data-chapter-number="6" data-slide-position="52"><head>
+<meta name="marpa-chapter" content="Decision Framework" data-chapter-number="6" data-slide-position="52"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>How to Choose Your Path - Decision Framework</title>
+<link href="./global-marpa-styles.css" rel="stylesheet">
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(2)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 25px 40px; /* Adjusted padding */
+            box-sizing: border-box;
+            border: 1px solid #1e2732;
+        }
+
+        /* Content Layout */
+        .content-wrapper {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 16px; /* Reduced gap */
+            margin-top: 10px;
+        }
+
+        /* Framework Table */
+        .framework-grid {
+            display: grid;
+            grid-template-columns: 2fr 1.5fr 1.5fr;
+            gap: 2px; /* Gap for borders */
+            background-color: rgba(4, 76, 115, 0.3); /* Border color equivalent */
+            border: 1px solid rgba(4, 76, 115, 0.3);
+            border-radius: 8px;
+            overflow: hidden;
+        }
+
+        .grid-header {
+            background-color: rgba(4, 76, 115, 0.2);
+            padding: 12px 20px; /* Reduced padding */
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            display: flex;
+            align-items: center;
+        }
+
+        .grid-row {
+            display: contents;
+        }
+
+        .grid-cell {
+            background-color: rgba(15, 20, 25, 0.8);
+            padding: 12px 20px; /* Reduced padding */
+            display: flex;
+            align-items: center;
+            transition: background-color 0.2s;
+        }
+
+        .grid-row:hover .grid-cell {
+            background-color: rgba(255, 255, 255, 0.02);
+        }
+
+        .criteria-name {
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--text-light);
+        }
+
+        /* Weight Bars */
+        .weight-container {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .weight-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--coral);
+            margin-bottom: 6px;
+            font-weight: 700;
+        }
+
+        .weight-track {
+            width: 100%;
+            height: 6px;
+            background-color: rgba(255, 255, 255, 0.1);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+
+        .weight-fill {
+            height: 100%;
+            background-color: var(--coral);
+            border-radius: 3px;
+        }
+
+        /* Best Path Badges */
+        .path-badge {
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            padding: 4px 10px;
+            border-radius: 4px;
+            letter-spacing: 0.5px;
+            display: inline-block;
+            margin-right: 6px;
+        }
+
+        .badge-solo { background: rgba(78, 205, 196, 0.15); color: var(--turquoise); border: 1px solid rgba(78, 205, 196, 0.3); }
+        .badge-shared { background: rgba(255, 230, 109, 0.15); color: var(--yellow); border: 1px solid rgba(255, 230, 109, 0.3); }
+        .badge-db { background: rgba(239, 99, 55, 0.15); color: var(--coral); border: 1px solid rgba(239, 99, 55, 0.3); }
+
+        /* Instruction Box */
+        .instruction-box {
+            /* margin-top: auto; removed */
+            background: rgba(141, 182, 176, 0.08);
+            border: 1px solid rgba(141, 182, 176, 0.2);
+            border-radius: 8px;
+            padding: 16px 24px; /* Reduced padding */
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .instruction-step {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .step-number {
+            width: 28px;
+            height: 28px;
+            background-color: var(--teal);
+            color: var(--bg-dark);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 14px;
+        }
+
+        .step-text {
+            font-size: 14px;
+            color: var(--text-light);
+        }
+        
+        .math-operator {
+            color: var(--text-muted);
+            font-size: 18px;
+            margin: 0 20px;
+        }
+
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="flex justify-between items-end mb-6 border-b border-[#044c73] pb-4">
+<div>
+<div class="flex items-center mb-2">
+<span class="w-2 h-2 bg-[#95E1D3] rounded-full mr-2"></span>
+<p class="text-[#95E1D3] font-bold tracking-widest text-xs uppercase">Chapter 5: Making The Decision</p>
+</div>
+<h1 class="font-serif text-[40px] text-[#f5f7fa] leading-tight">HOW TO CHOOSE YOUR PATH</h1>
+</div>
+<div class="text-right">
+<p class="text-[#b0b8c1] text-sm font-mono">DECISION FRAMEWORK</p>
+</div>
+</div>
+<!-- Main Content -->
+<div class="content-wrapper">
+<!-- Weighted Criteria Table -->
+<div class="framework-grid">
+<!-- Headers -->
+<div class="grid-header">Decision Criterion</div>
+<div class="grid-header">Weight Priority</div>
+<div class="grid-header">Best Performing Path</div>
+<!-- Row 1: Financial Sustainability -->
+<div class="grid-row">
+<div class="grid-cell">
+<div>
+<p class="criteria-name">Financial Sustainability</p>
+<p class="text-xs text-[#b0b8c1] mt-1">Long-term stability &amp; profit margin</p>
+</div>
+</div>
+<div class="grid-cell">
+<div class="weight-container">
+<p class="weight-label">30%</p>
+<div class="weight-track"><div class="weight-fill" style="width: 30%"></div></div>
+</div>
+</div>
+<div class="grid-cell">
+<div>
+<span class="path-badge badge-shared">Shared</span>
+<span class="path-badge badge-db">Design-Build</span>
+</div>
+</div>
+</div>
+<!-- Row 2: Valuation Uplift -->
+<div class="grid-row">
+<div class="grid-cell">
+<div>
+<p class="criteria-name">Valuation Uplift</p>
+<p class="text-xs text-[#b0b8c1] mt-1">Maximizing future enterprise value</p>
+</div>
+</div>
+<div class="grid-cell">
+<div class="weight-container">
+<p class="weight-label">25%</p>
+<div class="weight-track"><div class="weight-fill" style="width: 25%"></div></div>
+</div>
+</div>
+<div class="grid-cell">
+<span class="path-badge badge-db">Design-Build</span>
+</div>
+</div>
+<!-- Row 3: Time to Control -->
+<div class="grid-row">
+<div class="grid-cell">
+<div>
+<p class="criteria-name">Time to Control</p>
+<p class="text-xs text-[#b0b8c1] mt-1">Speed of ownership transfer</p>
+</div>
+</div>
+<div class="grid-cell">
+<div class="weight-container">
+<p class="weight-label">20%</p>
+<div class="weight-track"><div class="weight-fill" style="width: 20%"></div></div>
+</div>
+</div>
+<div class="grid-cell">
+<span class="path-badge badge-solo">Solo</span>
+</div>
+</div>
+<!-- Row 4: Risk Tolerance -->
+<div class="grid-row">
+<div class="grid-cell">
+<div>
+<p class="criteria-name">Risk Tolerance</p>
+<p class="text-xs text-[#b0b8c1] mt-1">Minimizing personal financial exposure</p>
+</div>
+</div>
+<div class="grid-cell">
+<div class="weight-container">
+<p class="weight-label">15%</p>
+<div class="weight-track"><div class="weight-fill" style="width: 15%"></div></div>
+</div>
+</div>
+<div class="grid-cell">
+<span class="path-badge badge-shared">Shared</span>
+</div>
+</div>
+<!-- Row 5: Operational Complexity -->
+<div class="grid-row">
+<div class="grid-cell">
+<div>
+<p class="criteria-name">Operational Complexity</p>
+<p class="text-xs text-[#b0b8c1] mt-1">Simplicity of management structure</p>
+</div>
+</div>
+<div class="grid-cell">
+<div class="weight-container">
+<p class="weight-label">10%</p>
+<div class="weight-track"><div class="weight-fill" style="width: 10%"></div></div>
+</div>
+</div>
+<div class="grid-cell">
+<span class="path-badge badge-solo">Solo</span>
+</div>
+</div>
+</div>
+<!-- Scoring Instructions -->
+<div class="instruction-box mt-4">
+<div class="instruction-step">
+<div class="step-number">1</div>
+<p class="step-text">Score each path <strong>1-5</strong> on criteria</p>
+</div>
+<i class="fas fa-times math-operator"></i>
+<div class="instruction-step">
+<div class="step-number">2</div>
+<p class="step-text">Multiply by <strong>Weight %</strong></p>
+</div>
+<i class="fas fa-equals math-operator"></i>
+<div class="instruction-step">
+<div class="step-number">3</div>
+<p class="step-text">Sum for <strong>Total Score</strong></p>
+</div>
+<div class="border-l border-[#8db6b0] border-opacity-30 pl-6 ml-4">
+<p class="text-[#8db6b0] text-xs font-bold uppercase tracking-widest">Goal</p>
+<p class="text-[#f5f7fa] text-sm mt-1">Remove emotion from the decision.</p>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="mt-auto pt-4 border-t border-[#044c73] border-opacity-30 flex justify-between items-center">
+<p class="text-[#4e5d6c] text-xs tracking-widest uppercase">Confidential · MARPA Equity Pathway 2026</p>
+<p class="text-[#4e5d6c] text-xs font-mono">CH5-S05</p>
+</div>
+</div>
+
+
+<script src="./slide-inner.js"></script></body></html>

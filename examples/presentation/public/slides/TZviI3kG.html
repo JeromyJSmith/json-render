@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/TZviI3kG -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Chart Set Overview - MARPA Equity</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+            
+            /* Chart Specific Colors */
+            --chart-green-dark: #1B5E20; /* Construction */
+            --chart-green-light: #66BB6A; /* Design */
+            --chart-luke: #2ECC71; /* Luke */
+            --chart-bodie: #044c73; /* Bodie */
+            --chart-pablo: #ef6337; /* Pablo */
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-light);
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            padding: 60px 80px;
+            position: relative;
+            background-color: var(--bg-dark);
+            box-sizing: border-box;
+        }
+
+        .bg-accent-blob {
+            position: absolute;
+            top: -200px;
+            right: -200px;
+            width: 600px;
+            height: 600px;
+            background-color: rgba(4, 76, 115, 0.15);
+            border-radius: 50%;
+            filter: blur(80px);
+            z-index: 0;
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header-section {
+            margin-bottom: 40px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 30px;
+        }
+
+        .title-pre {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--coral);
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+
+        .title-pre::before {
+            content: '';
+            width: 30px;
+            height: 2px;
+            background-color: var(--coral);
+            margin-right: 12px;
+        }
+
+        h1.main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 56px;
+            line-height: 1.1;
+            font-weight: 900;
+            margin-bottom: 16px;
+            color: var(--text-light);
+        }
+
+        .subtitle {
+            font-size: 20px;
+            color: var(--text-muted);
+            font-weight: 300;
+            max-width: 700px;
+            line-height: 1.5;
+        }
+
+        /* Grid Layout */
+        .chart-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 24px;
+            flex: 1;
+        }
+
+        .chart-card {
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            transition: all 0.3s ease;
+        }
+
+        .chart-card:hover {
+            transform: translateY(-5px);
+            background-color: rgba(255, 255, 255, 0.05);
+            border-color: rgba(255, 255, 255, 0.1);
+        }
+
+        .card-number {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            color: var(--teal);
+            margin-bottom: 12px;
+            opacity: 0.7;
+        }
+
+        .card-icon {
+            font-size: 24px;
+            color: var(--turquoise);
+            margin-bottom: 16px;
+        }
+
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 8px;
+            color: var(--text-light);
+            line-height: 1.2;
+        }
+
+        .card-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.4;
+            flex: 1;
+        }
+
+        .variations-tag {
+            margin-top: 16px;
+            display: flex;
+            gap: 6px;
+        }
+
+        .v-badge {
+            font-size: 10px;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 4px;
+            background-color: rgba(255,255,255,0.1);
+            color: var(--text-muted);
+        }
+
+        /* Color Legend Bar */
+        .legend-bar {
+            margin-top: 40px;
+            padding-top: 24px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .legend-group {
+            display: flex;
+            align-items: center;
+            gap: 24px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .color-swatch {
+            width: 16px;
+            height: 16px;
+            border-radius: 4px;
+        }
+
+        .legend-label {
+            font-size: 13px;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Background Elements -->
+<div class="bg-accent-blob"></div>
+<!-- Main Content -->
+<div class="content-wrapper">
+<!-- Header -->
+<div class="header-section">
+<div class="title-pre">Presentation Structure</div>
+<h1 class="main-title">Financial Visualization Suite</h1>
+<p class="subtitle">A comprehensive set of 15 chart variations designed to communicate MARPA's equity pathway, revenue composition, and growth projections.</p>
+</div>
+<!-- Chart Cards Grid -->
+<div class="chart-grid">
+<!-- Card 1: Ownership -->
+<div class="chart-card">
+<span class="card-number">CHART SET 01</span>
+<i class="fas fa-chart-pie card-icon"></i>
+<h3 class="card-title">Ownership Path Options</h3>
+<p class="card-desc">Comparison of Solo, Shared, and Design-Build equity splits.</p>
+<div class="variations-tag">
+<span class="v-badge">Waterfall</span>
+<span class="v-badge">Matrix</span>
+<span class="v-badge">Step</span>
+</div>
+</div>
+<!-- Card 2: Revenue -->
+<div class="chart-card">
+<span class="card-number">CHART SET 02</span>
+<i class="fas fa-coins card-icon" style="color: #FFE66D;"></i>
+<h3 class="card-title">Revenue Breakdown</h3>
+<p class="card-desc">Analysis of $11.03M revenue across three service lines.</p>
+<div class="variations-tag">
+<span class="v-badge">Flow</span>
+<span class="v-badge">Donut</span>
+<span class="v-badge">Bar</span>
+</div>
+</div>
+<!-- Card 3: Construction -->
+<div class="chart-card">
+<span class="card-number">CHART SET 03</span>
+<i class="fas fa-hard-hat card-icon" style="color: #ef6337;"></i>
+<h3 class="card-title">Construction Growth</h3>
+<p class="card-desc">10% annual growth trajectory from $1.2M baseline.</p>
+<div class="variations-tag">
+<span class="v-badge">Classic</span>
+<span class="v-badge">Stacked</span>
+<span class="v-badge">Area</span>
+</div>
+</div>
+<!-- Card 4: Maintenance -->
+<div class="chart-card">
+<span class="card-number">CHART SET 04</span>
+<i class="fas fa-seedling card-icon" style="color: #66BB6A;"></i>
+<h3 class="card-title">Maintenance Growth</h3>
+<p class="card-desc">20% annual growth showing recurring revenue power.</p>
+<div class="variations-tag">
+<span class="v-badge">Comp</span>
+<span class="v-badge">Dual</span>
+<span class="v-badge">Line</span>
+</div>
+</div>
+<!-- Card 5: Vesting -->
+<div class="chart-card">
+<span class="card-number">CHART SET 05</span>
+<i class="fas fa-hourglass-half card-icon" style="color: #8db6b0;"></i>
+<h3 class="card-title">Equity Vesting</h3>
+<p class="card-desc">4-year cliff schedule reaching 24% minority stake.</p>
+<div class="variations-tag">
+<span class="v-badge">Progress</span>
+<span class="v-badge">Stack</span>
+<span class="v-badge">Time</span>
+</div>
+</div>
+</div>
+<!-- Legend Bar -->
+<div class="legend-bar">
+<div class="legend-group">
+<span class="text-xs uppercase tracking-widest text-gray-500 font-bold">Principals</span>
+<div class="legend-item">
+<div class="color-swatch" style="background-color: var(--chart-luke);"></div>
+<span class="legend-label">Luke (51-52%)</span>
+</div>
+<div class="legend-item">
+<div class="color-swatch" style="background-color: var(--chart-bodie);"></div>
+<span class="legend-label">Bodie (24-49%)</span>
+</div>
+<div class="legend-item">
+<div class="color-swatch" style="background-color: var(--chart-pablo);"></div>
+<span class="legend-label">Pablo (24%)</span>
+</div>
+</div>
+<div class="legend-group">
+<span class="text-xs uppercase tracking-widest text-gray-500 font-bold">Revenue</span>
+<div class="legend-item">
+<div class="color-swatch" style="background-color: var(--chart-green-dark);"></div>
+<span class="legend-label">Construction</span>
+</div>
+<div class="legend-item">
+<div class="color-swatch" style="background-color: var(--chart-green-light);"></div>
+<span class="legend-label">Design</span>
+</div>
+<div class="legend-item">
+<div class="color-swatch" style="background-color: var(--turquoise);"></div>
+<span class="legend-label">Oversight</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+
+
+<script src="./slide-inner.js"></script></body></html>

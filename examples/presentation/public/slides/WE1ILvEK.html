@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/WE1ILvEK -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Construction Revenue Waterfall</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<script src="./chart.js"></script>
+<script src="./chartjs-plugin-datalabels@2.0.0"></script>
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+            
+            /* Construction Specific Colors */
+            --const-base: #1B5E20;
+            --const-light: #4CAF50;
+            --const-accent: #69F0AE;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-light);
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 60px;
+            position: relative;
+            background-color: var(--bg-dark);
+            box-sizing: border-box;
+        }
+
+        /* Header */
+        .header {
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .title-tag {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--const-light);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        h1.main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            font-weight: 900;
+            line-height: 1.1;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        /* Main Content */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            gap: 40px;
+            flex: 1;
+            height: 100%;
+        }
+
+        /* Chart Area */
+        .chart-wrapper {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 20px 30px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Sidebar Stats */
+        .stats-panel {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .stat-card {
+            background: rgba(27, 94, 32, 0.15); /* Green tint */
+            border-left: 4px solid var(--const-light);
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            position: relative;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 4px;
+        }
+
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-light);
+        }
+
+        .stat-delta {
+            font-size: 12px;
+            color: var(--const-accent);
+            display: flex;
+            align-items: center;
+            margin-top: 4px;
+        }
+
+        /* Highlight Box */
+        .insight-box {
+            margin-top: auto;
+            background: var(--navy);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 20px;
+            border-radius: 12px;
+        }
+
+        .insight-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 8px;
+            color: var(--yellow);
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .insight-text {
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--text-muted);
+        }
+
+        /* Chart Overlay Elements */
+        .growth-arrow-label {
+            background-color: var(--const-light);
+            color: white;
+            font-size: 10px;
+            font-weight: bold;
+            padding: 2px 6px;
+            border-radius: 4px;
+            text-align: center;
+        }
+
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="header">
+<div>
+<p class="title-tag">Growth Projection</p>
+<h1 class="main-title">Construction Revenue Waterfall</h1>
+<p class="subtitle">10% Annual Growth Trajectory Analysis (Years 1-4)</p>
+</div>
+<div class="text-right">
+<p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Chart 3A</p>
+<p class="text-sm font-bold text-white">Classic Waterfall</p>
+</div>
+</div>
+<!-- Content -->
+<div class="content-grid">
+<!-- Chart -->
+<div class="chart-wrapper">
+<canvas id="waterfallChart" width="856" height="599" style="display: block; box-sizing: border-box; height: 544.9px; width: 778.2px;"></canvas>
+</div>
+<!-- Sidebar -->
+<div class="stats-panel">
+<div class="stat-card">
+<p class="stat-label">Total Growth</p>
+<p class="stat-value">$397,200</p>
+<p class="stat-delta"><i class="fas fa-arrow-up mr-2"></i> 33% over 4 years</p>
+</div>
+<div class="stat-card" style="border-color: var(--const-accent); background: rgba(105, 240, 174, 0.1);">
+<p class="stat-label">Year 4 Projection</p>
+<p class="stat-value">$1.60M</p>
+<p class="stat-delta text-white opacity-70">Target Revenue</p>
+</div>
+<div class="stat-card" style="border-color: var(--yellow); background: rgba(255, 230, 109, 0.1);">
+<p class="stat-label">Annual Rate</p>
+<p class="stat-value">10%</p>
+<p class="stat-delta text-yellow-400">Compounding CAGR</p>
+</div>
+<!-- Insight -->
+<div class="insight-box">
+<div class="insight-header">
+<i class="fas fa-lightbulb mr-2"></i> Strategic Note
+                </div>
+<p class="insight-text">
+                    Consistent 10% compounding growth in Construction adds nearly $400K in top-line revenue without requiring major operational restructuring.
+                </p>
+</div>
+</div>
+</div>
+</div>
+<script>
+        // Register plugins
+        Chart.register(ChartDataLabels);
+
+        const ctx = document.getElementById('waterfallChart').getContext('2d');
+
+        // Custom plugin to draw waterfall arrows
+        const waterfallArrowsPlugin = {
+            id: 'waterfallArrows',
+            afterDraw: (chart) => {
+                const { ctx, scales: { x, y } } = chart;
+                const dataset = chart.data.datasets[0];
+                const meta = chart.getDatasetMeta(0);
+
+                ctx.save();
+                
+                meta.data.forEach((bar, index) => {
+                    if (index === 0) return; // Skip first bar
+
+                    const prevBar = meta.data[index - 1];
+                    
+                    // Coordinates
+                    const startX = prevBar.x + (prevBar.width / 2);
+                    const startY = prevBar.y;
+                    const endX = bar.x - (bar.width / 2);
+                    const endY = startY; // Horizontal line level with previous top
+                    const barTopY = bar.y;
+
+                    // Styles
+                    ctx.strokeStyle = 'rgba(105, 240, 174, 0.5)'; // Accent green
+                    ctx.lineWidth = 1;
+                    ctx.setLineDash([4, 4]);
+
+                    // Draw Horizontal Connector (Step)
+                    ctx.beginPath();
+                    ctx.moveTo(prevBar.x, prevBar.y);
+                    ctx.lineTo(bar.x, prevBar.y);
+                    ctx.stroke();
+
+                    // Draw Vertical Arrow (Growth)
+                    ctx.setLineDash([]);
+                    ctx.strokeStyle = '#69F0AE';
+                    ctx.lineWidth = 2;
+                    ctx.fillStyle = '#69F0AE';
+
+                    // Arrow line
+                    const arrowX = bar.x;
+                    const arrowBottomY = prevBar.y;
+                    const arrowTopY = bar.y;
+                    
+                    // Only draw if there is growth
+                    if (arrowTopY < arrowBottomY) {
+                        ctx.beginPath();
+                        ctx.moveTo(arrowX, arrowBottomY);
+                        ctx.lineTo(arrowX, arrowTopY + 5); // Stop just before top
+                        ctx.stroke();
+
+                        // Arrowhead
+                        ctx.beginPath();
+                        ctx.moveTo(arrowX - 4, arrowTopY + 5);
+                        ctx.lineTo(arrowX + 4, arrowTopY + 5);
+                        ctx.lineTo(arrowX, arrowTopY);
+                        ctx.fill();
+
+                        // Draw Growth Label Pill
+                        const growthVal = "+10%";
+                        ctx.font = 'bold 10px Inter';
+                        const textWidth = ctx.measureText(growthVal).width;
+                        const boxWidth = textWidth + 8;
+                        const boxHeight = 16;
+                        const boxX = arrowX - (boxWidth / 2);
+                        const boxY = arrowBottomY - ((arrowBottomY - arrowTopY) / 2) - (boxHeight / 2);
+
+                        // Box background
+                        ctx.fillStyle = '#0f1419';
+                        ctx.fillRect(boxX, boxY, boxWidth, boxHeight);
+                        // Box border
+                        ctx.strokeStyle = '#69F0AE';
+                        ctx.lineWidth = 1;
+                        ctx.strokeRect(boxX, boxY, boxWidth, boxHeight);
+                        // Text
+                        ctx.fillStyle = '#69F0AE';
+                        ctx.textAlign = 'center';
+                        ctx.textBaseline = 'middle';
+                        ctx.fillText(growthVal, arrowX, boxY + (boxHeight / 2));
+                    }
+                });
+
+                ctx.restore();
+            }
+        };
+
+        const data = {
+            labels: ['Year 1', 'Year 2', 'Year 3', 'Year 4'],
+            datasets: [
+                {
+                    label: 'Revenue',
+                    data: [1.20, 1.32, 1.45, 1.60],
+                    backgroundColor: [
+                        '#2E7D32', // Darker
+                        '#388E3C',
+                        '#43A047',
+                        '#4CAF50'  // Lighter
+                    ],
+                    borderColor: 'rgba(255,255,255,0.1)',
+                    borderWidth: 1,
+                    barPercentage: 0.6,
+                    categoryPercentage: 0.8
+                }
+            ]
+        };
+
+        const config = {
+            type: 'bar',
+            data: data,
+            plugins: [ChartDataLabels, waterfallArrowsPlugin],
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                layout: {
+                    padding: { top: 30, right: 20, left: 20, bottom: 0 }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 20, 25, 0.95)',
+                        titleFont: { family: 'Playfair Display', size: 14 },
+                        bodyFont: { family: 'JetBrains Mono', size: 12 },
+                        padding: 12,
+                        callbacks: {
+                            label: function(context) {
+                                return '$' + context.raw + 'M';
+                            }
+                        }
+                    },
+                    datalabels: {
+                        color: 'white',
+                        anchor: 'end',
+                        align: 'top',
+                        offset: 4,
+                        font: { weight: 'bold', family: 'JetBrains Mono', size: 14 },
+                        formatter: function(value) {
+                            return '$' + value + 'M';
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: { display: false },
+                        ticks: {
+                            color: '#b0b8c1',
+                            font: { family: 'Inter', size: 13 }
+                        }
+                    },
+                    y: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.05)',
+                            borderDash: [5, 5]
+                        },
+                        ticks: {
+                            color: '#b0b8c1',
+                            callback: function(value) { return '$' + value + 'M'; }
+                        },
+                        beginAtZero: true,
+                        max: 1.8 // Headroom for labels
+                    }
+                },
+                animation: {
+                    duration: 1500,
+                    easing: 'easeOutQuart'
+                }
+            }
+        };
+
+        new Chart(ctx, config);
+    </script>
+
+
+<script src="./slide-inner.js"></script></body></html>

@@ -132,7 +132,6 @@ export async function POST(request: NextRequest) {
       model: gateway("anthropic/claude-sonnet-4-20250514"),
       system: SYSTEM_PROMPT,
       prompt: `Generate a slide for: ${prompt}`,
-      maxTokens: 1024,
     });
 
     const responseText = result.text;

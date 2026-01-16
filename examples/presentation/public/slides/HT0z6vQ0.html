@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/HT0z6vQ0 -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Revenue Growth Comparison - Dual Axis</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<script src="./chart.js"></script>
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --blue-bright: #29B6F6;
+            --orange-bright: #FF7043;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-light);
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 60px;
+            position: relative;
+            background-color: var(--bg-dark);
+            box-sizing: border-box;
+        }
+
+        /* Header */
+        .header {
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .title-tag {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--blue-bright);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        h1.main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            font-weight: 900;
+            line-height: 1.1;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        /* Content Layout */
+        .content-grid {
+            display: flex;
+            gap: 40px;
+            flex: 1;
+            height: 100%;
+            position: relative;
+        }
+
+        /* Chart Area */
+        .chart-wrapper {
+            flex: 2;
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 20px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Sidebar / Metrics Table */
+        .metrics-panel {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .metrics-card {
+            background: rgba(4, 76, 115, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            overflow: hidden;
+        }
+
+        .metrics-header {
+            padding: 15px 20px;
+            background: rgba(0, 0, 0, 0.2);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            font-weight: 700;
+            font-size: 14px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+        }
+
+        .comparison-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .comparison-table th {
+            text-align: left;
+            padding: 12px 20px;
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-muted);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .comparison-table td {
+            padding: 14px 20px;
+            font-size: 14px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .comparison-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .label-cell {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .value-cell {
+            text-align: right;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+        }
+
+        .dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+
+        .dot-blue { background-color: var(--blue-bright); }
+        .dot-orange { background-color: var(--orange-bright); }
+
+        .growth-positive {
+            color: #69F0AE;
+            font-size: 12px;
+            margin-left: 6px;
+        }
+
+        /* Insight Box */
+        .insight-box {
+            margin-top: auto;
+            background: linear-gradient(135deg, rgba(239, 99, 55, 0.1) 0%, rgba(4, 76, 115, 0.1) 100%);
+            border: 1px solid rgba(239, 99, 55, 0.3);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        .insight-title {
+            color: var(--orange-bright);
+            font-weight: 700;
+            font-size: 13px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .insight-text {
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--text-light);
+        }
+
+        /* Chart Legends specifically for dual axis explanation */
+        .axis-legend {
+            position: absolute;
+            top: 20px;
+            font-size: 11px;
+            font-weight: 600;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+        .legend-left { left: 60px; color: var(--blue-bright); }
+        .legend-right { right: 20px; color: var(--orange-bright); }
+
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="header">
+<div>
+<p class="title-tag">Growth Velocity</p>
+<h1 class="main-title">Revenue Growth Comparison</h1>
+<p class="subtitle">Construction vs Maintenance (4-Year Projection)</p>
+</div>
+<div class="text-right">
+<p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Chart 4C</p>
+<p class="text-sm font-bold text-white">Dual-Axis Analysis</p>
+</div>
+</div>
+<!-- Content -->
+<div class="content-grid">
+<!-- Chart Wrapper -->
+<div class="chart-wrapper">
+<div class="axis-legend legend-left">Construction (L)</div>
+<div class="axis-legend legend-right">Maintenance (R)</div>
+<canvas id="dualAxisChart" width="790" height="553" style="display: block; box-sizing: border-box; height: 502.9px; width: 718.8px;"></canvas>
+</div>
+<!-- Metrics Panel -->
+<div class="metrics-panel">
+<div class="metrics-card">
+<div class="metrics-header">Performance Metrics</div>
+<table class="comparison-table">
+<thead>
+<tr>
+<th>Service Line</th>
+<th>Abs. Growth</th>
+<th>% Growth</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<div class="label-cell">
+<span class="dot dot-blue"></span> Construction
+                                    </div>
+<p class="text-xs text-gray-500 ml-5 mt-1">Base: $1.2M</p>
+</td>
+<td class="value-cell text-blue-300">+$397K</td>
+<td class="value-cell text-blue-300">+33%</td>
+</tr>
+<tr>
+<td>
+<div class="label-cell">
+<span class="dot dot-orange"></span> Maintenance
+                                    </div>
+<p class="text-xs text-gray-500 ml-5 mt-1">Base: $500K</p>
+</td>
+<td class="value-cell text-orange-300">+$364K</td>
+<td class="value-cell text-orange-300">+73%</td>
+</tr>
+</tbody>
+</table>
+<!-- Total Summary Row -->
+<div class="px-5 py-3 border-t border-gray-800 bg-white/5">
+<div class="flex justify-between items-center mb-1">
+<span class="text-xs text-gray-400 uppercase">4-Year Total Revenue</span>
+</div>
+<div class="flex justify-between items-center">
+<span class="text-sm font-semibold text-gray-300">Combined Potential</span>
+<span class="font-mono font-bold text-lg text-white">$8.34M</span>
+</div>
+</div>
+</div>
+<!-- Insight Box -->
+<div class="insight-box">
+<div class="insight-title">
+<i class="fas fa-chart-line"></i> Velocity Check
+                </div>
+<p class="insight-text">
+                    Maintenance grows <strong class="text-orange-400">2.2x faster</strong> than Construction. By Year 4, Maintenance revenue reaches 54% of Construction's value, despite starting at only 41%.
+                </p>
+</div>
+</div>
+</div>
+</div>
+<script>
+        const ctx = document.getElementById('dualAxisChart').getContext('2d');
+
+        // Data
+        const labels = ['Year 1', 'Year 2', 'Year 3', 'Year 4'];
+        const constructionData = [1.2, 1.32, 1.45, 1.60];
+        const maintenanceData = [0.5, 0.6, 0.72, 0.86];
+
+        const config = {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        label: 'Construction (10%)',
+                        data: constructionData,
+                        borderColor: '#29B6F6', // Blue Bright
+                        backgroundColor: 'rgba(41, 182, 246, 0.1)',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#0f1419',
+                        pointBorderColor: '#29B6F6',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        pointHoverRadius: 8,
+                        yAxisID: 'y',
+                        tension: 0.3,
+                        fill: true
+                    },
+                    {
+                        label: 'Maintenance (20%)',
+                        data: maintenanceData,
+                        borderColor: '#FF7043', // Orange Bright
+                        backgroundColor: 'rgba(255, 112, 67, 0.1)',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#0f1419',
+                        pointBorderColor: '#FF7043',
+                        pointBorderWidth: 2,
+                        pointRadius: 6,
+                        pointHoverRadius: 8,
+                        yAxisID: 'y1',
+                        tension: 0.3,
+                        fill: true
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                layout: {
+                    padding: { top: 30, right: 10, left: 10, bottom: 10 }
+                },
+                interaction: {
+                    mode: 'index',
+                    intersect: false,
+                },
+                plugins: {
+                    legend: {
+                        display: false // Using custom HTML legend
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 20, 25, 0.95)',
+                        titleFont: { family: 'Playfair Display', size: 14 },
+                        bodyFont: { family: 'JetBrains Mono', size: 12 },
+                        padding: 12,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label = label.split('(')[0].trim() + ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += new Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD', minimumFractionDigits: 2 }).format(context.parsed.y) + 'M';
+                                }
+                                return label;
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.05)',
+                            drawBorder: false
+                        },
+                        ticks: {
+                            color: '#b0b8c1',
+                            font: { family: 'Inter', size: 12 }
+                        }
+                    },
+                    y: {
+                        type: 'linear',
+                        display: true,
+                        position: 'left',
+                        grid: {
+                            color: 'rgba(41, 182, 246, 0.1)', // Subtle blue grid
+                            borderDash: [5, 5]
+                        },
+                        ticks: {
+                            color: '#29B6F6',
+                            callback: function(value) { return '$' + value + 'M'; }
+                        },
+                        title: {
+                            display: false
+                        },
+                        min: 1.0,
+                        max: 1.8
+                    },
+                    y1: {
+                        type: 'linear',
+                        display: true,
+                        position: 'right',
+                        grid: {
+                            drawOnChartArea: false // only want the grid lines for one axis to show up
+                        },
+                        ticks: {
+                            color: '#FF7043',
+                            callback: function(value) { return '$' + value + 'M'; }
+                        },
+                        min: 0.4,
+                        max: 1.0
+                    }
+                },
+                animation: {
+                    duration: 2000,
+                    easing: 'easeOutQuart'
+                }
+            }
+        };
+
+        new Chart(ctx, config);
+    </script>
+
+
+<script src="./slide-inner.js"></script></body></html>

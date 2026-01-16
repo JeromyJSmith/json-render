@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/qLr01GeV -->
+<html lang="en" data-chapter="Ownership Pathways" data-chapter-number="4" data-slide-position="30"><head>
+<meta name="marpa-chapter" content="Ownership Pathways" data-chapter-number="4" data-slide-position="30"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Chapter 3: Shared Leadership</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(1)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<link href="./global-marpa-styles.css" rel="stylesheet">
+<script src="./gsap.min.js"></script>
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            min-height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Abstract Pathway Visual */
+        .pathway-visual {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 55%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.8;
+        }
+
+        /* ANIMATIONS */
+        @keyframes pulseNumber {
+            0% { opacity: 0.1; transform: scale(1); }
+            50% { opacity: 0.25; transform: scale(1.02); }
+            100% { opacity: 0.1; transform: scale(1); }
+        }
+
+        @keyframes flowLine {
+            from { stroke-dashoffset: 1000; }
+            to { stroke-dashoffset: 0; }
+        }
+
+        @keyframes nodePulse {
+            0% { r: 6; opacity: 0.6; }
+            50% { r: 8; opacity: 1; filter: drop-shadow(0 0 5px var(--yellow)); }
+            100% { r: 6; opacity: 0.6; }
+        }
+
+        /* SVG Element Styling */
+        .path-track {
+            stroke-dasharray: 2000;
+            stroke-dashoffset: 0;
+            opacity: 0.2;
+        }
+
+        .path-flow {
+            stroke-dasharray: 50 150; /* Dash length, Gap length */
+            stroke-dashoffset: 1000;
+            animation: flowLine 4s linear infinite;
+        }
+        
+        /* Different speeds for different paths */
+        .path-flow-fast { animation-duration: 3s; }
+        .path-flow-slow { animation-duration: 5s; }
+
+        .team-node {
+            animation: nodePulse 3s infinite ease-in-out;
+        }
+        
+        /* Stagger animations for nodes */
+        .node-1 { animation-delay: 0s; }
+        .node-2 { animation-delay: 1s; }
+        .node-3 { animation-delay: 2s; }
+
+        .content-area {
+            z-index: 10;
+            padding: 60px; /* Reduced from 80px */
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-width: 50%;
+        }
+
+        .chapter-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 140px; /* Reduced from 180px */
+            font-weight: 900;
+            line-height: 0.8;
+            color: transparent;
+            -webkit-text-stroke: 2px var(--yellow);
+            opacity: 0.15;
+            position: absolute;
+            top: 60px;
+            left: 60px;
+            z-index: -1;
+            /* Pulse Animation applied here */
+            animation: pulseNumber 4s infinite ease-in-out;
+            transform-origin: center left;
+        }
+
+        .chapter-label {
+            color: var(--yellow);
+            font-size: 16px; /* Reduced from 18px */
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            opacity: 0; /* GSAP start state */
+        }
+
+        .chapter-label::before {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background-color: var(--yellow);
+            margin-right: 16px;
+        }
+
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 56px; /* Reduced from 72px */
+            font-weight: 700;
+            line-height: 1.1;
+            color: var(--text-light);
+            margin-bottom: 20px;
+            opacity: 0; /* GSAP start state */
+            transform: translateY(20px);
+        }
+
+        .subtitle {
+            font-size: 18px; /* Reduced from 20px */
+            line-height: 1.6;
+            color: var(--text-muted);
+            margin-bottom: 30px;
+            max-width: 500px;
+            opacity: 0; /* GSAP start state */
+            transform: translateY(20px);
+        }
+
+        .emotional-anchor-box {
+            border-left: 4px solid var(--yellow);
+            padding: 20px 30px;
+            background-color: rgba(255, 230, 109, 0.08);
+            margin-top: 20px;
+            opacity: 0; /* GSAP start state */
+            transform: translateX(-20px);
+        }
+
+        .anchor-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--yellow);
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .anchor-text {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 22px; /* Reduced from 24px */
+            color: var(--text-light);
+        }
+
+        /* Shared icon badge */
+        .icon-badge {
+            width: 80px;
+            height: 80px;
+            background-color: rgba(255, 230, 109, 0.1);
+            border: 1px solid var(--yellow);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 30px;
+            opacity: 0; /* GSAP start state */
+            transform: scale(0.5);
+        }
+        
+        .footer {
+            opacity: 0;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Background SVG Visual -->
+<div class="pathway-visual">
+<svg height="100%" preserveAspectRatio="none" viewBox="0 0 800 720" width="100%">
+<defs>
+<filter id="glow">
+<fegaussianblur result="coloredBlur" stdDeviation="4"></fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+<!-- Background Geometry -->
+<path class="bg-shape" d="M100,720 L300,400 L800,200 L800,720 Z" fill="#044c73" opacity="0.2" style="opacity: 0.2;"></path>
+<path class="bg-shape" d="M500,720 L600,500 L800,400 L800,720 Z" fill="#044c73" opacity="0.1" style="opacity: 0.1;"></path>
+<!-- The Shared Path Lines (Multiple branching/parallel lines) -->
+<!-- Line 1: Main Path (Static Track) -->
+<path class="path-track" d="M50,720 C150,600 200,500 300,400 C450,250 550,150 800,100" fill="none" stroke="#FFE66D" stroke-width="3" style="stroke-dashoffset: 0px;"></path>
+<!-- Line 1: Animated Flow -->
+<path class="path-flow path-flow-slow" d="M50,720 C150,600 200,500 300,400 C450,250 550,150 800,100" fill="none" stroke="#FFE66D" stroke-linecap="round" stroke-width="3"></path>
+<!-- Line 2: Parallel Support Path 1 (Static Track) -->
+<path class="path-track" d="M100,720 C180,620 230,520 330,420 C480,270 580,170 800,150" fill="none" stroke="#FFE66D" stroke-dasharray="10,10" stroke-width="2" style="stroke-dashoffset: 0px;"></path>
+<!-- Line 2: Animated Flow -->
+<path class="path-flow path-flow-fast" d="M100,720 C180,620 230,520 330,420 C480,270 580,170 800,150" fill="none" stroke="#FFE66D" stroke-linecap="round" stroke-width="2"></path>
+<!-- Line 3: Parallel Support Path 2 (Static Track) -->
+<path class="path-track" d="M0,720 C120,580 170,480 270,380 C420,230 520,130 800,50" fill="none" stroke="#FFE66D" stroke-dasharray="10,10" stroke-width="2" style="stroke-dashoffset: 0px;"></path>
+<!-- Line 3: Animated Flow -->
+<path class="path-flow" d="M0,720 C120,580 170,480 270,380 C420,230 520,130 800,50" fill="none" stroke="#FFE66D" stroke-linecap="round" stroke-width="2"></path>
+<!-- Decorative dots representing team nodes -->
+<circle class="team-node node-1" cx="300" cy="400" fill="#FFE66D" r="6"></circle>
+<circle class="team-node node-2" cx="330" cy="420" fill="#FFE66D" r="4"></circle>
+<circle class="team-node node-3" cx="270" cy="380" fill="#FFE66D" r="4"></circle>
+<!-- End Goal Node -->
+<circle class="end-node" cx="800" cy="100" fill="#ef6337" filter="url(#glow)" r="10"></circle>
+<!-- Secondary subtle lines -->
+<path d="M100,800 L400,300" fill="none" opacity="0.3" stroke="#044c73" stroke-width="1"></path>
+<path d="M200,800 L500,200" fill="none" opacity="0.2" stroke="#044c73" stroke-width="1"></path>
+</svg>
+</div>
+<div class="chapter-number">03</div>
+<div class="content-area">
+<div class="icon-badge" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<i class="fas fa-users text-3xl text-[#FFE66D]"></i>
+</div>
+<div class="chapter-label" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<p>Chapter 3</p>
+</div>
+<h1 class="main-title" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<p>SHARED<br>LEADERSHIP</p>
+</h1>
+<div class="subtitle" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<p>Distributing investment, responsibility, and succession depth.</p>
+</div>
+<div class="emotional-anchor-box" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<p class="anchor-label">Emotional Anchor</p>
+<p class="anchor-text">"Feels like building a team and sharing the load."</p>
+</div>
+</div>
+<!-- Footer -->
+<div class="footer absolute bottom-8 left-12 right-12 flex justify-between items-end border-t border-[#044c73] pt-4 opacity-60" style="opacity: 0.6;">
+<div class="text-[#b0b8c1] text-xs tracking-widest uppercase">MARPA Equity Pathway 2026</div>
+<div class="text-[#b0b8c1] text-xs">Confidential Presentation</div>
+</div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+        // 1. Badge pop
+        tl.to(".icon-badge", {
+            scale: 1,
+            opacity: 1,
+            duration: 0.8,
+            ease: "back.out(1.7)"
+        });
+
+        // 2. Text Reveal Stagger
+        tl.to([".chapter-label", ".main-title", ".subtitle"], {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            stagger: 0.15
+        }, "-=0.4");
+
+        // 3. Anchor Box Slide in
+        tl.to(".emotional-anchor-box", {
+            x: 0,
+            opacity: 1,
+            duration: 0.8
+        }, "-=0.4");
+
+        // 4. Background Shapes Fade In
+        tl.from(".bg-shape", {
+            opacity: 0,
+            duration: 1.5,
+            stagger: 0.2
+        }, 0); // Start at beginning
+
+        // 5. Draw the static path tracks
+        tl.from(".path-track", {
+            strokeDashoffset: 2000,
+            duration: 2,
+            ease: "power2.inOut",
+            stagger: 0.2
+        }, 0.5);
+
+        // 6. Footer fade in
+        tl.to(".footer", {
+            opacity: 0.6,
+            duration: 1
+        }, "-=1");
+
+        // Note: Infinite animations (flow, pulse) are handled by CSS keyframes
+    });
+</script>
+
+
+<script src="./slide-inner.js"></script></body></html>

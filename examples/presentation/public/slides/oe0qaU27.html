@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/oe0qaU27 -->
+<html lang="en" data-chapter="Ownership Pathways" data-chapter-number="4" data-slide-position="32"><head>
+<meta name="marpa-chapter" content="Ownership Pathways" data-chapter-number="4" data-slide-position="32"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>What We Recommend</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(2)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<script src="./gsap.min.js"></script>
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --yellow: #FFE66D;
+            --mint: #95E1D3;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+        }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+        
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 40px 60px;
+            box-sizing: border-box;
+        }
+
+        /* Recommendation Cards */
+        .rec-container {
+            display: flex;
+            gap: 30px;
+            flex: 1;
+            margin-bottom: 24px;
+        }
+
+        .rec-card {
+            flex: 1;
+            border-radius: 12px;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            opacity: 0; /* Initial state for animation */
+            transform: translateY(20px);
+        }
+
+        /* Luke's Card Styling */
+        .card-luke {
+            background: rgba(4, 76, 115, 0.15);
+            border: 1px solid rgba(4, 76, 115, 0.4);
+            border-top: 4px solid var(--navy);
+        }
+
+        /* Bodie's Card Styling */
+        .card-bodie {
+            background: rgba(255, 230, 109, 0.05);
+            border: 1px solid rgba(255, 230, 109, 0.2);
+            border-top: 4px solid var(--yellow);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .persona-tag {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            padding: 4px 8px;
+            border-radius: 4px;
+        }
+
+        .tag-luke { background: rgba(4, 76, 115, 0.3); color: #8db6b0; }
+        .tag-bodie { background: rgba(255, 230, 109, 0.2); color: var(--yellow); }
+
+        .rec-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 28px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .highlight-metric {
+            font-size: 42px;
+            font-weight: 700;
+            color: var(--coral);
+            margin: 16px 0;
+            line-height: 1;
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            opacity: 0; /* For animation */
+        }
+
+        .metric-sub {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 400;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .benefit-list {
+            margin-top: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .benefit-item {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            font-size: 15px;
+            color: var(--text-light);
+            line-height: 1.4;
+            opacity: 0; /* For animation */
+            transform: translateX(-10px);
+        }
+
+        .check-icon {
+            margin-top: 3px;
+            font-size: 14px;
+        }
+        
+        .icon-luke { color: var(--teal); }
+        .icon-bodie { color: var(--yellow); }
+
+        /* Caveat Section */
+        .caveat-box {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px dashed rgba(255, 255, 255, 0.1);
+            border-radius: 8px;
+            padding: 16px 24px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            opacity: 0; /* For animation */
+        }
+
+        .caveat-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            font-weight: 700;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 4px 8px;
+            border-radius: 4px;
+            white-space: nowrap;
+        }
+
+        .caveat-text {
+            font-size: 14px;
+            color: var(--text-muted);
+            flex: 1;
+        }
+
+        .badge-pill {
+            display: inline-block;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            margin-left: 8px;
+            vertical-align: middle;
+        }
+        
+        .badge-best {
+            background-color: var(--coral);
+            color: white;
+        }
+
+        /* Animation Classes */
+        .animate-header { opacity: 0; transform: translateY(-10px); }
+
+</style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="flex justify-between items-end mb-8 border-b border-[#044c73] pb-4 animate-header" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div>
+<div class="flex items-center mb-2">
+<span class="w-2 h-2 bg-[#95E1D3] rounded-full mr-2"></span>
+<p class="text-[#95E1D3] font-bold tracking-widest text-xs uppercase">Chapter 5: Decision &amp; Next Steps</p>
+</div>
+<h1 class="font-serif text-4xl text-[#f5f7fa]">WHAT WE RECOMMEND</h1>
+</div>
+<div class="text-right">
+<p class="text-[#b0b8c1] text-sm font-mono">STRATEGIC ADVISORY</p>
+</div>
+</div>
+<!-- Main Content: Split Cards -->
+<div class="rec-container">
+<!-- Luke's Recommendation -->
+<div class="rec-card card-luke" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="card-header">
+<span class="persona-tag tag-luke">FOR LUKE (SELLER)</span>
+<i class="fas fa-crown text-[#044c73] opacity-50 text-2xl"></i>
+</div>
+<h2 class="rec-title text-[#f5f7fa]">Design-Build <span class="badge-pill badge-best">Best Path</span></h2>
+<p class="text-[#b0b8c1] text-sm font-mono">52/24/24 STRUCTURE</p>
+<div class="highlight-metric" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+                    $4.7M
+                    <span class="metric-sub">Exit Value</span>
+</div>
+<p class="text-sm text-[#8db6b0] mb-6 italic">vs $2.1M in Design-Only path</p>
+<div class="benefit-list">
+<div class="benefit-item" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<i class="fas fa-check-circle check-icon icon-luke"></i>
+<p><strong>Highest Financial Return:</strong> 124% increase in net proceeds based on $17.0M canonical valuation.</p>
+</div>
+<div class="benefit-item" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<i class="fas fa-check-circle check-icon icon-luke"></i>
+<p><strong>Legacy Preserved:</strong> Creates a stronger, vertically integrated company built to last for 20+ years.</p>
+</div>
+<div class="benefit-item" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<i class="fas fa-check-circle check-icon icon-luke"></i>
+<p><strong>Strategic Fit:</strong> Focus remains on high-level design while partners handle operations.</p>
+</div>
+</div>
+</div>
+<!-- Bodie's Recommendation -->
+<div class="rec-card card-bodie" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="card-header">
+<span class="persona-tag tag-bodie">FOR BODIE (BUYER)</span>
+<i class="fas fa-shield-alt text-[#FFE66D] opacity-50 text-2xl"></i>
+</div>
+<h2 class="rec-title text-[#FFE66D]">Design-Build <span class="text-lg font-normal text-[#b0b8c1]">or</span> Shared</h2>
+<p class="text-[#b0b8c1] text-sm font-mono">DISTRIBUTED RISK MODELS</p>
+<div class="highlight-metric text-[#FFE66D]" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+                    Lower Risk
+                    <span class="metric-sub">Profile</span>
+</div>
+<p class="text-sm text-[#b0b8c1] mb-6 italic">Avoids 100% SBA personal guarantee</p>
+<div class="benefit-list">
+<div class="benefit-item" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<i class="fas fa-check-circle check-icon icon-bodie"></i>
+<p><strong>Lower Exposure:</strong> Investment spread across multiple partners significantly reduces personal financial burden.</p>
+</div>
+<div class="benefit-item" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<i class="fas fa-check-circle check-icon icon-bodie"></i>
+<p><strong>Succession Depth:</strong> "Bench strength" of partners ensures business continuity.</p>
+</div>
+<div class="benefit-item" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<i class="fas fa-check-circle check-icon icon-bodie"></i>
+<p><strong>Meaningful Ownership:</strong> 24% of a high-margin Design-Build firm is worth more than 49% of a standard firm.</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Caveat Section -->
+<div class="caveat-box" style="opacity: 1;">
+<span class="caveat-label">Alternative Path Caveat</span>
+<p class="caveat-text">
+                The <strong>Solo Principal Path (Option A)</strong> remains a viable option only if Bodie has exceptionally high risk tolerance and direct access to ~$420K in liquid capital.
+            </p>
+<i class="fas fa-exclamation-triangle text-[#ef6337] opacity-60"></i>
+</div>
+<!-- Footer -->
+<div class="mt-auto pt-4 flex justify-between items-center border-t border-[#044c73] border-opacity-30 animate-header" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<p class="text-[#4e5d6c] text-xs tracking-widest uppercase">Confidential · MARPA Equity Pathway 2026</p>
+<p class="text-[#4e5d6c] text-xs font-mono">CH5-S06</p>
+</div>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+        // Header Elements
+        tl.to(".animate-header", {
+            y: 0,
+            opacity: 1,
+            duration: 0.8
+        });
+
+        // Cards Slide Up
+        tl.to(".rec-card", {
+            y: 0,
+            opacity: 1,
+            duration: 0.8,
+            stagger: 0.2
+        }, "-=0.4");
+
+        // Highlights inside cards pop
+        tl.to(".highlight-metric", {
+            scale: 1,
+            opacity: 1,
+            duration: 0.5,
+            stagger: 0.2
+        }, "-=0.4");
+
+        // Benefits cascade
+        tl.to(".benefit-item", {
+            x: 0,
+            opacity: 1,
+            duration: 0.4,
+            stagger: 0.1
+        }, "-=0.2");
+
+        // Caveat fade in
+        tl.to(".caveat-box", {
+            opacity: 1,
+            duration: 0.8
+        }, "-=0.2");
+    });
+</script>
+
+
+<script src="./slide-inner.js"></script></body></html>

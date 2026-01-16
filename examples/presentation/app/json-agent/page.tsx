@@ -22,7 +22,7 @@ const componentMap = {
         position: "relative",
       }}
     >
-      {props.tag && (
+      {typeof props.tag === "string" && props.tag && (
         <div
           style={{
             position: "absolute",
@@ -38,7 +38,7 @@ const componentMap = {
             textTransform: "uppercase",
           }}
         >
-          {props.tag as string}
+          {props.tag}
         </div>
       )}
       <h1
@@ -53,7 +53,7 @@ const componentMap = {
       >
         {props.title as string}
       </h1>
-      {props.subtitle && (
+      {typeof props.subtitle === "string" && props.subtitle && (
         <p
           style={{
             fontSize: 24,
@@ -62,10 +62,10 @@ const componentMap = {
             maxWidth: 800,
           }}
         >
-          {props.subtitle as string}
+          {props.subtitle}
         </p>
       )}
-      {props.bullets && (
+      {Array.isArray(props.bullets) && (
         <ul
           style={{
             marginTop: 40,
@@ -271,7 +271,7 @@ const componentMap = {
             </div>
           ))}
         </div>
-        {props.insight && (
+        {typeof props.insight === "string" && props.insight && (
           <div
             style={{
               marginTop: 24,
@@ -282,7 +282,7 @@ const componentMap = {
               fontSize: 16,
             }}
           >
-            {props.insight as string}
+            {props.insight}
           </div>
         )}
         <div style={{ display: "flex", gap: 24, marginTop: 16 }}>
@@ -505,7 +505,7 @@ const componentMap = {
             ))}
           </tbody>
         </table>
-        {props.caption && (
+        {typeof props.caption === "string" && props.caption && (
           <p
             style={{
               marginTop: 16,
@@ -514,7 +514,7 @@ const componentMap = {
               fontStyle: "italic",
             }}
           >
-            {props.caption as string}
+            {props.caption}
           </p>
         )}
       </div>
@@ -553,7 +553,7 @@ const componentMap = {
       >
         {props.content as string}
       </p>
-      {props.highlight && (
+      {typeof props.highlight === "string" && props.highlight && (
         <blockquote
           style={{
             marginTop: 40,
@@ -565,7 +565,7 @@ const componentMap = {
             color: COLORS.coral,
           }}
         >
-          {props.highlight as string}
+          {props.highlight}
         </blockquote>
       )}
     </div>

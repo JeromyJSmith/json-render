@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/7PPJfKBM -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Construction Revenue Trajectory - Area Chart</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<script src="./chart.js"></script>
+<script src="./chartjs-plugin-annotation.min.js"></script>
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+            
+            /* Specific Colors for this chart */
+            --chart-fill: rgba(4, 76, 115, 0.3);
+            --chart-line: #4ECDC4;
+            --chart-point: #0f1419;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-light);
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 60px;
+            position: relative;
+            background-color: var(--bg-dark);
+            box-sizing: border-box;
+        }
+
+        /* Header */
+        .header {
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .title-tag {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--turquoise);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        h1.main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            font-weight: 900;
+            line-height: 1.1;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        /* Main Layout */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            flex: 1;
+            height: 100%;
+        }
+
+        /* Chart Section */
+        .chart-wrapper {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 24px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Table Section */
+        .table-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 14px;
+        }
+
+        .data-table th {
+            text-align: left;
+            padding: 12px;
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 600;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            font-size: 12px;
+            text-transform: uppercase;
+        }
+
+        .data-table td {
+            padding: 16px 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            color: var(--text-light);
+        }
+
+        .data-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .growth-positive {
+            color: var(--turquoise);
+            font-weight: 600;
+        }
+
+        .row-highlight {
+            background: rgba(78, 205, 196, 0.05);
+        }
+
+        /* Key Insight Box */
+        .insight-card {
+            background: rgba(4, 76, 115, 0.15);
+            border-left: 4px solid var(--turquoise);
+            padding: 20px;
+            border-radius: 0 8px 8px 0;
+            margin-top: auto;
+        }
+
+        .insight-header {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--turquoise);
+            font-weight: 700;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .insight-text {
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--text-light);
+        }
+
+        /* Value Highlight */
+        .total-growth {
+            font-family: 'Playfair Display', serif;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--turquoise);
+            margin-top: 4px;
+        }
+
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="header">
+<div>
+<p class="title-tag">4-Year Outlook</p>
+<h1 class="main-title">Construction Revenue Trajectory</h1>
+<p class="subtitle">Projected performance with 10% annual compounding growth</p>
+</div>
+<div class="text-right">
+<p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Chart 3C</p>
+<p class="text-sm font-bold text-white">Area &amp; Table View</p>
+</div>
+</div>
+<!-- Content -->
+<div class="content-grid">
+<!-- Left: Chart -->
+<div class="chart-wrapper">
+<canvas id="areaChart" width="766" height="489" style="display: block; box-sizing: border-box; height: 445.1px; width: 696.9px;"></canvas>
+</div>
+<!-- Right: Data Table & Insights -->
+<div class="table-container">
+<div class="bg-[#0f1419] rounded-xl border border-gray-800 overflow-hidden">
+<table class="data-table">
+<thead>
+<tr>
+<th>Year</th>
+<th>Revenue</th>
+<th>Growth</th>
+<th>YoY %</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Year 1</td>
+<td class="font-mono">$1.20M</td>
+<td class="text-gray-500">—</td>
+<td class="text-gray-500">—</td>
+</tr>
+<tr>
+<td>Year 2</td>
+<td class="font-mono">$1.32M</td>
+<td class="growth-positive">+$120K</td>
+<td class="growth-positive">+10%</td>
+</tr>
+<tr>
+<td>Year 3</td>
+<td class="font-mono">$1.45M</td>
+<td class="growth-positive">+$132K</td>
+<td class="growth-positive">+10%</td>
+</tr>
+<tr class="row-highlight">
+<td>Year 4</td>
+<td class="font-mono font-bold">$1.60M</td>
+<td class="growth-positive">+$145K</td>
+<td class="growth-positive">+10%</td>
+</tr>
+</tbody>
+</table>
+</div>
+<!-- Insight Card -->
+<div class="insight-card">
+<div class="insight-header">
+<i class="fas fa-chart-line mr-2"></i> Performance Summary
+                    </div>
+<p class="insight-text">
+                        From $1.2M to $1.6M represents a
+                    </p>
+<p class="total-growth">33% Total Increase</p>
+<p class="text-xs text-gray-400 mt-2">
+                        Consistent execution creates compounding value over the 4-year horizon.
+                    </p>
+</div>
+</div>
+</div>
+</div>
+<script>
+        // Register plugins
+        Chart.register(window['chartjs-plugin-annotation']);
+
+        const ctx = document.getElementById('areaChart').getContext('2d');
+
+        // Create gradient
+        const gradient = ctx.createLinearGradient(0, 0, 0, 400);
+        gradient.addColorStop(0, 'rgba(78, 205, 196, 0.5)');   // Turquoise
+        gradient.addColorStop(1, 'rgba(4, 76, 115, 0.05)');    // Navy fade
+
+        const data = {
+            labels: ['Year 1', 'Year 2', 'Year 3', 'Year 4'],
+            datasets: [{
+                label: 'Projected Revenue',
+                data: [1.20, 1.32, 1.45, 1.60],
+                backgroundColor: gradient,
+                borderColor: '#4ECDC4',
+                borderWidth: 3,
+                pointBackgroundColor: '#0f1419',
+                pointBorderColor: '#4ECDC4',
+                pointBorderWidth: 2,
+                pointRadius: 6,
+                pointHoverRadius: 8,
+                fill: true,
+                tension: 0.4
+            }]
+        };
+
+        const config = {
+            type: 'line',
+            data: data,
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: {
+                    legend: {
+                        display: false
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 20, 25, 0.95)',
+                        titleFont: { family: 'Playfair Display', size: 14 },
+                        bodyFont: { family: 'JetBrains Mono', size: 12 },
+                        padding: 12,
+                        cornerRadius: 8,
+                        callbacks: {
+                            label: function(context) {
+                                return '$' + context.parsed.y.toFixed(2) + 'M Revenue';
+                            }
+                        }
+                    },
+                    annotation: {
+                        annotations: {
+                            label1: {
+                                type: 'label',
+                                xValue: 2.5, // Between Year 3 and 4
+                                yValue: 1.52,
+                                backgroundColor: 'rgba(15, 20, 25, 0.8)',
+                                content: ['+10% Annual Growth'],
+                                font: {
+                                    family: 'Inter',
+                                    size: 12,
+                                    weight: 'bold'
+                                },
+                                color: '#4ECDC4',
+                                padding: {
+                                    top: 6,
+                                    bottom: 6,
+                                    left: 10,
+                                    right: 10
+                                },
+                                borderRadius: 4,
+                                position: 'center'
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.05)'
+                        },
+                        ticks: {
+                            color: '#b0b8c1',
+                            font: { family: 'Inter', size: 13, weight: '500' },
+                            padding: 10
+                        }
+                    },
+                    y: {
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.05)',
+                            borderDash: [5, 5]
+                        },
+                        ticks: {
+                            color: '#b0b8c1',
+                            callback: function(value) {
+                                return '$' + value + 'M';
+                            },
+                            padding: 10
+                        },
+                        min: 1.0,
+                        max: 1.7
+                    }
+                },
+                animation: {
+                    duration: 2000,
+                    easing: 'easeOutQuart'
+                }
+            }
+        };
+
+        new Chart(ctx, config);
+    </script>
+
+
+<script src="./slide-inner.js"></script></body></html>

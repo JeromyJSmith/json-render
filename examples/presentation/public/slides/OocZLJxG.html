@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/OocZLJxG -->
+<html lang="en" data-chapter="Foundation" data-chapter-number="1" data-slide-position="7"><head>
+<meta name="marpa-chapter" content="Foundation" data-chapter-number="1" data-slide-position="7"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>MARPA Financial Dashboard</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./all(1).min.css" rel="stylesheet">
+<link href="./css2(4)" rel="stylesheet">
+<script src="./gsap.min.js"></script>
+<style>
+        /* ==========================================
+           COLOR PRESERVATION BLOCK
+           ========================================== */
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --mint: #95E1D3;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+            --text-gray: #4e5d6c;
+        }
+
+        /* Tailwind color preservation */
+        .text-\[\#ef6337\] { color: #ef6337 !important; }
+        .text-\[\#f5f7fa\] { color: #f5f7fa !important; }
+        .text-\[\#8db6b0\] { color: #8db6b0 !important; }
+        .text-\[\#b0b8c1\] { color: #b0b8c1 !important; }
+        .text-\[\#4e5d6c\] { color: #4e5d6c !important; }
+        .text-\[\#044c73\] { color: #044c73 !important; }
+        .text-\[\#4ECDC4\] { color: #4ECDC4 !important; }
+        .text-\[\#FFE66D\] { color: #FFE66D !important; }
+        .text-\[\#95E1D3\] { color: #95E1D3 !important; }
+        .text-\[\#0f1419\] { color: #0f1419 !important; }
+
+        .bg-\[\#0f1419\] { background-color: #0f1419 !important; }
+        .bg-\[\#044c73\] { background-color: #044c73 !important; }
+        .bg-\[\#ef6337\] { background-color: #ef6337 !important; }
+        .bg-\[\#0b0f13\] { background-color: #0b0f13 !important; }
+        .bg-\[\#FFE66D\] { background-color: #FFE66D !important; }
+
+        .border-\[\#044c73\] { border-color: #044c73 !important; }
+        .border-\[\#ef6337\] { border-color: #ef6337 !important; }
+        .border-l-\[\#ef6337\] { border-left-color: #ef6337 !important; }
+        .border-l-\[\#044c73\] { border-left-color: #044c73 !important; }
+        .border-l-\[\#FFE66D\] { border-left-color: #FFE66D !important; }
+
+        /* Slide-specific styles */
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            background-color: var(--bg-dark);
+            overflow: hidden;
+            padding: 25px 40px;
+        }
+
+        .metric-row {
+            background-color: #161b22;
+            transition: all 0.3s ease;
+            border-left: 4px solid transparent;
+            opacity: 0; /* Hidden initially for GSAP */
+            transform: translateX(-50px); /* Start off-screen */
+        }
+        .metric-row:hover {
+            transform: translateX(5px) !important; /* Override GSAP inline style on hover */
+            background-color: #1c232b;
+            border-left-color: var(--coral);
+        }
+
+        .progress-bar-bg {
+            background-color: rgba(141, 182, 176, 0.1);
+        }
+        .progress-bar-fill {
+            background-color: var(--teal);
+            width: 0%; /* Start at 0 for animation */
+        }
+        .progress-bar-fill.highlight {
+            background-color: var(--coral);
+        }
+        
+        /* Custom scrollbar override */
+        ::-webkit-scrollbar { width: 0px; }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="flex justify-between items-end mb-6 header-section" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<div>
+<h2 class="text-[#ef6337] font-bold tracking-widest text-xs mb-2 uppercase">Chapter 1: Foundation</h2>
+<h1 class="font-serif text-4xl font-bold text-[#f5f7fa]">MARPA'S FINANCIAL DASHBOARD</h1>
+</div>
+<div class="text-right">
+<p class="text-[#b0b8c1] text-xs font-mono">DATA SOURCE: DEC 2025 REVIEW</p>
+<div class="w-32 h-1 bg-[#044c73] mt-2 ml-auto"></div>
+</div>
+</div>
+<!-- Main Content: Metrics Rows -->
+<div class="flex-1 flex flex-col justify-center space-y-3">
+<!-- Row 1: EBITDA -->
+<div class="metric-row rounded-r-lg p-4 flex items-center shadow-lg border-l-[#ef6337]" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<!-- Icon -->
+<div class="w-12 h-12 rounded-full bg-[#044c73] bg-opacity-20 flex items-center justify-center mr-6 flex-shrink-0">
+<i class="fas fa-chart-line text-[#ef6337] text-xl"></i>
+</div>
+<!-- Label & Context -->
+<div class="flex-1 pr-8">
+<h3 class="text-lg font-bold text-[#f5f7fa] mb-1">Trailing EBITDA</h3>
+<p class="text-[#b0b8c1] text-sm">Base foundation for all valuation multiples</p>
+</div>
+<!-- Value -->
+<div class="w-48 text-right pr-8">
+<span class="text-2xl font-bold text-[#ef6337] font-mono">$1.655M</span>
+</div>
+<!-- Visual -->
+<div class="w-48 flex flex-col justify-center">
+<div class="flex justify-between text-xs text-[#b0b8c1] mb-1">
+<p>Strength</p>
+<p>High</p>
+</div>
+<div class="h-2 w-full progress-bar-bg rounded-full overflow-hidden">
+<div class="h-full progress-bar-fill highlight" data-width="95%" style="width: 95%;"></div>
+</div>
+</div>
+</div>
+<!-- Row 2: Revenue -->
+<div class="metric-row rounded-r-lg p-4 flex items-center shadow-lg border-l-[#044c73]" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="w-12 h-12 rounded-full bg-[#044c73] bg-opacity-20 flex items-center justify-center mr-6 flex-shrink-0">
+<i class="fas fa-bullseye text-[#8db6b0] text-xl"></i>
+</div>
+<div class="flex-1 pr-8">
+<h3 class="text-lg font-bold text-[#f5f7fa] mb-1">Revenue Target (2025)</h3>
+<p class="text-[#b0b8c1] text-sm">Projected growth based on current pipeline</p>
+</div>
+<div class="w-48 text-right pr-8">
+<span class="text-xl font-bold text-[#f5f7fa] font-mono">$11.03M</span>
+</div>
+<div class="w-48 flex flex-col justify-center">
+<div class="flex justify-between text-xs text-[#b0b8c1] mb-1">
+<p>Projection</p>
+<p>Solid</p>
+</div>
+<div class="h-2 w-full progress-bar-bg rounded-full overflow-hidden">
+<div class="h-full progress-bar-fill" data-width="80%" style="width: 80%;"></div>
+</div>
+</div>
+</div>
+<!-- Row 3: EBITDA Margin -->
+<div class="metric-row rounded-r-lg p-4 flex items-center shadow-lg border-l-[#044c73]" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="w-12 h-12 rounded-full bg-[#044c73] bg-opacity-20 flex items-center justify-center mr-6 flex-shrink-0">
+<i class="fas fa-percentage text-[#8db6b0] text-xl"></i>
+</div>
+<div class="flex-1 pr-8">
+<h3 class="text-lg font-bold text-[#f5f7fa] mb-1">EBITDA Margin</h3>
+<p class="text-[#b0b8c1] text-sm">Operational efficiency indicator</p>
+</div>
+<div class="w-48 text-right pr-8">
+<span class="text-xl font-bold text-[#f5f7fa] font-mono">16.7%</span>
+</div>
+<div class="w-48 flex flex-col justify-center">
+<div class="flex justify-between text-xs text-[#b0b8c1] mb-1">
+<p>Industry Avg</p>
+<p>Top Tier</p>
+</div>
+<div class="h-2 w-full progress-bar-bg rounded-full overflow-hidden">
+<div class="h-full progress-bar-fill" data-width="75%" style="width: 75%;"></div>
+</div>
+</div>
+</div>
+<!-- Row 4: Win Rate -->
+<div class="metric-row rounded-r-lg p-4 flex items-center shadow-lg border-l-[#ef6337]" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="w-12 h-12 rounded-full bg-[#044c73] bg-opacity-20 flex items-center justify-center mr-6 flex-shrink-0">
+<i class="fas fa-trophy text-[#ef6337] text-xl"></i>
+</div>
+<div class="flex-1 pr-8">
+<h3 class="text-lg font-bold text-[#f5f7fa] mb-1">Win Rate</h3>
+<p class="text-[#b0b8c1] text-sm">Exceptional vs 50% industry average</p>
+</div>
+<div class="w-48 text-right pr-8">
+<span class="text-2xl font-bold text-[#ef6337] font-mono">92-95%</span>
+</div>
+<div class="w-48 flex flex-col justify-center">
+<div class="flex justify-between text-xs text-[#b0b8c1] mb-1">
+<p>Conversion</p>
+<p>Elite</p>
+</div>
+<div class="h-2 w-full progress-bar-bg rounded-full overflow-hidden">
+<div class="h-full progress-bar-fill highlight" data-width="95%" style="width: 95%;"></div>
+</div>
+</div>
+</div>
+<!-- Row 5: Pipeline -->
+<div class="metric-row rounded-r-lg p-4 flex items-center shadow-lg border-l-[#FFE66D]" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="w-12 h-12 rounded-full bg-[#044c73] bg-opacity-20 flex items-center justify-center mr-6 flex-shrink-0">
+<i class="fas fa-filter text-[#FFE66D] text-xl"></i>
+</div>
+<div class="flex-1 pr-8">
+<h3 class="text-lg font-bold text-[#f5f7fa] mb-1">Active Pipeline</h3>
+<p class="text-[#b0b8c1] text-sm">Corrected figure, verified meetings</p>
+</div>
+<div class="w-48 text-right pr-8">
+<span class="text-xl font-bold text-[#f5f7fa] font-mono">$5.5M</span>
+</div>
+<div class="w-48 flex flex-col justify-center">
+<div class="flex justify-between text-xs text-[#b0b8c1] mb-1">
+<p>Coverage</p>
+<p>52%</p>
+</div>
+<div class="h-2 w-full progress-bar-bg rounded-full overflow-hidden">
+<div class="h-full progress-bar-fill" data-width="52%" style="background-color: rgb(255, 230, 109); width: 52%;"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer -->
+<div class="mt-4 pt-4 border-t border-[#044c73] border-opacity-30 flex justify-between items-center footer-section" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<p class="text-[#4e5d6c] text-xs uppercase tracking-widest">MARPA EQUITY PATHWAY 2026</p>
+<p class="text-[#4e5d6c] text-xs uppercase tracking-widest">CONFIDENTIAL · FINANCIAL DATA</p>
+</div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", (event) => {
+        // Staggered slide-in animation for rows
+        gsap.to(".metric-row", {
+            duration: 0.8,
+            x: 0,
+            opacity: 1,
+            stagger: 0.15,
+            ease: "power3.out"
+        });
+
+        // Animate progress bars after rows appear
+        gsap.utils.toArray(".progress-bar-fill").forEach(bar => {
+            gsap.to(bar, {
+                width: bar.getAttribute("data-width"),
+                duration: 1.2,
+                delay: 0.8,
+                ease: "power2.out"
+            });
+        });
+
+        // Header and footer fade in
+        gsap.from(".header-section, .footer-section", {
+            duration: 1,
+            opacity: 0,
+            y: -20,
+            delay: 0.2,
+            stagger: 0.2,
+            ease: "power2.out"
+        });
+    });
+</script>
+
+
+<script src="./slide-inner.js"></script></body></html>

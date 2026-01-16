@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/cCSvjZK6 -->
+<html lang="en" data-chapter="Financial Analysis" data-chapter-number="3" data-slide-position="17"><head>
+<meta name="marpa-chapter" content="Financial Analysis" data-chapter-number="3" data-slide-position="17"><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Chapter 01: Foundation</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(1)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<script src="./gsap.min.js"></script>
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+        }
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .font-serif { font-family: 'Playfair Display', serif; }
+        
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            min-height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            background-color: var(--bg-dark);
+        }
+
+        /* Abstract Pathway Visual */
+        .pathway-visual {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 55%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.8;
+        }
+
+        /* SVG Styling */
+        .path-line {
+            stroke-dasharray: 2000;
+            stroke-dashoffset: 2000;
+            filter: drop-shadow(0 0 8px rgba(239, 99, 55, 0.3));
+        }
+
+        .content-area {
+            z-index: 10;
+            padding: 60px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            max-width: 50%;
+        }
+
+        .chapter-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 140px;
+            font-weight: 900;
+            line-height: 0.8;
+            color: transparent;
+            -webkit-text-stroke: 2px var(--coral);
+            opacity: 0.3;
+            position: absolute;
+            top: 60px;
+            left: 60px;
+            z-index: -1;
+            transform-origin: center;
+        }
+
+        .chapter-label {
+            color: var(--coral);
+            font-size: 16px;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .chapter-label::before {
+            content: '';
+            display: block;
+            width: 40px;
+            height: 2px;
+            background-color: var(--coral);
+            margin-right: 16px;
+        }
+
+        .main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 56px;
+            font-weight: 700;
+            line-height: 1.1;
+            color: var(--text-light);
+            margin-bottom: 30px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .subtitle {
+            font-size: 18px;
+            line-height: 1.6;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            max-width: 500px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .emotional-anchor-box {
+            border-left: 4px solid var(--navy);
+            padding: 20px 30px;
+            background-color: rgba(4, 76, 115, 0.1);
+            margin-top: 20px;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .anchor-label {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            color: var(--navy);
+            margin-bottom: 8px;
+            letter-spacing: 1px;
+        }
+
+        .anchor-text {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 22px;
+            color: var(--text-light);
+        }
+
+        .footer-content {
+            opacity: 0;
+        }
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Background SVG Visual -->
+<div class="pathway-visual">
+<svg height="100%" preserveAspectRatio="none" viewBox="0 0 800 720" width="100%">
+<defs>
+<filter id="glow">
+<fegaussianblur result="coloredBlur" stdDeviation="4"></fegaussianblur>
+<femerge>
+<femergenode in="coloredBlur"></femergenode>
+<femergenode in="SourceGraphic"></femergenode>
+</femerge>
+</filter>
+</defs>
+<!-- Abstract geometric shapes -->
+<path class="bg-shape" d="M100,720 L300,400 L800,200 L800,720 Z" fill="#044c73" opacity="0.3" style="opacity: 0.3671;"></path>
+<!-- The Path Line -->
+<path class="path-line" d="M50,720 C150,600 200,500 300,400 C450,250 550,150 800,100" fill="none" opacity="0.8" stroke="#ef6337" stroke-width="3" style="stroke-dashoffset: 0px;"></path>
+<!-- Decorative elements -->
+<circle class="deco-dot" cx="300" cy="400" fill="#ef6337" opacity="0" r="6" style="opacity: 0.8;"></circle>
+<circle class="deco-end" cx="800" cy="100" fill="#FFE66D" filter="url(#glow)" opacity="0" r="10" data-svg-origin="790 90" transform="matrix(1.2,0,0,1.2,-158,-18)" style="translate: none; rotate: none; scale: none; transform-origin: 0px 0px; opacity: 1;"></circle>
+<!-- Secondary subtle lines -->
+<path class="subtle-line" d="M100,800 L400,300" fill="none" opacity="0" stroke="#044c73" stroke-width="1" style="opacity: 0.3;"></path>
+<path class="subtle-line" d="M200,800 L500,200" fill="none" opacity="0" stroke="#044c73" stroke-width="1" style="opacity: 0.3;"></path>
+</svg>
+</div>
+<div class="chapter-number" style="translate: none; rotate: none; scale: none; opacity: 0.3918; transform: translate3d(0px, 0px, 0px) scale(1.0459, 1.0459);">01</div>
+<div class="content-area">
+<div class="chapter-label" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<p>Chapter 01</p>
+</div>
+<div class="main-title" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<p>FOUNDATION</p>
+</div>
+<div class="subtitle" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<p>The MARPA story—50 years of contemplative design excellence.</p>
+</div>
+<div class="emotional-anchor-box" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<p class="anchor-label">Core Philosophy</p>
+<p class="anchor-text">"Each threshold earned. Each phase intentional."</p>
+</div>
+</div>
+<!-- Footer -->
+<div class="footer-content absolute bottom-8 left-12 right-12 flex justify-between items-end border-t border-[#044c73] pt-4" style="opacity: 0.6;">
+<div class="text-[#b0b8c1] text-xs tracking-widest uppercase"><p>MARPA Equity Pathway 2026</p></div>
+<div class="text-[#b0b8c1] text-xs"><p>Confidential Presentation</p></div>
+</div>
+</div>
+<script>
+    document.addEventListener("DOMContentLoaded", (event) => {
+        const tl = gsap.timeline({defaults: {ease: "power3.out"}});
+        
+        // 1. Initial setup - done via CSS opacity: 0
+        
+        // 2. Main content entrance
+        tl.to(".chapter-label", {y: 0, opacity: 1, duration: 0.8})
+          .to(".main-title", {y: 0, opacity: 1, duration: 0.8}, "-=0.6")
+          .to(".subtitle", {y: 0, opacity: 1, duration: 0.8}, "-=0.6")
+          .to(".emotional-anchor-box", {y: 0, opacity: 1, duration: 0.8}, "-=0.4");
+          
+        // 3. Footer fade in
+        tl.to(".footer-content", {opacity: 0.6, duration: 1}, "-=0.8");
+        
+        // 4. Visual elements animation
+        tl.to(".path-line", {strokeDashoffset: 0, duration: 2.5, ease: "power2.inOut"}, 0.2);
+        
+        // 5. Decorative elements appearance
+        tl.to(".deco-dot", {opacity: 0.8, duration: 0.5}, "-=1.5")
+          .to(".deco-end", {opacity: 1, duration: 0.8, scale: 1.2, ease: "back.out(1.7)"}, "-=1.0")
+          .to(".subtle-line", {opacity: 0.3, duration: 1.5, stagger: 0.2}, "-=2.0");
+          
+        // 6. Chapter number pulse animation (continuous)
+        gsap.to(".chapter-number", {
+            scale: 1.05,
+            opacity: 0.4,
+            duration: 3,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut"
+        });
+        
+        // 7. Subtle background movement
+        gsap.to(".bg-shape", {
+            opacity: 0.4,
+            duration: 4,
+            repeat: -1,
+            yoyo: true,
+            ease: "sine.inOut"
+        });
+    });
+</script>
+
+
+<script src="./slide-inner.js"></script></body></html>

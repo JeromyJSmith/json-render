@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<!--
+    GenSpark Slide Template for MARPA Equity Pathway 2026
+
+    Usage: Duplicate this file and modify content for each slide.
+    Refer to: /docs/GENSPARK_STYLE_GUIDE.md for design specifications.
+
+    Canonical Values:
+    - Valuation: $17M
+    - Ownership: 52/24/24 (Luke/Bodie/Pablo)
+    - Revenue: $11M current, $20M+ Year 11 target
+    - EBITDA: $1.655M
+    - Transition: 4 years
+    - Annual Vesting: 6%
+-->
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SLIDE_TITLE - MARPA Equity Pathway 2026</title>
+
+    <!-- Tailwind CSS -->
+    <link href="../data/MARPA Equity Pathway 2026_files/tailwind.min.css" rel="stylesheet">
+
+    <!-- Google Fonts -->
+    <link href="../data/MARPA Equity Pathway 2026_files/css2" rel="stylesheet">
+    <link href="../data/MARPA Equity Pathway 2026_files/css2(1)" rel="stylesheet">
+    <link href="../data/MARPA Equity Pathway 2026_files/css2(2)" rel="stylesheet">
+
+    <!-- Font Awesome Icons -->
+    <link href="../data/MARPA Equity Pathway 2026_files/all.min.css" rel="stylesheet">
+
+    <!-- Chart.js (include if slide has charts) -->
+    <script src="../data/MARPA Equity Pathway 2026_files/chart.js"></script>
+    <script src="../data/MARPA Equity Pathway 2026_files/chartjs-plugin-annotation.min.js"></script>
+
+    <!-- GSAP Animations -->
+    <script src="../data/MARPA Equity Pathway 2026_files/gsap.min.js"></script>
+
+    <style>
+        /* ==========================================
+           CSS CUSTOM PROPERTIES (Design Tokens)
+           ========================================== */
+        :root {
+            /* Primary Colors */
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --mint: #95E1D3;
+            --teal: #8db6b0;
+
+            /* Text Colors */
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+            --text-gray: #4e5d6c;
+
+            /* UI Colors */
+            --gray-circle: #4e5d6c;
+            --gray-panel: rgba(255, 255, 255, 0.03);
+            --coral-panel: rgba(239, 99, 55, 0.08);
+        }
+
+        /* ==========================================
+           BASE STYLES
+           ========================================== */
+        body {
+            background-color: var(--bg-dark);
+            color: var(--text-light);
+            font-family: 'Inter', sans-serif;
+            margin: 0;
+            padding: 0;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+
+        /* Font Family Utilities */
+        .font-serif { font-family: 'Playfair Display', serif; }
+        .font-mono { font-family: 'JetBrains Mono', monospace; }
+
+        /* ==========================================
+           SLIDE CONTAINER
+           ========================================== */
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            padding: 40px 60px;
+            box-sizing: border-box;
+            background-color: var(--bg-dark);
+        }
+
+        /* ==========================================
+           HEADER SECTION
+           ========================================== */
+        .header-section {
+            border-bottom: 1px solid rgba(4, 76, 115, 0.3);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .chapter-label {
+            color: var(--coral);
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 5px;
+        }
+
+        .slide-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 40px;
+            font-weight: 700;
+            color: var(--text-light);
+            line-height: 1.1;
+        }
+
+        .slide-subtitle {
+            color: var(--text-muted);
+            font-size: 14px;
+            margin-top: 4px;
+            font-weight: 500;
+        }
+
+        .slide-number {
+            color: var(--text-muted);
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+        }
+
+        /* ==========================================
+           CONTENT AREA LAYOUTS
+           ========================================== */
+
+        /* Two-Column Layout */
+        .content-two-column {
+            display: flex;
+            gap: 40px;
+            flex: 1;
+            min-height: 0;
+        }
+
+        /* Three-Column Layout */
+        .content-three-column {
+            display: flex;
+            gap: 24px;
+            flex: 1;
+            align-items: stretch;
+        }
+
+        /* ==========================================
+           PANEL STYLES
+           ========================================== */
+        .panel {
+            flex: 1;
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .panel-default {
+            background-color: var(--gray-panel);
+        }
+
+        .panel-highlight {
+            background-color: var(--coral-panel);
+            border-color: rgba(239, 99, 55, 0.2);
+        }
+
+        .panel-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            margin-bottom: 4px;
+        }
+
+        .panel-subtitle {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 16px;
+        }
+
+        /* ==========================================
+           CHART CONTAINER
+           ========================================== */
+        .chart-container {
+            flex: 2;
+            position: relative;
+            background: rgba(4, 76, 115, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+        }
+
+        /* ==========================================
+           LEGEND BOX
+           ========================================== */
+        .legend-container {
+            flex: 0.8;
+            background: rgba(15, 20, 25, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 12px;
+            padding: 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            height: fit-content;
+            backdrop-filter: blur(5px);
+        }
+
+        .legend-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 10px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            padding-bottom: 10px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px;
+            border-radius: 6px;
+        }
+
+        .legend-dot {
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            flex-shrink: 0;
+        }
+
+        .legend-text {
+            font-size: 14px;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+
+        /* ==========================================
+           CARD STYLES
+           ========================================== */
+        .card {
+            background: rgba(15, 20, 25, 0.6);
+            border: 1px solid rgba(4, 76, 115, 0.3);
+            border-radius: 12px;
+            padding: 16px 20px;
+        }
+
+        .card-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 4px;
+        }
+
+        .card-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.4;
+        }
+
+        /* ==========================================
+           QUOTE CONTAINER
+           ========================================== */
+        .quote-container {
+            background: rgba(4, 76, 115, 0.15);
+            border-left: 4px solid var(--turquoise);
+            padding: 20px 30px;
+            border-radius: 0 12px 12px 0;
+        }
+
+        .quote-text {
+            font-family: 'Playfair Display', serif;
+            font-style: italic;
+            font-size: 22px;
+            color: var(--text-light);
+            line-height: 1.3;
+        }
+
+        /* ==========================================
+           STATUS BADGES
+           ========================================== */
+        .badge {
+            display: inline-flex;
+            align-items: center;
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 11px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .badge-coral {
+            background: rgba(239, 99, 55, 0.15);
+            color: var(--coral);
+            border: 1px solid rgba(239, 99, 55, 0.3);
+        }
+
+        .badge-turquoise {
+            background: rgba(78, 205, 196, 0.1);
+            color: var(--turquoise);
+            border: 1px solid rgba(78, 205, 196, 0.3);
+        }
+
+        .badge-yellow {
+            background: rgba(255, 230, 109, 0.1);
+            color: var(--yellow);
+            border: 1px solid rgba(255, 230, 109, 0.3);
+        }
+
+        .badge-muted {
+            background: rgba(176, 184, 193, 0.1);
+            color: var(--text-muted);
+            border: 1px solid rgba(176, 184, 193, 0.2);
+        }
+
+        /* ==========================================
+           CTA BOX
+           ========================================== */
+        .cta-box {
+            background: rgba(239, 99, 55, 0.05);
+            border: 1px solid var(--coral);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        }
+
+        .cta-button {
+            display: inline-block;
+            background: var(--coral);
+            color: #fff;
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            font-size: 14px;
+            padding: 14px 28px;
+            border-radius: 8px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            box-shadow: 0 4px 15px rgba(239, 99, 55, 0.3);
+        }
+
+        /* ==========================================
+           HIGHLIGHT UTILITIES
+           ========================================== */
+        .highlight-coral {
+            color: var(--coral);
+            font-weight: 700;
+        }
+
+        .highlight-turquoise {
+            color: var(--turquoise);
+            font-weight: 700;
+        }
+
+        .highlight-yellow {
+            color: var(--yellow);
+            font-weight: 700;
+        }
+
+        /* ==========================================
+           FOOTER SECTION
+           ========================================== */
+        .footer-section {
+            margin-top: auto;
+            padding-top: 12px;
+            border-top: 1px solid rgba(4, 76, 115, 0.3);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-text {
+            color: var(--text-gray);
+            font-size: 10px;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+        }
+
+        /* ==========================================
+           ANIMATION HELPERS
+           ========================================== */
+        .gsap-hide {
+            opacity: 0;
+        }
+
+        /* ==========================================
+           TAILWIND COLOR PRESERVATION
+           Forces specificity over any global CSS
+           ========================================== */
+        .text-\[\#ef6337\] { color: #ef6337 !important; }
+        .text-\[\#f5f7fa\] { color: #f5f7fa !important; }
+        .text-\[\#8db6b0\] { color: #8db6b0 !important; }
+        .text-\[\#b0b8c1\] { color: #b0b8c1 !important; }
+        .text-\[\#4e5d6c\] { color: #4e5d6c !important; }
+        .text-\[\#044c73\] { color: #044c73 !important; }
+        .text-\[\#4ECDC4\] { color: #4ECDC4 !important; }
+        .text-\[\#FFE66D\] { color: #FFE66D !important; }
+        .text-\[\#0f1419\] { color: #0f1419 !important; }
+
+        .bg-\[\#0f1419\] { background-color: #0f1419 !important; }
+        .bg-\[\#044c73\] { background-color: #044c73 !important; }
+        .bg-\[\#ef6337\] { background-color: #ef6337 !important; }
+        .bg-\[\#FFE66D\] { background-color: #FFE66D !important; }
+        .bg-\[\#4ECDC4\] { background-color: #4ECDC4 !important; }
+
+        .border-\[\#044c73\] { border-color: #044c73 !important; }
+        .border-\[\#ef6337\] { border-color: #ef6337 !important; }
+    </style>
+</head>
+
+<body>
+    <div class="slide-container">
+
+        <!-- ==========================================
+             HEADER SECTION
+             ========================================== -->
+        <div class="header-section">
+            <div>
+                <!-- Chapter Label with Indicator Dot -->
+                <div class="flex items-center mb-1">
+                    <span class="w-2 h-2 rounded-full mr-2 bg-[#ef6337]"></span>
+                    <p class="chapter-label">Chapter Name</p>
+                </div>
+
+                <!-- Slide Title -->
+                <h1 class="slide-title">SLIDE TITLE HERE</h1>
+
+                <!-- Subtitle -->
+                <p class="slide-subtitle">Descriptive subtitle explaining the slide content</p>
+            </div>
+
+            <div class="text-right">
+                <!-- Optional Badge -->
+                <div class="badge badge-coral mb-2">Key Badge</div>
+                <!-- Slide Number -->
+                <p class="slide-number">CH#-S##</p>
+            </div>
+        </div>
+
+        <!-- ==========================================
+             MAIN CONTENT AREA
+             Choose one of the layout patterns below
+             ========================================== -->
+
+        <!-- OPTION A: Two-Column Layout -->
+        <div class="content-two-column">
+
+            <!-- Left Column: Chart Container -->
+            <div class="chart-container gsap-hide" id="chartArea">
+                <!-- Canvas for Chart.js -->
+                <canvas id="mainChart"></canvas>
+            </div>
+
+            <!-- Right Column: Legend/Info Panel -->
+            <div class="legend-container gsap-hide" id="legendArea">
+                <h3 class="legend-title">Legend Title</h3>
+
+                <div class="legend-item">
+                    <span class="legend-dot" style="background-color: #4ECDC4;"></span>
+                    <span class="legend-text">Item A: Description</span>
+                </div>
+
+                <div class="legend-item">
+                    <span class="legend-dot" style="background-color: #FFE66D;"></span>
+                    <span class="legend-text">Item B: Description</span>
+                </div>
+
+                <div class="legend-item">
+                    <span class="legend-dot" style="background-color: #ef6337;"></span>
+                    <span class="legend-text">Item C: Description</span>
+                </div>
+            </div>
+
+        </div>
+
+        <!-- OPTION B: Quote Section (uncomment to use) -->
+        <!--
+        <div class="quote-container gsap-hide" id="quoteArea">
+            <p class="quote-text">
+                "Quote text with <span class="highlight-turquoise">highlighted</span>
+                and <span class="highlight-coral">emphasized</span> words."
+            </p>
+        </div>
+        -->
+
+        <!-- ==========================================
+             FOOTER SECTION
+             ========================================== -->
+        <div class="footer-section">
+            <p class="footer-text">Confidential - MARPA Equity Pathway 2026</p>
+            <div class="flex gap-4">
+                <p class="footer-text">
+                    <i class="fas fa-chart-line text-[10px] mr-2"></i>
+                    Additional Footer Info
+                </p>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- ==========================================
+         GSAP ANIMATIONS
+         ========================================== -->
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Create animation timeline
+            const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+            // Header animation
+            tl.from("h1, .slide-subtitle, .chapter-label", {
+                y: -20,
+                opacity: 0,
+                duration: 0.8,
+                stagger: 0.1
+            });
+
+            // Main content animations
+            tl.to("#chartArea", {
+                opacity: 1,
+                duration: 1
+            }, "-=0.4");
+
+            tl.to("#legendArea", {
+                opacity: 1,
+                x: 0,
+                duration: 0.8
+            }, "-=0.6");
+
+            // Quote area (if present)
+            tl.to("#quoteArea", {
+                opacity: 1,
+                y: 0,
+                duration: 0.8
+            }, "-=0.4");
+        });
+    </script>
+
+    <!-- ==========================================
+         CHART.JS CONFIGURATION (Optional)
+         Uncomment and configure for slides with charts
+         ========================================== -->
+    <!--
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const ctx = document.getElementById('mainChart').getContext('2d');
+
+            new Chart(ctx, {
+                type: 'bar', // or 'line', 'bubble', 'doughnut', etc.
+                data: {
+                    labels: ['Label 1', 'Label 2', 'Label 3'],
+                    datasets: [{
+                        label: 'Dataset',
+                        data: [10, 20, 30],
+                        backgroundColor: [
+                            '#4ECDC4',
+                            '#FFE66D',
+                            '#ef6337'
+                        ],
+                        borderRadius: 4
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            backgroundColor: 'rgba(15, 20, 25, 0.95)',
+                            titleFont: { family: 'JetBrains Mono' },
+                            bodyFont: { family: 'Inter' },
+                            padding: 12
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#b0b8c1',
+                                font: { family: 'JetBrains Mono', size: 11 }
+                            }
+                        },
+                        y: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)',
+                                borderDash: [5, 5]
+                            },
+                            ticks: {
+                                color: '#b0b8c1',
+                                font: { family: 'Inter', size: 11 }
+                            }
+                        }
+                    }
+                }
+            });
+        });
+    </script>
+    -->
+
+</body>
+</html>

@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/4haVyRQA -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Construction Revenue Growth - Stacked</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<script src="./chart.js"></script>
+<script src="./chartjs-plugin-datalabels@2.0.0"></script>
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+            
+            /* Construction Colors */
+            --const-base: #1B5E20;   /* Dark Green */
+            --const-growth: #69F0AE; /* Bright Green Accent */
+            --const-mid: #2E7D32;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-light);
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 60px;
+            position: relative;
+            background-color: var(--bg-dark);
+            box-sizing: border-box;
+        }
+
+        /* Header */
+        .header {
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .title-tag {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--const-growth);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        h1.main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            font-weight: 900;
+            line-height: 1.1;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 300px;
+            gap: 40px;
+            flex: 1;
+            height: 100%;
+            position: relative;
+        }
+
+        /* Chart Section */
+        .chart-wrapper {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            padding: 30px;
+            position: relative;
+            display: flex;
+            align-items: flex-end;
+        }
+
+        /* Sidebar Stats */
+        .stats-sidebar {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            justify-content: center;
+        }
+
+        .stat-card {
+            background: rgba(4, 76, 115, 0.15);
+            border-left: 4px solid var(--const-growth);
+            padding: 24px;
+            border-radius: 0 8px 8px 0;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-card::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: 60px;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(105, 240, 174, 0.05));
+            pointer-events: none;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 6px;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 32px;
+            font-weight: 700;
+            color: var(--text-light);
+            margin-bottom: 4px;
+        }
+
+        .stat-context {
+            font-size: 13px;
+            color: var(--const-growth);
+            display: flex;
+            align-items: center;
+        }
+
+        /* Trend Arrow Overlay */
+        .trend-arrow-container {
+            position: absolute;
+            top: 40px;
+            right: 40px;
+            z-index: 10;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+        }
+
+        .trend-line {
+            width: 200px;
+            height: 100px;
+            position: absolute;
+            top: 100px;
+            left: 150px;
+            border-top: 2px dashed rgba(105, 240, 174, 0.3);
+            transform: rotate(-15deg);
+            pointer-events: none;
+        }
+
+        /* Annotation Box */
+        .annotation-box {
+            background: rgba(255, 230, 109, 0.1);
+            border: 1px dashed rgba(255, 230, 109, 0.3);
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: auto;
+        }
+
+        .annotation-text {
+            font-size: 13px;
+            line-height: 1.5;
+            color: var(--yellow);
+        }
+
+        .annotation-icon {
+            margin-right: 8px;
+        }
+
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="header">
+<div>
+<p class="title-tag">Revenue Build-Up</p>
+<h1 class="main-title">Construction Revenue Growth</h1>
+<p class="subtitle">4-Year Projection: Base Revenue vs. Cumulative Growth (10% Annual)</p>
+</div>
+<div class="text-right">
+<p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Chart 3B</p>
+<p class="text-sm font-bold text-white">Stacked Visualization</p>
+</div>
+</div>
+<!-- Content -->
+<div class="content-grid">
+<!-- Chart Area -->
+<div class="chart-wrapper">
+<canvas id="stackedGrowthChart" width="834" height="572" style="display: block; box-sizing: border-box; height: 520.8px; width: 758.2px;"></canvas>
+</div>
+<!-- Stats Sidebar -->
+<div class="stats-sidebar">
+<!-- Total Growth Card -->
+<div class="stat-card">
+<p class="stat-label">4-Year Growth</p>
+<p class="stat-value">+$397K</p>
+<p class="stat-context">
+<i class="fas fa-arrow-trend-up mr-2"></i> 33% Increase
+                    </p>
+</div>
+<!-- Rate Card -->
+<div class="stat-card" style="border-color: var(--const-mid);">
+<p class="stat-label">Annual Rate</p>
+<p class="stat-value">10%</p>
+<p class="stat-context" style="color: #4CAF50;">
+                        Consistent YoY
+                    </p>
+</div>
+<!-- Final Value Card -->
+<div class="stat-card" style="border-color: #fff;">
+<p class="stat-label">Year 4 Total</p>
+<p class="stat-value">$1.60M</p>
+<p class="stat-context" style="color: #fff;">
+                        Target Revenue
+                    </p>
+</div>
+<!-- Insight Annotation -->
+<div class="annotation-box">
+<p class="annotation-text">
+<i class="fas fa-comment-dollar annotation-icon"></i>
+<strong>Key Insight:</strong> Steady 10% annual growth compounds to add nearly $400K in new annual revenue by Year 4.
+                    </p>
+</div>
+</div>
+</div>
+</div>
+<script>
+        // Register plugins
+        Chart.register(ChartDataLabels);
+
+        const ctx = document.getElementById('stackedGrowthChart').getContext('2d');
+
+        // Data Preparation
+        // Base is maintained at Year 1 level ($1.2M)
+        const baseData = [1.2, 1.2, 1.2, 1.2];
+        
+        // Growth builds on top
+        // Y1: 0
+        // Y2: 1.32 - 1.2 = 0.12
+        // Y3: 1.452 - 1.2 = 0.252
+        // Y4: 1.597 - 1.2 = 0.397
+        const growthData = [0, 0.12, 0.252, 0.3972];
+
+        const config = {
+            type: 'bar',
+            data: {
+                labels: ['Year 1', 'Year 2', 'Year 3', 'Year 4'],
+                datasets: [
+                    {
+                        label: 'Cumulative Growth',
+                        data: growthData,
+                        backgroundColor: '#69F0AE',
+                        borderColor: 'rgba(105, 240, 174, 0.8)',
+                        borderWidth: 1,
+                        barPercentage: 0.6,
+                        order: 1
+                    },
+                    {
+                        label: 'Base Revenue',
+                        data: baseData,
+                        backgroundColor: '#1B5E20',
+                        borderColor: 'rgba(27, 94, 32, 0.8)',
+                        borderWidth: 1,
+                        barPercentage: 0.6,
+                        order: 2
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    x: {
+                        stacked: true,
+                        grid: {
+                            display: false
+                        },
+                        ticks: {
+                            color: '#b0b8c1',
+                            font: {
+                                family: 'Inter',
+                                size: 12
+                            }
+                        }
+                    },
+                    y: {
+                        stacked: true,
+                        grid: {
+                            color: 'rgba(255, 255, 255, 0.05)',
+                            borderDash: [5, 5]
+                        },
+                        ticks: {
+                            color: '#b0b8c1',
+                            callback: function(value) {
+                                return '$' + value + 'M';
+                            }
+                        },
+                        beginAtZero: true,
+                        max: 1.8
+                    }
+                },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                        align: 'end',
+                        labels: {
+                            color: '#f5f7fa',
+                            font: { family: 'Inter', size: 12 },
+                            usePointStyle: true,
+                            pointStyle: 'circle'
+                        }
+                    },
+                    tooltip: {
+                        backgroundColor: 'rgba(15, 20, 25, 0.95)',
+                        titleFont: { family: 'Playfair Display', size: 14 },
+                        bodyFont: { family: 'JetBrains Mono', size: 12 },
+                        padding: 12,
+                        callbacks: {
+                            label: function(context) {
+                                let label = context.dataset.label || '';
+                                if (label) {
+                                    label += ': ';
+                                }
+                                if (context.parsed.y !== null) {
+                                    label += '$' + context.parsed.y.toFixed(2) + 'M';
+                                }
+                                return label;
+                            },
+                            footer: function(tooltipItems) {
+                                let total = 0;
+                                tooltipItems.forEach(function(tooltipItem) {
+                                    total += tooltipItem.parsed.y;
+                                });
+                                return 'Total: $' + total.toFixed(2) + 'M';
+                            }
+                        }
+                    },
+                    datalabels: {
+                        display: function(context) {
+                            // Only show total label on the top dataset (Growth)
+                            // Or if value > 0 for growth
+                            return context.datasetIndex === 0; // Growth layer
+                        },
+                        color: 'white',
+                        anchor: 'end',
+                        align: 'top',
+                        offset: 4,
+                        font: {
+                            weight: 'bold',
+                            family: 'JetBrains Mono',
+                            size: 14
+                        },
+                        formatter: function(value, context) {
+                            // Calculate total manually since it's stacked
+                            let index = context.dataIndex;
+                            let total = baseData[index] + growthData[index];
+                            return '$' + total.toFixed(2) + 'M';
+                        }
+                    }
+                },
+                animation: {
+                    duration: 1500,
+                    easing: 'easeOutQuart'
+                }
+            }
+        };
+
+        new Chart(ctx, config);
+    </script>
+
+
+<script src="./slide-inner.js"></script></body></html>

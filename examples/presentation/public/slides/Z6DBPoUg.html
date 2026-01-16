@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/Z6DBPoUg -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Equity Vesting Accumulation - Stacked Area</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<script src="./chart.js"></script>
+<script src="./gsap.min.js"></script>
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+            
+            /* Chart Specific */
+            --vested-color: #4ECDC4;
+            --retained-color: #263238;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-light);
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            /* Reduced padding from 40px 60px to 30px 45px */
+            padding: 30px 45px;
+            position: relative;
+            background-color: var(--bg-dark);
+            box-sizing: border-box;
+        }
+
+        /* Header */
+        .header {
+            /* Reduced margin/padding */
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .title-tag {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--turquoise);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        h1.main-title {
+            font-family: 'Playfair Display', serif;
+            /* Reduced font size from 42px to 38px */
+            font-size: 38px;
+            font-weight: 900;
+            line-height: 1.1;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        /* Content Layout */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 3fr 1fr;
+            /* Reduced gap from 40px to 28px */
+            gap: 28px;
+            flex: 1;
+            height: 100%;
+            position: relative;
+            min-height: 0; /* Prevent grid overflow */
+        }
+
+        /* Chart Area */
+        .chart-wrapper {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            /* Reduced padding from 20px to 14px */
+            padding: 14px;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            min-height: 0;
+        }
+
+        /* Sidebar Stats */
+        .sidebar {
+            display: flex;
+            flex-direction: column;
+            /* Reduced gap from 20px to 14px */
+            gap: 14px;
+            height: 100%;
+            overflow: visible;
+        }
+
+        .stat-card {
+            background: rgba(4, 76, 115, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            /* Reduced padding from 20px to 16px */
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-label {
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--text-muted);
+            margin-bottom: 8px;
+            font-weight: 600;
+        }
+
+        .stat-value {
+            font-family: 'JetBrains Mono', monospace;
+            /* Reduced font size from 32px to 28px */
+            font-size: 28px;
+            font-weight: 700;
+            color: var(--text-light);
+        }
+
+        .stat-sub {
+            font-size: 12px;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Legend */
+        .legend-container {
+            display: flex;
+            gap: 20px;
+            margin-bottom: 10px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        .legend-color {
+            width: 12px;
+            height: 12px;
+            border-radius: 3px;
+        }
+
+        /* Insight Box */
+        .insight-box {
+            margin-top: auto;
+            /* Replaced gradient with solid rgba to meet constraints */
+            background: rgba(78, 205, 196, 0.1);
+            border-left: 4px solid var(--turquoise);
+            /* Reduced padding from 20px to 14px */
+            padding: 14px;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .insight-header {
+            color: var(--turquoise);
+            font-weight: 700;
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+        }
+
+        .insight-text {
+            font-size: 14px;
+            line-height: 1.5;
+            color: var(--text-light);
+        }
+
+        /* Custom Annotation Badge on Chart */
+        .chart-badge {
+            position: absolute;
+            background: rgba(15, 20, 25, 0.9);
+            border: 1px solid var(--turquoise);
+            color: var(--turquoise);
+            padding: 6px 12px;
+            border-radius: 4px;
+            font-size: 11px;
+            font-weight: 700;
+            pointer-events: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            top: 25%;
+            right: 15%;
+            transform: translateY(-50%);
+            opacity: 0; /* Animated in */
+        }
+
+        .chart-badge::before {
+            content: '';
+            position: absolute;
+            left: -6px;
+            top: 50%;
+            transform: translateY(-50%);
+            border-width: 6px 6px 6px 0;
+            border-style: solid;
+            border-color: transparent var(--turquoise) transparent transparent;
+        }
+
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="header">
+<div>
+<p class="title-tag">Equity Transition</p>
+<h1 class="main-title">Equity Vesting Accumulation</h1>
+<p class="subtitle">4-Year Timeline: Growing from 0% to 24% Ownership</p>
+</div>
+<div class="text-right">
+<p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Chart 5B</p>
+<p class="text-sm font-bold text-white">Stacked Area View</p>
+</div>
+</div>
+<!-- Content -->
+<div class="content-grid">
+<!-- Chart Section -->
+<div class="chart-wrapper">
+<div class="legend-container">
+<div class="legend-item">
+<div class="legend-color" style="background-color: #263238; border: 1px solid #455a64;"></div>
+<p>Retained by Principals</p>
+</div>
+<div class="legend-item">
+<div class="legend-color" style="background-color: #4ECDC4;"></div>
+<p>Minority Partner Vesting</p>
+</div>
+</div>
+<div style="flex: 1; position: relative; min-height: 0;">
+<canvas id="vestingChart" width="925" height="564" style="display: block; box-sizing: border-box; height: 513px; width: 841.7px;"></canvas>
+<div class="chart-badge" id="vestingBadge" style="translate: none; rotate: none; scale: none; transform: translate(0%, -50%) translate(-10px, -0.1491px); opacity: 1;">
+                    Full Vesting: 24%
+                </div>
+</div>
+</div>
+<!-- Sidebar -->
+<div class="sidebar">
+<!-- Metric 1 -->
+<div class="stat-card" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<p class="stat-label">Annual Cliff</p>
+<p class="stat-value text-[#4ECDC4]">6%</p>
+<p class="stat-sub">Equity unlocks each anniversary</p>
+</div>
+<!-- Metric 2 -->
+<div class="stat-card" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<p class="stat-label">Vesting Period</p>
+<p class="stat-value text-white">4 Years</p>
+<p class="stat-sub">Linear progression model</p>
+</div>
+<!-- Metric 3 -->
+<div class="stat-card" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<p class="stat-label">Final Minority Stake</p>
+<p class="stat-value text-[#FFE66D]">24%</p>
+<p class="stat-sub">Target ownership at completion</p>
+</div>
+<!-- Insight -->
+<div class="insight-box" style="translate: none; rotate: none; scale: none; opacity: 1; transform: translate(0px, 0px);">
+<div class="insight-header">
+<i class="fas fa-chart-area mr-2"></i> Structure Logic
+                </div>
+<p class="insight-text">
+                    This stacked model ensures operational continuity. The <strong>6% annual cliff</strong> protects the firm against early departure while providing meaningful equity accumulation for the partner.
+                </p>
+</div>
+</div>
+</div>
+</div>
+<script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const ctx = document.getElementById('vestingChart').getContext('2d');
+
+            // Gradient for Vested Area (Chart.js canvas gradients are allowed)
+            const gradientVested = ctx.createLinearGradient(0, 400, 0, 0);
+            gradientVested.addColorStop(0, 'rgba(78, 205, 196, 0.2)');
+            gradientVested.addColorStop(1, 'rgba(78, 205, 196, 0.8)');
+
+            // Gradient for Retained Area
+            const gradientRetained = ctx.createLinearGradient(0, 0, 0, 400);
+            gradientRetained.addColorStop(0, 'rgba(38, 50, 56, 0.9)');
+            gradientRetained.addColorStop(1, 'rgba(38, 50, 56, 0.4)');
+
+            const data = {
+                labels: ['Start', 'Year 1', 'Year 2', 'Year 3', 'Year 4'],
+                datasets: [
+                    {
+                        label: 'Retained Equity',
+                        data: [100, 94, 88, 82, 76],
+                        backgroundColor: gradientRetained,
+                        borderColor: '#455a64',
+                        borderWidth: 1,
+                        pointRadius: 0,
+                        pointHoverRadius: 0,
+                        fill: '-1', // Fill to previous dataset (Vested)
+                        tension: 0.3
+                    },
+                    {
+                        label: 'Vested Equity',
+                        data: [0, 6, 12, 18, 24],
+                        backgroundColor: gradientVested,
+                        borderColor: '#4ECDC4',
+                        borderWidth: 3,
+                        pointBackgroundColor: '#0f1419',
+                        pointBorderColor: '#4ECDC4',
+                        pointBorderWidth: 2,
+                        pointRadius: 5,
+                        pointHoverRadius: 7,
+                        fill: 'origin',
+                        tension: 0.3
+                    }
+                ]
+            };
+
+            const config = {
+                type: 'line',
+                data: data,
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false },
+                        tooltip: {
+                            mode: 'index',
+                            intersect: false,
+                            backgroundColor: 'rgba(15, 20, 25, 0.95)',
+                            titleFont: { family: 'JetBrains Mono' },
+                            bodyFont: { family: 'Inter' },
+                            padding: 12,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.raw + '%';
+                                }
+                            }
+                        }
+                    },
+                    scales: {
+                        x: {
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)',
+                                drawBorder: false
+                            },
+                            ticks: {
+                                color: '#b0b8c1',
+                                font: { family: 'Inter', size: 12 }
+                            }
+                        },
+                        y: {
+                            stacked: true, // Key for stacking the areas properly
+                            grid: {
+                                color: 'rgba(255, 255, 255, 0.05)',
+                                borderDash: [5, 5]
+                            },
+                            ticks: {
+                                color: '#b0b8c1',
+                                callback: function(value) { return value + '%'; },
+                                stepSize: 20
+                            },
+                            min: 0,
+                            max: 100
+                        }
+                    },
+                    animation: {
+                        duration: 2000,
+                        easing: 'easeOutQuart',
+                        onComplete: function() {
+                            // Show Badge after chart draws
+                            gsap.to("#vestingBadge", { opacity: 1, x: -10, duration: 0.8, ease: "back.out(1.7)" });
+                        }
+                    }
+                }
+            };
+
+            new Chart(ctx, config);
+
+            // Animate Sidebar elements
+            gsap.from(".stat-card", {
+                y: 20,
+                opacity: 0,
+                duration: 0.6,
+                stagger: 0.15,
+                delay: 0.5,
+                ease: "power2.out"
+            });
+            
+            gsap.from(".insight-box", {
+                x: 20,
+                opacity: 0,
+                duration: 0.8,
+                delay: 1.0,
+                ease: "power2.out"
+            });
+        });
+    </script>
+
+
+<script src="./slide-inner.js"></script></body></html>

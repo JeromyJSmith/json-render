@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/wWSurMs8 -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Construction vs Maintenance Growth Comparison</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<script src="./chart.js"></script>
+<script src="./chartjs-plugin-datalabels@2.0.0"></script>
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+            
+            /* Specific Colors */
+            --construction-color: #044c73; /* Navy Blue */
+            --maintenance-color: #ef6337;  /* Coral/Orange */
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-light);
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 60px;
+            position: relative;
+            background-color: var(--bg-dark);
+            box-sizing: border-box;
+        }
+
+        /* Header */
+        .header {
+            margin-bottom: 24px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .title-tag {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--maintenance-color);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        h1.main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            font-weight: 900;
+            line-height: 1.1;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        /* Content Grid */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+            flex: 1;
+            height: 100%;
+            position: relative;
+        }
+
+        /* Chart Containers */
+        .chart-panel {
+            background: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 16px;
+            padding-bottom: 12px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+        }
+
+        .panel-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .growth-badge {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-weight: 700;
+        }
+
+        .badge-construction { background: rgba(4, 76, 115, 0.2); color: #5B8FA6; }
+        .badge-maintenance { background: rgba(239, 99, 55, 0.2); color: var(--coral); }
+
+        .chart-area {
+            flex: 1;
+            position: relative;
+            width: 100%;
+        }
+
+        /* Comparison Insight Box */
+        .insight-overlay {
+            position: absolute;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(15, 20, 25, 0.95);
+            border: 1px solid var(--maintenance-color);
+            border-radius: 50px;
+            padding: 12px 30px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            z-index: 10;
+            min-width: 400px;
+            justify-content: center;
+        }
+
+        .insight-icon {
+            color: var(--maintenance-color);
+            font-size: 18px;
+        }
+
+        .insight-text {
+            font-size: 14px;
+            color: var(--text-light);
+            font-weight: 500;
+        }
+
+        /* Custom styles for charts */
+        .color-text-construction { color: #5B8FA6; }
+        .color-text-maintenance { color: var(--coral); }
+
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="header">
+<div>
+<p class="title-tag">Revenue Stream Comparison</p>
+<h1 class="main-title">Construction vs. Maintenance Growth</h1>
+<p class="subtitle">Comparing absolute revenue and growth velocity over 4 years</p>
+</div>
+<div class="text-right">
+<p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Chart 4A</p>
+<p class="text-sm font-bold text-white">Side-by-Side Waterfall</p>
+</div>
+</div>
+<!-- Content -->
+<div class="content-grid">
+<!-- Left: Construction -->
+<div class="chart-panel" style="border-top: 4px solid var(--construction-color);">
+<div class="panel-header">
+<h3 class="panel-title color-text-construction">
+<i class="fas fa-hard-hat"></i> Construction
+                </h3>
+<span class="growth-badge badge-construction">+10% YoY</span>
+</div>
+<div class="chart-area">
+<canvas id="constructionChart" width="570" height="386" style="display: block; box-sizing: border-box; height: 351.5px; width: 518.2px;"></canvas>
+</div>
+<div class="mt-4 flex justify-between text-xs text-gray-400 font-mono">
+<p>Start: $1.20M</p>
+<p>End: $1.60M</p>
+</div>
+</div>
+<!-- Right: Maintenance -->
+<div class="chart-panel" style="border-top: 4px solid var(--maintenance-color);">
+<div class="panel-header">
+<h3 class="panel-title color-text-maintenance">
+<i class="fas fa-tools"></i> Maintenance
+                </h3>
+<span class="growth-badge badge-maintenance">+20% YoY</span>
+</div>
+<div class="chart-area">
+<canvas id="maintenanceChart" width="570" height="386" style="display: block; box-sizing: border-box; height: 351.5px; width: 518.2px;"></canvas>
+</div>
+<div class="mt-4 flex justify-between text-xs text-gray-400 font-mono">
+<p>Start: $0.50M</p>
+<p>End: $0.86M</p>
+</div>
+</div>
+<!-- Floating Insight -->
+<div class="insight-overlay">
+<i class="fas fa-rocket insight-icon"></i>
+<p class="insight-text">
+                Maintenance starts smaller but grows <span style="color: #ef6337; font-weight: 700;">2x faster</span> (20% vs 10%)
+            </p>
+</div>
+</div>
+</div>
+<script>
+        // Register plugins
+        Chart.register(ChartDataLabels);
+
+        // Common Chart Options
+        const commonOptions = {
+            responsive: true,
+            maintainAspectRatio: false,
+            layout: {
+                padding: { top: 25, bottom: 10 }
+            },
+            plugins: {
+                legend: { display: false },
+                tooltip: { enabled: false }, // Using datalabels instead
+                datalabels: {
+                    color: 'white',
+                    anchor: 'end',
+                    align: 'top',
+                    offset: 4,
+                    font: { weight: 'bold', family: 'JetBrains Mono', size: 12 },
+                    formatter: function(value) {
+                        return '$' + value.toFixed(2) + 'M';
+                    }
+                }
+            },
+            scales: {
+                x: {
+                    grid: { display: false },
+                    ticks: { color: '#b0b8c1', font: { family: 'Inter' } }
+                },
+                y: {
+                    grid: { color: 'rgba(255, 255, 255, 0.05)', borderDash: [5, 5] },
+                    ticks: { 
+                        color: '#b0b8c1',
+                        callback: function(value) { return '$' + value + 'M'; }
+                    },
+                    beginAtZero: true,
+                    // Use same scale max for visual comparison of absolute value?
+                    // Or relative? Prompt implies comparison of rate/impact.
+                    // Let's use independent scales but aligned visually to show growth shape.
+                    // Actually, prompt says "Construction larger in absolute $", so maybe shared max is better visually.
+                    suggestedMax: 1.8 
+                }
+            },
+            animation: {
+                duration: 1500,
+                easing: 'easeOutQuart'
+            }
+        };
+
+        // Construction Data (+10%)
+        const constCtx = document.getElementById('constructionChart').getContext('2d');
+        const constData = {
+            labels: ['Y1', 'Y2', 'Y3', 'Y4'],
+            datasets: [{
+                data: [1.20, 1.32, 1.45, 1.60],
+                backgroundColor: [
+                    '#044c73', // Base
+                    '#065d8a',
+                    '#086ea1',
+                    '#0a80b8'  // Growth
+                ],
+                borderRadius: 4,
+                barPercentage: 0.6
+            }]
+        };
+
+        // Maintenance Data (+20%)
+        const maintCtx = document.getElementById('maintenanceChart').getContext('2d');
+        const maintData = {
+            labels: ['Y1', 'Y2', 'Y3', 'Y4'],
+            datasets: [{
+                data: [0.50, 0.60, 0.72, 0.86],
+                backgroundColor: [
+                    '#bf360c', // Base dark orange
+                    '#d84315',
+                    '#e64a19',
+                    '#ef6337'  // Bright coral
+                ],
+                borderRadius: 4,
+                barPercentage: 0.6
+            }]
+        };
+
+        // Render Charts
+        new Chart(constCtx, {
+            type: 'bar',
+            data: constData,
+            options: commonOptions
+        });
+
+        new Chart(maintCtx, {
+            type: 'bar',
+            data: maintData,
+            options: commonOptions // Sharing scale emphasizes construction is bigger, but maint steeper curve
+        });
+    </script>
+
+
+<script src="./slide-inner.js"></script></body></html>

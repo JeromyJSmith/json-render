@@ -1,0 +1,451 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/JGaBbsrt -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Ownership Path Options - Interactive View</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<script src="./chart.js"></script>
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+            
+            /* Ownership Colors */
+            --color-luke: #2ECC71;
+            --color-bodie: #3498DB;
+            --color-pablo: #E67E22;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-light);
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 60px;
+            position: relative;
+            background-color: var(--bg-dark);
+            box-sizing: border-box;
+        }
+
+        /* Header */
+        .header {
+            margin-bottom: 20px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .title-tag {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--turquoise);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        h1.main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            font-weight: 900;
+            line-height: 1.1;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        /* Step Panels Container */
+        .step-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 24px;
+            flex: 1;
+            height: 100%;
+            margin-top: 10px;
+        }
+
+        /* Individual Panel */
+        .panel {
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 16px;
+            display: flex;
+            flex-direction: column;
+            padding: 24px;
+            position: relative;
+            transition: all 0.3s ease;
+            height: 100%;
+        }
+
+        .panel:hover {
+            transform: translateY(-5px);
+            background-color: rgba(255, 255, 255, 0.04);
+            border-color: rgba(255, 255, 255, 0.1);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+        }
+
+        /* Panel Header */
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 12px;
+        }
+
+        .panel-step {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 12px;
+            font-weight: 700;
+            padding: 4px 8px;
+            border-radius: 4px;
+            text-transform: uppercase;
+        }
+
+        .step-a { background: rgba(52, 152, 219, 0.15); color: #3498DB; }
+        .step-b { background: rgba(230, 126, 34, 0.15); color: #E67E22; }
+        .step-c { background: rgba(46, 204, 113, 0.15); color: #2ECC71; }
+
+        .panel-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        /* Chart Area */
+        .chart-wrapper {
+            position: relative;
+            flex: 1;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px 0;
+        }
+
+        .chart-canvas-container {
+            width: 200px;
+            height: 200px;
+            position: relative;
+        }
+
+        /* Ownership Stack */
+        .ownership-stack {
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .stack-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 8px 12px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 6px;
+            font-size: 13px;
+        }
+
+        .stack-label {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--text-muted);
+        }
+
+        .stack-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+        }
+
+        .stack-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-weight: 700;
+            color: var(--text-light);
+        }
+
+        /* Annotation Box */
+        .annotation-box {
+            margin-top: auto;
+            padding: 12px;
+            background: rgba(255, 230, 109, 0.1);
+            border: 1px dashed rgba(255, 230, 109, 0.3);
+            border-radius: 8px;
+            font-size: 12px;
+            color: var(--yellow);
+            display: flex;
+            align-items: start;
+            gap: 8px;
+            line-height: 1.4;
+        }
+
+        /* Connectors */
+        .connector {
+            position: absolute;
+            top: 50%;
+            right: -24px;
+            transform: translateY(-50%);
+            color: rgba(255,255,255,0.1);
+            font-size: 20px;
+            z-index: 10;
+        }
+
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<div class="header">
+<div>
+<p class="title-tag">Sequential View</p>
+<h1 class="main-title">Ownership Path Evolution</h1>
+<p class="subtitle">Comparing equity structures across three strategic models</p>
+</div>
+<div class="text-right">
+<p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Chart 1C</p>
+<p class="text-sm font-bold text-white">Step-Through View</p>
+</div>
+</div>
+<div class="step-container">
+<!-- Panel 1: Solo -->
+<div class="panel">
+<div class="panel-header">
+<h3 class="panel-title">Solo Path</h3>
+<span class="panel-step step-a">Option A</span>
+</div>
+<div class="chart-wrapper">
+<div class="chart-canvas-container">
+<canvas id="chartA" width="220" height="220" style="display: block; box-sizing: border-box; height: 200px; width: 200px;"></canvas>
+</div>
+</div>
+<div class="ownership-stack">
+<div class="stack-item">
+<div class="stack-label">
+<div class="stack-dot" style="background-color: var(--color-luke);"></div>
+<span>Luke</span>
+</div>
+<span class="stack-val">52%</span>
+</div>
+<div class="stack-item">
+<div class="stack-label">
+<div class="stack-dot" style="background-color: var(--color-bodie);"></div>
+<span>Bodie</span>
+</div>
+<span class="stack-val">48%</span>
+</div>
+</div>
+<div class="mt-4 text-xs text-gray-500 text-center">
+<p>Clean 2-Partner Structure</p>
+</div>
+<i class="fas fa-chevron-right connector"></i>
+</div>
+<!-- Panel 2: Shared -->
+<div class="panel">
+<div class="panel-header">
+<h3 class="panel-title">Shared Path</h3>
+<span class="panel-step step-b">Option B</span>
+</div>
+<div class="chart-wrapper">
+<div class="chart-canvas-container">
+<canvas id="chartB" width="220" height="220" style="display: block; box-sizing: border-box; height: 200px; width: 200px;"></canvas>
+</div>
+</div>
+<div class="ownership-stack">
+<div class="stack-item">
+<div class="stack-label">
+<div class="stack-dot" style="background-color: var(--color-luke);"></div>
+<span>Luke</span>
+</div>
+<span class="stack-val">52%</span>
+</div>
+<div class="stack-item">
+<div class="stack-label">
+<div class="stack-dot" style="background-color: var(--color-bodie);"></div>
+<span>Bodie</span>
+</div>
+<span class="stack-val">24%</span>
+</div>
+<div class="stack-item">
+<div class="stack-label">
+<div class="stack-dot" style="background-color: var(--color-pablo);"></div>
+<span>Pablo</span>
+</div>
+<span class="stack-val">24%</span>
+</div>
+</div>
+<div class="mt-4 text-xs text-gray-500 text-center">
+<p>Balanced Partnership</p>
+</div>
+<i class="fas fa-chevron-right connector"></i>
+</div>
+<!-- Panel 3: Design Build -->
+<div class="panel" style="border-color: rgba(239, 99, 55, 0.3); background-color: rgba(239, 99, 55, 0.05);">
+<div class="panel-header" style="border-bottom-color: rgba(239, 99, 55, 0.2);">
+<h3 class="panel-title" style="color: var(--coral);">Design Build</h3>
+<span class="panel-step step-c" style="background: rgba(239, 99, 55, 0.2); color: var(--coral);">Option C</span>
+</div>
+<div class="chart-wrapper">
+<div class="chart-canvas-container">
+<canvas id="chartC" width="220" height="220" style="display: block; box-sizing: border-box; height: 200px; width: 200px;"></canvas>
+</div>
+</div>
+<div class="ownership-stack">
+<div class="stack-item">
+<div class="stack-label">
+<div class="stack-dot" style="background-color: var(--color-luke);"></div>
+<span>Luke</span>
+</div>
+<span class="stack-val">52%</span>
+</div>
+<div class="stack-item">
+<div class="stack-label">
+<div class="stack-dot" style="background-color: var(--color-bodie);"></div>
+<span>Bodie</span>
+</div>
+<span class="stack-val">24%</span>
+</div>
+<div class="stack-item">
+<div class="stack-label">
+<div class="stack-dot" style="background-color: var(--color-pablo);"></div>
+<span>Pablo</span>
+</div>
+<span class="stack-val">24%</span>
+</div>
+</div>
+<div class="annotation-box">
+<i class="fas fa-info-circle mt-1"></i>
+<p><strong>Note:</strong> Identical equity split to Option B, but applied to a vertically integrated model.</p>
+</div>
+</div>
+</div>
+</div>
+<script>
+    // Common Chart Options
+    const commonOptions = {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+            legend: { display: false },
+            tooltip: { enabled: false }
+        },
+        cutout: '60%',
+        borderWidth: 0,
+        animation: {
+            animateScale: true,
+            animateRotate: true,
+            duration: 1500
+        }
+    };
+
+    // Colors
+    const cLuke = '#2ECC71';
+    const cBodie = '#3498DB';
+    const cPablo = '#E67E22';
+
+    // Chart A - Solo (UPDATED TO CANONICAL VALUES: Luke 52%, Bodie 48%)
+    new Chart(document.getElementById('chartA'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Luke', 'Bodie'],
+            datasets: [{
+                data: [52, 48],
+                backgroundColor: [cLuke, cBodie],
+                borderWidth: 0
+            }]
+        },
+        options: commonOptions
+    });
+
+    // Chart B - Shared
+    new Chart(document.getElementById('chartB'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Luke', 'Bodie', 'Pablo'],
+            datasets: [{
+                data: [52, 24, 24],
+                backgroundColor: [cLuke, cBodie, cPablo],
+                borderWidth: 0
+            }]
+        },
+        options: commonOptions
+    });
+
+    // Chart C - Design Build
+    new Chart(document.getElementById('chartC'), {
+        type: 'doughnut',
+        data: {
+            labels: ['Luke', 'Bodie', 'Pablo'],
+            datasets: [{
+                data: [52, 24, 24],
+                backgroundColor: [cLuke, cBodie, cPablo],
+                borderWidth: 0
+            }]
+        },
+        options: commonOptions
+    });
+</script>
+
+
+<script src="./slide-inner.js"></script></body></html>

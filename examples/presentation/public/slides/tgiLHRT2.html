@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<!-- saved from url=(0044)https://www.genspark.ai/api/files/s/tgiLHRT2 -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<meta content="width=device-width, initial-scale=1.0" name="viewport">
+<title>Equity Vesting Timeline</title>
+<link href="./tailwind.min.css" rel="stylesheet">
+<link href="./css2(1)" rel="stylesheet">
+<link href="./all.min.css" rel="stylesheet">
+<script src="./gsap.min.js"></script>
+<style>
+        :root {
+            --bg-dark: #0f1419;
+            --navy: #044c73;
+            --coral: #ef6337;
+            --teal: #8db6b0;
+            --turquoise: #4ECDC4;
+            --yellow: #FFE66D;
+            --text-light: #f5f7fa;
+            --text-muted: #b0b8c1;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-dark);
+            font-family: 'Inter', sans-serif;
+            color: var(--text-light);
+            overflow: hidden;
+        }
+
+        .slide-container {
+            width: 1280px;
+            height: 720px;
+            display: flex;
+            flex-direction: column;
+            padding: 40px 60px;
+            position: relative;
+            background-color: var(--bg-dark);
+            box-sizing: border-box;
+        }
+
+        /* Header */
+        .header {
+            margin-bottom: 40px;
+            padding-bottom: 16px;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+        }
+
+        .title-tag {
+            font-family: 'JetBrains Mono', monospace;
+            color: var(--yellow);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        h1.main-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 42px;
+            font-weight: 900;
+            line-height: 1.1;
+            color: var(--text-light);
+            margin: 0;
+        }
+
+        .subtitle {
+            font-size: 16px;
+            color: var(--text-muted);
+            margin-top: 8px;
+        }
+
+        /* Timeline Components */
+        .timeline-area {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+            padding: 0 20px;
+        }
+
+        /* The Line */
+        .progress-track-bg {
+            position: absolute;
+            top: 35%; /* Align with node centers */
+            left: 20px;
+            right: 20px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 4px;
+            z-index: 0;
+        }
+
+        .progress-track-fill {
+            position: absolute;
+            top: 35%;
+            left: 20px;
+            height: 4px;
+            background: linear-gradient(90deg, var(--teal), var(--turquoise), var(--yellow));
+            border-radius: 4px;
+            z-index: 1;
+            width: 0%; /* Animated */
+        }
+
+        /* Steps Wrapper */
+        .steps-wrapper {
+            display: flex;
+            justify-content: space-between;
+            position: relative;
+            z-index: 10;
+            margin-top: -20px; /* Adjust for centering vertically */
+        }
+
+        .step-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 180px;
+            opacity: 0; /* Animated */
+            transform: translateY(20px);
+        }
+
+        /* Step Node Circle */
+        .step-node {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--bg-dark);
+            border: 3px solid var(--text-muted);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+            font-size: 14px;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 0 8px var(--bg-dark); /* Masking effect */
+        }
+
+        .step-item.active .step-node {
+            border-color: var(--yellow);
+            color: var(--yellow);
+            background-color: rgba(255, 230, 109, 0.1);
+            box-shadow: 0 0 0 8px var(--bg-dark), 0 0 20px rgba(255, 230, 109, 0.3);
+        }
+
+        /* Step Content Card */
+        .step-card {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            border-radius: 8px;
+            padding: 16px;
+            width: 100%;
+            text-align: center;
+            position: relative;
+        }
+
+        .step-card::before {
+            content: '';
+            position: absolute;
+            top: -6px;
+            left: 50%;
+            transform: translateX(-50%) rotate(45deg);
+            width: 12px;
+            height: 12px;
+            background: rgba(30, 35, 40, 1); /* Approximate bg match */
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            border-left: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        .step-year {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 6px;
+        }
+
+        .vest-amount {
+            color: var(--turquoise);
+            font-weight: 700;
+            font-size: 13px;
+            margin-bottom: 8px;
+            display: inline-block;
+            background: rgba(78, 205, 196, 0.1);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .cumulative-label {
+            font-size: 10px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+
+        .cumulative-value {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--text-light);
+            line-height: 1.2;
+        }
+
+        /* Special Styling for Final Step */
+        .step-item.final .step-node {
+            border-color: var(--coral);
+            color: var(--coral);
+            background-color: rgba(239, 99, 55, 0.1);
+        }
+        
+        .step-item.final .vest-amount {
+            color: var(--coral);
+            background: rgba(239, 99, 55, 0.1);
+        }
+
+        .step-item.final .cumulative-value {
+            color: var(--coral);
+        }
+
+        /* Footer Stats */
+        .stats-footer {
+            margin-top: auto;
+            background: rgba(4, 76, 115, 0.15);
+            border-top: 1px solid var(--navy);
+            border-bottom: 1px solid var(--navy);
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .stat-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 4px;
+        }
+
+        .stat-val {
+            font-family: 'JetBrains Mono', monospace;
+            font-size: 18px;
+            font-weight: 700;
+            color: var(--text-light);
+        }
+
+        .vertical-divider {
+            width: 1px;
+            height: 40px;
+            background: rgba(255,255,255,0.1);
+        }
+
+    </style>
+<style id="slide-selected-style">
+  [data-slide-selected]::before
+  /* [data-slide-hover-selected]::before */ {
+    content: '';
+    position: absolute;
+    top: -4px;
+    left: -4px;
+    width: 100%;
+    height: 100%;
+    box-sizing: content-box;
+    padding: 4px;
+    border-radius: 0px;
+    outline: 2px solid #0f7fff !important;
+    z-index: 10000;
+    pointer-events: none;
+  }
+
+ /* [data-slide-hover-selected], */
+  [data-slide-selected] {
+    position: relative;
+    outline: none;
+    cursor: default;
+  }
+
+  img[data-slide-selected],
+  img[data-slide-hover-selected],
+  [data-slide-hover-selected],
+  [item-slide-click-selected],
+  [item-slide-selected] {
+    border: 2px solid #0f7fff !important;
+  }
+
+
+</style></head>
+<body>
+<div class="slide-container">
+<!-- Header -->
+<div class="header">
+<div>
+<p class="title-tag">Partnership Mechanics</p>
+<h1 class="main-title">Equity Vesting Timeline</h1>
+<p class="subtitle">Milestone Tracker: Path to 24% Minority Ownership</p>
+</div>
+<div class="text-right">
+<p class="text-xs text-gray-500 uppercase tracking-widest mb-1">Chart 5C</p>
+<p class="text-sm font-bold text-white">Milestone View</p>
+</div>
+</div>
+<!-- Timeline Content -->
+<div class="timeline-area">
+<!-- Progress Bar Background & Fill -->
+<div class="progress-track-bg"></div>
+<div class="progress-track-fill" style="width: 100%;"></div>
+<!-- Steps -->
+<div class="steps-wrapper">
+<!-- Start -->
+<div class="step-item active" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<div class="step-node"><i class="fas fa-play text-xs"></i></div>
+<div class="step-card">
+<p class="step-year">Start Date</p>
+<span class="vest-amount" style="color: #b0b8c1; background: rgba(255,255,255,0.1);">Effective</span>
+<div class="mt-2">
+<p class="cumulative-label">Minority Equity</p>
+<p class="cumulative-value">0%</p>
+</div>
+</div>
+</div>
+<!-- Year 1 -->
+<div class="step-item active" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<div class="step-node">1</div>
+<div class="step-card">
+<p class="step-year">Year 1 Cliff</p>
+<span class="vest-amount">+6% Vested</span>
+<div class="mt-2">
+<p class="cumulative-label">Cumulative</p>
+<p class="cumulative-value">6%</p>
+</div>
+</div>
+</div>
+<!-- Year 2 -->
+<div class="step-item active" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<div class="step-node">2</div>
+<div class="step-card">
+<p class="step-year">Year 2 Anniv.</p>
+<span class="vest-amount">+6% Vested</span>
+<div class="mt-2">
+<p class="cumulative-label">Cumulative</p>
+<p class="cumulative-value">12%</p>
+</div>
+</div>
+</div>
+<!-- Year 3 -->
+<div class="step-item active" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<div class="step-node">3</div>
+<div class="step-card">
+<p class="step-year">Year 3 Anniv.</p>
+<span class="vest-amount">+6% Vested</span>
+<div class="mt-2">
+<p class="cumulative-label">Cumulative</p>
+<p class="cumulative-value">18%</p>
+</div>
+</div>
+</div>
+<!-- Year 4 (Final) -->
+<div class="step-item final active" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<div class="step-node"><i class="fas fa-flag-checkered"></i></div>
+<div class="step-card" style="border-color: rgba(239, 99, 55, 0.3); background: rgba(239, 99, 55, 0.05);">
+<p class="step-year" style="color: var(--coral);">Full Vesting</p>
+<span class="vest-amount">+6% Vested</span>
+<div class="mt-2">
+<p class="cumulative-label">Final Equity</p>
+<p class="cumulative-value">24%</p>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Footer Stats -->
+<div class="stats-footer" style="translate: none; rotate: none; scale: none; transform: translate(0px, 0px); opacity: 1;">
+<div class="stat-group">
+<span class="stat-label">Total Vesting Period</span>
+<span class="stat-val">4 Years</span>
+</div>
+<div class="vertical-divider"></div>
+<div class="stat-group">
+<span class="stat-label">Annual Increment</span>
+<span class="stat-val" style="color: var(--turquoise);">6.0%</span>
+</div>
+<div class="vertical-divider"></div>
+<div class="stat-group">
+<span class="stat-label">Vesting Type</span>
+<span class="stat-val">Annual Cliff</span>
+</div>
+<div class="vertical-divider"></div>
+<div class="stat-group text-right">
+<span class="stat-label" style="color: var(--coral);">Final Minority Equity</span>
+<span class="stat-val" style="color: var(--coral);">24.0%</span>
+</div>
+</div>
+<!-- Small Disclaimer -->
+<p class="absolute bottom-3 left-10 text-[10px] text-[#4e5d6c] uppercase tracking-widest font-bold">Confidential · MARPA Equity Pathway 2026</p>
+</div>
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const tl = gsap.timeline({ defaults: { ease: "power3.out" } });
+
+        // 1. Animate Line Filling
+        tl.to(".progress-track-fill", {
+            width: "100%",
+            duration: 2.5,
+            ease: "power1.inOut"
+        });
+
+        // 2. Animate Steps Popping In (staggered with line)
+        tl.to(".step-item", {
+            opacity: 1,
+            y: 0,
+            duration: 0.6,
+            stagger: 0.4
+        }, "<0.2"); // Start slightly after line starts
+
+        // 3. Highlight Final Card
+        tl.from(".step-item.final .step-card", {
+            borderColor: "rgba(255,255,255,0.05)",
+            backgroundColor: "rgba(255,255,255,0.03)",
+            duration: 0.8
+        });
+
+        // 4. Footer Fade Up
+        tl.from(".stats-footer", {
+            opacity: 0,
+            y: 20,
+            duration: 0.8
+        }, "-=0.5");
+    });
+</script>
+
+
+<script src="./slide-inner.js"></script></body></html>
