@@ -1,607 +1,442 @@
 "use client";
 
-import { useState, useEffect, useCallback, useRef } from "react";
-import {
-  DataProvider,
-  ActionProvider,
-  VisibilityProvider,
-  Renderer,
-} from "@json-render/react";
-import type { UITree, UIElement } from "@json-render/core";
-import { slides, chapters, TOTAL_SLIDES } from "@/lib/slides";
-import { getSlideRegistry } from "@/lib/slide-registry";
+import { useState } from "react";
+import Link from "next/link";
 
-// Helper to get audio filename from slide index
-function getAudioFile(slideIndex: number): string {
-  const num = String(slideIndex + 1).padStart(3, "0");
-  return `/audio/slide_${num}.mp3`;
-}
+export default function WelcomePage() {
+  const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false);
 
-// Component registry for json-render - using loose typing for flexibility
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const componentRegistry: Record<string, any> = {
-  SlideViewer: ({ element }: { element: UIElement }) => {
-    const slideIndex = element.props.slideIndex as number;
-    const slide = slides[slideIndex];
-    const basePath = "/slides/";
-    const containerRef = useRef<HTMLDivElement>(null);
-    const [scale, setScale] = useState(1);
-
-    // Calculate scale to fit viewport
-    useEffect(() => {
-      const calculateScale = () => {
-        if (!containerRef.current) return;
-        const container = containerRef.current;
-        const availableWidth = container.clientWidth - 40; // padding
-        const availableHeight = container.clientHeight - 20;
-        const scaleX = availableWidth / 1280;
-        const scaleY = availableHeight / 720;
-        setScale(Math.min(scaleX, scaleY, 1)); // don't scale up, only down
-      };
-
-      calculateScale();
-      window.addEventListener("resize", calculateScale);
-      return () => window.removeEventListener("resize", calculateScale);
-    }, []);
-
-    return (
-      <div
-        ref={containerRef}
-        style={{
-          flex: 1,
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          background: "#000",
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            width: 1280,
-            height: 720,
-            transform: `scale(${scale})`,
-            transformOrigin: "center center",
-          }}
-        >
-          <iframe
-            src={`${basePath}${slide.file}`}
-            style={{
-              width: 1280,
-              height: 720,
-              border: "none",
-              background: "#0f1419",
-              boxShadow: "0 10px 40px rgba(0,0,0,0.8)",
-            }}
-            title={slide.title}
-          />
-        </div>
-      </div>
-    );
-  },
-
-  SlideNav: ({
-    element,
-    onAction,
-  }: {
-    element: UIElement;
-    onAction: (action: { name: string }) => void;
-  }) => {
-    const current = element.props.current as number;
-    const total = element.props.total as number;
-
-    return (
-      <div
+  return (
+    <div
+      style={{
+        minHeight: "100vh",
+        background:
+          "linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0f1419 100%)",
+        color: "#fff",
+        fontFamily: "system-ui, -apple-system, sans-serif",
+      }}
+    >
+      {/* Header */}
+      <header
         style={{
           display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          gap: 20,
-          padding: "16px 24px",
-          background: "rgba(15,20,25,0.95)",
-          borderTop: "1px solid rgba(239,99,55,0.3)",
-        }}
-      >
-        <button
-          onClick={() => onAction({ name: "prev" })}
-          disabled={current === 0}
-          className="nav-btn"
-        >
-          Previous
-        </button>
-
-        <div className="slide-counter">
-          {current + 1} / {total}
-        </div>
-
-        <button
-          onClick={() => onAction({ name: "next" })}
-          disabled={current === total - 1}
-          className="nav-btn"
-        >
-          Next
-        </button>
-      </div>
-    );
-  },
-
-  SlideInfo: ({ element }: { element: UIElement }) => {
-    const title = element.props.title as string;
-    const chapter = element.props.chapter as string | undefined;
-
-    return (
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
           justifyContent: "space-between",
-          padding: "12px 24px",
-          background: "rgba(15,20,25,0.95)",
-          borderBottom: "1px solid rgba(239,99,55,0.3)",
+          alignItems: "center",
+          padding: "20px 40px",
+          borderBottom: "1px solid rgba(239,99,55,0.2)",
         }}
       >
-        <div
-          style={{ color: "#ef6337", fontWeight: 600, letterSpacing: "0.1em" }}
-        >
-          MARPA
-        </div>
-        <div style={{ color: "#8db6b0", fontSize: 14 }}>{title}</div>
-        {chapter && (
-          <div style={{ color: "rgba(255,255,255,0.6)", fontSize: 13 }}>
-            {chapter}
-          </div>
-        )}
-      </div>
-    );
-  },
-
-  ChapterNav: ({
-    element,
-    onAction,
-  }: {
-    element: UIElement;
-    onAction: (action: {
-      name: string;
-      params?: Record<string, unknown>;
-    }) => void;
-  }) => {
-    const currentChapter = element.props.currentChapter as string | undefined;
-
-    return (
-      <div
-        style={{
-          display: "flex",
-          gap: 8,
-          padding: "8px 24px",
-          background: "rgba(10,10,10,0.95)",
-          borderBottom: "1px solid rgba(255,255,255,0.1)",
-          overflowX: "auto",
-        }}
-      >
-        {chapters.map((ch) => (
-          <button
-            key={ch.id}
-            onClick={() =>
-              onAction({
-                name: "goto_chapter",
-                params: { slideIndex: ch.startSlide },
-              })
-            }
+        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+          <div
             style={{
-              padding: "6px 12px",
-              background:
-                currentChapter === ch.name
-                  ? "rgba(239,99,55,0.3)"
-                  : "rgba(255,255,255,0.05)",
-              border:
-                currentChapter === ch.name
-                  ? "1px solid #ef6337"
-                  : "1px solid rgba(255,255,255,0.1)",
-              borderRadius: 4,
-              color: currentChapter === ch.name ? "#ef6337" : "#8b949e",
-              fontSize: 12,
-              cursor: "pointer",
-              whiteSpace: "nowrap",
+              width: 40,
+              height: 40,
+              background: "linear-gradient(135deg, #ef6337, #ff8c5a)",
+              borderRadius: 8,
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              fontWeight: 700,
+              fontSize: 18,
             }}
           >
-            {ch.name}
-          </button>
-        ))}
-      </div>
-    );
-  },
-
-  ProgressBar: ({ element }: { element: UIElement }) => {
-    const current = element.props.current as number;
-    const total = element.props.total as number;
-    const progress = ((current + 1) / total) * 100;
-
-    return (
-      <div
-        style={{
-          width: "100%",
-          maxWidth: 600,
-          height: 4,
-          background: "rgba(255,255,255,0.1)",
-          borderRadius: 2,
-          overflow: "hidden",
-        }}
-      >
-        <div
-          style={{
-            width: `${progress}%`,
-            height: "100%",
-            background: "#ef6337",
-            transition: "width 0.3s ease",
-          }}
-        />
-      </div>
-    );
-  },
-
-  AudioPlayer: ({
-    element,
-    onAction,
-  }: {
-    element: UIElement;
-    onAction: (action: { name: string }) => void;
-  }) => {
-    const isPlaying = element.props.isPlaying as boolean;
-    const autoAdvance = element.props.autoAdvance as boolean;
-
-    return (
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          gap: 12,
-        }}
-      >
-        <button
-          onClick={() => onAction({ name: "toggle_audio" })}
-          style={{
-            padding: "8px 16px",
-            background: isPlaying ? "#ef6337" : "rgba(255,255,255,0.1)",
-            border: "1px solid rgba(239,99,55,0.5)",
-            borderRadius: 4,
-            color: "#fff",
-            fontSize: 13,
-            cursor: "pointer",
-          }}
-        >
-          {isPlaying ? "Pause" : "Play Audio"}
-        </button>
-        <label
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 6,
-            color: "#8b949e",
-            fontSize: 12,
-            cursor: "pointer",
-          }}
-        >
-          <input
-            type="checkbox"
-            checked={autoAdvance}
-            onChange={() => onAction({ name: "toggle_auto_advance" })}
-            style={{ accentColor: "#ef6337" }}
-          />
-          Auto-advance
-        </label>
-      </div>
-    );
-  },
-};
-
-function buildUITree(
-  slideIndex: number,
-  isPlaying: boolean,
-  autoAdvance: boolean,
-): UITree {
-  const slide = slides[slideIndex];
-
-  return {
-    root: "container",
-    elements: {
-      container: {
-        key: "container",
-        type: "Stack",
-        props: { direction: "column", gap: 0 },
-        children: ["info", "chapterNav", "viewer", "controlsRow"],
-      },
-      info: {
-        key: "info",
-        type: "SlideInfo",
-        props: { title: slide.title, chapter: slide.chapter },
-      },
-      chapterNav: {
-        key: "chapterNav",
-        type: "ChapterNav",
-        props: { currentChapter: slide.chapter },
-      },
-      viewer: {
-        key: "viewer",
-        type: "SlideViewer",
-        props: { slideIndex },
-      },
-      controlsRow: {
-        key: "controlsRow",
-        type: "ControlsRow",
-        props: {
-          current: slideIndex,
-          total: TOTAL_SLIDES,
-          isPlaying,
-          autoAdvance,
-        },
-      },
-    },
-  };
-}
-
-// Simple Stack component for layout
-componentRegistry.Stack = ({
-  element,
-  children,
-}: {
-  element: UIElement;
-  children?: React.ReactNode;
-}) => {
-  const direction = (element.props.direction as "row" | "column") || "column";
-  const gap = (element.props.gap as number) || 0;
-
-  return (
-    <div
-      style={{
-        display: "flex",
-        flexDirection: direction,
-        gap,
-        height: direction === "column" ? "100vh" : undefined,
-      }}
-    >
-      {children}
-    </div>
-  );
-};
-
-// Combined controls row with nav and audio
-componentRegistry.ControlsRow = ({
-  element,
-  onAction,
-}: {
-  element: UIElement;
-  onAction: (action: { name: string }) => void;
-}) => {
-  const current = element.props.current as number;
-  const total = element.props.total as number;
-  const isPlaying = element.props.isPlaying as boolean;
-  const autoAdvance = element.props.autoAdvance as boolean;
-
-  return (
-    <div
-      style={{
-        display: "flex",
-        alignItems: "center",
-        justifyContent: "space-between",
-        padding: "16px 24px",
-        background: "rgba(15,20,25,0.95)",
-        borderTop: "1px solid rgba(239,99,55,0.3)",
-      }}
-    >
-      {/* Audio controls */}
-      <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-        <button
-          onClick={() => onAction({ name: "toggle_audio" })}
-          style={{
-            padding: "8px 16px",
-            background: isPlaying ? "#ef6337" : "rgba(255,255,255,0.1)",
-            border: "1px solid rgba(239,99,55,0.5)",
-            borderRadius: 4,
-            color: "#fff",
-            fontSize: 13,
-            cursor: "pointer",
-          }}
-        >
-          {isPlaying ? "Pause" : "Play"}
-        </button>
-        <label
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 6,
-            color: "#8b949e",
-            fontSize: 12,
-            cursor: "pointer",
-          }}
-        >
-          <input
-            type="checkbox"
-            checked={autoAdvance}
-            onChange={() => onAction({ name: "toggle_auto_advance" })}
-            style={{ accentColor: "#ef6337" }}
-          />
-          Auto-advance
-        </label>
-      </div>
-
-      {/* Navigation */}
-      <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-        <button
-          onClick={() => onAction({ name: "prev" })}
-          disabled={current === 0}
-          className="nav-btn"
-        >
-          Previous
-        </button>
-        <div className="slide-counter">
-          {current + 1} / {total}
+            M
+          </div>
+          <span
+            style={{ fontSize: 24, fontWeight: 600, letterSpacing: "0.05em" }}
+          >
+            MARPA
+          </span>
         </div>
-        <button
-          onClick={() => onAction({ name: "next" })}
-          disabled={current === total - 1}
-          className="nav-btn"
-        >
-          Next
-        </button>
-      </div>
+        <div style={{ color: "#8db6b0", fontSize: 14 }}>
+          Strategic Ownership Transition
+        </div>
+      </header>
 
-      {/* Progress bar */}
-      <div
-        style={{
-          width: 200,
-          height: 4,
-          background: "rgba(255,255,255,0.1)",
-          borderRadius: 2,
-          overflow: "hidden",
-        }}
-      >
+      {/* Hero Section */}
+      <main style={{ maxWidth: 1200, margin: "0 auto", padding: "60px 40px" }}>
+        <div style={{ textAlign: "center", marginBottom: 60 }}>
+          <h1
+            style={{
+              fontSize: 48,
+              fontWeight: 700,
+              marginBottom: 20,
+              background: "linear-gradient(135deg, #fff, #8db6b0)",
+              WebkitBackgroundClip: "text",
+              WebkitTextFillColor: "transparent",
+              lineHeight: 1.2,
+            }}
+          >
+            AI-Powered Presentation System
+          </h1>
+          <p
+            style={{
+              fontSize: 20,
+              color: "#8b949e",
+              maxWidth: 600,
+              margin: "0 auto",
+              lineHeight: 1.6,
+            }}
+          >
+            Interactive slide presentation with ElevenLabs narration, AI
+            assistant for Q&A, and intelligent slide navigation.
+          </p>
+        </div>
+
+        {/* App Cards */}
         <div
           style={{
-            width: `${((current + 1) / total) * 100}%`,
-            height: "100%",
-            background: "#ef6337",
-            transition: "width 0.3s ease",
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
+            gap: 24,
+            marginBottom: 60,
           }}
-        />
-      </div>
+        >
+          {/* Presenter Card */}
+          <Link href="/presenter" style={{ textDecoration: "none" }}>
+            <div
+              style={{
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(239,99,55,0.3)",
+                borderRadius: 16,
+                padding: 32,
+                cursor: "pointer",
+                transition: "all 0.3s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "rgba(239,99,55,0.1)";
+                e.currentTarget.style.borderColor = "#ef6337";
+                e.currentTarget.style.transform = "translateY(-4px)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "rgba(255,255,255,0.03)";
+                e.currentTarget.style.borderColor = "rgba(239,99,55,0.3)";
+                e.currentTarget.style.transform = "translateY(0)";
+              }}
+            >
+              <div
+                style={{
+                  width: 56,
+                  height: 56,
+                  background: "linear-gradient(135deg, #ef6337, #ff8c5a)",
+                  borderRadius: 12,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginBottom: 20,
+                  fontSize: 24,
+                }}
+              >
+                🎬
+              </div>
+              <h2
+                style={{
+                  fontSize: 24,
+                  fontWeight: 600,
+                  marginBottom: 12,
+                  color: "#fff",
+                }}
+              >
+                Presenter Mode
+              </h2>
+              <p
+                style={{ color: "#8b949e", lineHeight: 1.6, marginBottom: 20 }}
+              >
+                Full presentation experience with 78 slides across 8 chapters.
+                Features ElevenLabs voice narration, chapter navigation, and
+                keyboard controls.
+              </p>
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  color: "#ef6337",
+                  fontWeight: 500,
+                }}
+              >
+                Launch Presenter
+                <span style={{ fontSize: 18 }}>→</span>
+              </div>
+            </div>
+          </Link>
+
+          {/* Assistant Card */}
+          <Link href="/assistant" style={{ textDecoration: "none" }}>
+            <div
+              style={{
+                background: "rgba(255,255,255,0.03)",
+                border: "1px solid rgba(141,182,176,0.3)",
+                borderRadius: 16,
+                padding: 32,
+                cursor: "pointer",
+                transition: "all 0.3s ease",
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = "rgba(141,182,176,0.1)";
+                e.currentTarget.style.borderColor = "#8db6b0";
+                e.currentTarget.style.transform = "translateY(-4px)";
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = "rgba(255,255,255,0.03)";
+                e.currentTarget.style.borderColor = "rgba(141,182,176,0.3)";
+                e.currentTarget.style.transform = "translateY(0)";
+              }}
+            >
+              <div
+                style={{
+                  width: 56,
+                  height: 56,
+                  background: "linear-gradient(135deg, #8db6b0, #a8d4cd)",
+                  borderRadius: 12,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  marginBottom: 20,
+                  fontSize: 24,
+                }}
+              >
+                💬
+              </div>
+              <h2
+                style={{
+                  fontSize: 24,
+                  fontWeight: 600,
+                  marginBottom: 12,
+                  color: "#fff",
+                }}
+              >
+                Q&A Assistant
+              </h2>
+              <p
+                style={{ color: "#8b949e", lineHeight: 1.6, marginBottom: 20 }}
+              >
+                AI-powered assistant that can answer questions about MARPA,
+                search slide content, lookup canonical business data, and search
+                the web for context.
+              </p>
+              <div
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  color: "#8db6b0",
+                  fontWeight: 500,
+                }}
+              >
+                Open Assistant
+                <span style={{ fontSize: 18 }}>→</span>
+              </div>
+            </div>
+          </Link>
+        </div>
+
+        {/* How to Use Section */}
+        <div
+          style={{
+            background: "rgba(255,255,255,0.02)",
+            border: "1px solid rgba(255,255,255,0.1)",
+            borderRadius: 16,
+            padding: 40,
+            marginBottom: 40,
+          }}
+        >
+          <h2
+            style={{
+              fontSize: 28,
+              fontWeight: 600,
+              marginBottom: 24,
+              textAlign: "center",
+            }}
+          >
+            How to Use
+          </h2>
+
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+              gap: 32,
+            }}
+          >
+            {/* Presenter Instructions */}
+            <div>
+              <h3 style={{ color: "#ef6337", fontSize: 18, marginBottom: 16 }}>
+                Presenter Mode
+              </h3>
+              <ul
+                style={{
+                  listStyle: "none",
+                  padding: 0,
+                  margin: 0,
+                  color: "#8b949e",
+                  lineHeight: 2,
+                }}
+              >
+                <li>• Use arrow keys or buttons to navigate slides</li>
+                <li>
+                  • Press <kbd style={kbdStyle}>Space</kbd> to play/pause
+                  narration
+                </li>
+                <li>• Click chapter tabs for quick navigation</li>
+                <li>• Enable auto-advance for hands-free playback</li>
+                <li>
+                  • Press <kbd style={kbdStyle}>Home</kbd>/
+                  <kbd style={kbdStyle}>End</kbd> for first/last slide
+                </li>
+              </ul>
+            </div>
+
+            {/* Assistant Instructions */}
+            <div>
+              <h3 style={{ color: "#8db6b0", fontSize: 18, marginBottom: 16 }}>
+                Q&A Assistant
+              </h3>
+              <ul
+                style={{
+                  listStyle: "none",
+                  padding: 0,
+                  margin: 0,
+                  color: "#8b949e",
+                  lineHeight: 2,
+                }}
+              >
+                <li>• Ask questions about MARPA&apos;s ownership transition</li>
+                <li>• Query financial metrics and valuations</li>
+                <li>• Search for specific slide content</li>
+                <li>• Get web search results for context</li>
+                <li>• All answers cite their data sources</li>
+              </ul>
+            </div>
+          </div>
+
+          {/* Keyboard Shortcuts Toggle */}
+          <div style={{ textAlign: "center", marginTop: 32 }}>
+            <button
+              onClick={() => setShowKeyboardShortcuts(!showKeyboardShortcuts)}
+              style={{
+                background: "rgba(255,255,255,0.05)",
+                border: "1px solid rgba(255,255,255,0.2)",
+                borderRadius: 8,
+                padding: "10px 20px",
+                color: "#fff",
+                cursor: "pointer",
+                fontSize: 14,
+              }}
+            >
+              {showKeyboardShortcuts ? "Hide" : "Show"} Keyboard Shortcuts
+            </button>
+          </div>
+
+          {showKeyboardShortcuts && (
+            <div
+              style={{
+                marginTop: 24,
+                padding: 24,
+                background: "rgba(0,0,0,0.3)",
+                borderRadius: 12,
+              }}
+            >
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                  gap: 16,
+                }}
+              >
+                {[
+                  { key: "← / →", action: "Previous / Next slide" },
+                  { key: "↑ / ↓", action: "Previous / Next slide" },
+                  { key: "Space", action: "Play / Pause audio" },
+                  { key: "Home", action: "Go to first slide" },
+                  { key: "End", action: "Go to last slide" },
+                ].map((shortcut) => (
+                  <div
+                    key={shortcut.key}
+                    style={{
+                      display: "flex",
+                      alignItems: "center",
+                      gap: 12,
+                    }}
+                  >
+                    <kbd
+                      style={{ ...kbdStyle, minWidth: 60, textAlign: "center" }}
+                    >
+                      {shortcut.key}
+                    </kbd>
+                    <span style={{ color: "#8b949e", fontSize: 14 }}>
+                      {shortcut.action}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
+        {/* Quick Stats */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(4, 1fr)",
+            gap: 16,
+            marginBottom: 40,
+          }}
+        >
+          {[
+            { value: "78", label: "Slides" },
+            { value: "8", label: "Chapters" },
+            { value: "$17M", label: "Valuation" },
+            { value: "95%", label: "Win Rate" },
+          ].map((stat) => (
+            <div
+              key={stat.label}
+              style={{
+                textAlign: "center",
+                padding: 24,
+                background: "rgba(255,255,255,0.02)",
+                borderRadius: 12,
+                border: "1px solid rgba(255,255,255,0.05)",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: 32,
+                  fontWeight: 700,
+                  color: "#ef6337",
+                  marginBottom: 4,
+                }}
+              >
+                {stat.value}
+              </div>
+              <div style={{ color: "#8b949e", fontSize: 14 }}>{stat.label}</div>
+            </div>
+          ))}
+        </div>
+      </main>
+
+      {/* Footer */}
+      <footer
+        style={{
+          textAlign: "center",
+          padding: "24px 40px",
+          borderTop: "1px solid rgba(255,255,255,0.1)",
+          color: "#8b949e",
+          fontSize: 13,
+        }}
+      >
+        MARPA Strategic Ownership Transition • Powered by JSON-Render & AI SDK
+      </footer>
     </div>
   );
+}
+
+const kbdStyle: React.CSSProperties = {
+  background: "rgba(255,255,255,0.1)",
+  border: "1px solid rgba(255,255,255,0.2)",
+  borderRadius: 4,
+  padding: "2px 8px",
+  fontFamily: "monospace",
+  fontSize: 12,
+  color: "#fff",
 };
-
-function PresentationContent() {
-  const [slideIndex, setSlideIndex] = useState(0);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [autoAdvance, setAutoAdvance] = useState(true);
-  const audioRef = useRef<HTMLAudioElement>(null);
-
-  const [tree, setTree] = useState<UITree>(buildUITree(0, false, true));
-
-  // Track slide renders in registry
-  useEffect(() => {
-    const registry = getSlideRegistry();
-    registry.recordRender(slideIndex + 1, "viewer");
-  }, [slideIndex]);
-
-  // Update tree when state changes
-  useEffect(() => {
-    setTree(buildUITree(slideIndex, isPlaying, autoAdvance));
-  }, [slideIndex, isPlaying, autoAdvance]);
-
-  // Load and play audio when slide changes
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    const audioFile = getAudioFile(slideIndex);
-    audio.src = audioFile;
-    audio.load();
-
-    if (isPlaying) {
-      audio.play().catch(console.error);
-    }
-  }, [slideIndex]);
-
-  // Handle play state changes
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    if (isPlaying) {
-      audio.play().catch(console.error);
-    } else {
-      audio.pause();
-    }
-  }, [isPlaying]);
-
-  // Auto-advance when audio ends
-  useEffect(() => {
-    const audio = audioRef.current;
-    if (!audio) return;
-
-    const handleEnded = () => {
-      if (autoAdvance && slideIndex < TOTAL_SLIDES - 1) {
-        setSlideIndex((i) => i + 1);
-      } else {
-        setIsPlaying(false);
-      }
-    };
-
-    audio.addEventListener("ended", handleEnded);
-    return () => audio.removeEventListener("ended", handleEnded);
-  }, [autoAdvance, slideIndex]);
-
-  // Action handlers for json-render components
-  const handleAction = useCallback(
-    (action: { name: string; params?: Record<string, unknown> }) => {
-      switch (action.name) {
-        case "prev":
-          setSlideIndex((i) => Math.max(0, i - 1));
-          break;
-        case "next":
-          setSlideIndex((i) => Math.min(TOTAL_SLIDES - 1, i + 1));
-          break;
-        case "goto_chapter":
-          const idx = action.params?.slideIndex as number;
-          if (typeof idx === "number") setSlideIndex(idx);
-          break;
-        case "toggle_audio":
-          setIsPlaying((p) => !p);
-          break;
-        case "toggle_auto_advance":
-          setAutoAdvance((a) => !a);
-          break;
-      }
-    },
-    [],
-  );
-
-  // Keyboard navigation
-  useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
-        setSlideIndex((i) => Math.max(0, i - 1));
-      } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
-        setSlideIndex((i) => Math.min(TOTAL_SLIDES - 1, i + 1));
-      } else if (e.key === " ") {
-        e.preventDefault();
-        setIsPlaying((p) => !p);
-      } else if (e.key === "Home") {
-        setSlideIndex(0);
-      } else if (e.key === "End") {
-        setSlideIndex(TOTAL_SLIDES - 1);
-      }
-    };
-
-    window.addEventListener("keydown", handleKey);
-    return () => window.removeEventListener("keydown", handleKey);
-  }, []);
-
-  // Create registry with action handler
-  const registryWithActions = Object.fromEntries(
-    Object.entries(componentRegistry).map(([key, Component]) => [
-      key,
-      (props: { element: UIElement; children?: React.ReactNode }) => (
-        <Component {...props} onAction={handleAction} />
-      ),
-    ]),
-  );
-
-  return (
-    <>
-      <audio ref={audioRef} />
-      <Renderer tree={tree} registry={registryWithActions} />
-    </>
-  );
-}
-
-export default function PresentationPage() {
-  return (
-    <DataProvider initialData={{ slideIndex: 0 }}>
-      <VisibilityProvider>
-        <ActionProvider handlers={{}}>
-          <PresentationContent />
-        </ActionProvider>
-      </VisibilityProvider>
-    </DataProvider>
-  );
-}
