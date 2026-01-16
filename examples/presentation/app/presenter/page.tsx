@@ -559,9 +559,9 @@ export default function PresenterPage() {
           </header>
 
           {/* Middle row: slide viewport + narration */}
-          <section className="flex-1 min-h-0 flex">
+          <section className="flex-1 min-h-0 h-full flex">
             {/* Slide viewport column */}
-            <div className="flex-1 min-w-0">
+            <div className="flex-1 min-w-0 h-full">
               <SlideViewport>
                 <iframe
                   ref={iframeRef}
