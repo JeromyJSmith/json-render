@@ -12,6 +12,8 @@ import { COLORS } from "@/lib/schema";
 
 type Mode = "presenting" | "paused" | "question" | "generating" | "conversing";
 
+// Welcome Modal Component - removed, now on landing page
+
 export default function PresenterPage() {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [mode, setMode] = useState<Mode>("paused");
@@ -688,15 +690,11 @@ Generate complete, animated HTML with Chart.js.`;
           }}
         >
           <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
-            <span
-              style={{
-                color: COLORS.coral,
-                fontWeight: 600,
-                letterSpacing: "0.1em",
-              }}
-            >
-              MARPA
-            </span>
+            <img
+              src="/marpa_logo_darkmode_transparent.png"
+              alt="MARPA"
+              style={{ height: 28, width: "auto" }}
+            />
             <span style={{ color: COLORS.teal, fontSize: 14, fontWeight: 600 }}>
               AI Presenter
             </span>
