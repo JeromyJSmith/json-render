@@ -1,10 +1,26 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 
 export default function WelcomePage() {
   const [showKeyboardShortcuts, setShowKeyboardShortcuts] = useState(false);
+
+  // Override global overflow:hidden for this page
+  useEffect(() => {
+    document.body.style.overflow = "auto";
+    document.body.style.height = "auto";
+    document.documentElement.style.overflow = "auto";
+    document.documentElement.style.height = "auto";
+
+    return () => {
+      document.body.style.overflow = "";
+      document.body.style.height = "";
+      document.documentElement.style.overflow = "";
+      document.documentElement.style.height = "";
+    };
+  }, []);
 
   return (
     <div
@@ -14,6 +30,7 @@ export default function WelcomePage() {
           "linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 50%, #0f1419 100%)",
         color: "#fff",
         fontFamily: "system-ui, -apple-system, sans-serif",
+        overflowY: "auto",
       }}
     >
       {/* Header */}
@@ -22,72 +39,97 @@ export default function WelcomePage() {
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
-          padding: "20px 40px",
+          padding: "16px 40px",
           borderBottom: "1px solid rgba(239,99,55,0.2)",
+          background: "rgba(10,10,10,0.8)",
+          backdropFilter: "blur(10px)",
+          position: "sticky",
+          top: 0,
+          zIndex: 100,
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <div
-            style={{
-              width: 40,
-              height: 40,
-              background: "linear-gradient(135deg, #ef6337, #ff8c5a)",
-              borderRadius: 8,
-              display: "flex",
-              alignItems: "center",
-              justifyContent: "center",
-              fontWeight: 700,
-              fontSize: 18,
-            }}
-          >
-            M
-          </div>
-          <span
-            style={{ fontSize: 24, fontWeight: 600, letterSpacing: "0.05em" }}
-          >
-            MARPA
-          </span>
-        </div>
+        <Link
+          href="/"
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: 12,
+            textDecoration: "none",
+          }}
+        >
+          <Image
+            src="/marpa_logo_darkmode_transparent.png"
+            alt="MARPA"
+            width={120}
+            height={40}
+            style={{ objectFit: "contain" }}
+            priority
+          />
+        </Link>
         <div style={{ color: "#8db6b0", fontSize: 14 }}>
           Strategic Ownership Transition
         </div>
       </header>
 
-      {/* Hero Section */}
-      <main style={{ maxWidth: 1200, margin: "0 auto", padding: "60px 40px" }}>
-        <div style={{ textAlign: "center", marginBottom: 60 }}>
-          <h1
-            style={{
-              fontSize: 48,
-              fontWeight: 700,
-              marginBottom: 20,
-              background: "linear-gradient(135deg, #fff, #8db6b0)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              lineHeight: 1.2,
-            }}
-          >
-            AI-Powered Presentation System
-          </h1>
-          <p
-            style={{
-              fontSize: 20,
-              color: "#8b949e",
-              maxWidth: 600,
-              margin: "0 auto",
-              lineHeight: 1.6,
-            }}
-          >
-            Interactive slide presentation with ElevenLabs narration, AI
-            assistant for Q&A, and intelligent slide navigation.
-          </p>
+      {/* Hero Section with Large Logo */}
+      <section
+        style={{
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "60px 40px",
+          textAlign: "center",
+        }}
+      >
+        {/* Large Logo */}
+        <div style={{ marginBottom: 40 }}>
+          <Image
+            src="/marpa_logo_darkmode_transparent.png"
+            alt="MARPA"
+            width={400}
+            height={150}
+            style={{ objectFit: "contain", maxWidth: "80vw", height: "auto" }}
+            priority
+          />
         </div>
 
+        <h1
+          style={{
+            fontSize: "clamp(32px, 5vw, 48px)",
+            fontWeight: 700,
+            marginBottom: 20,
+            background: "linear-gradient(135deg, #fff, #8db6b0)",
+            WebkitBackgroundClip: "text",
+            WebkitTextFillColor: "transparent",
+            lineHeight: 1.2,
+          }}
+        >
+          AI-Powered Presentation System
+        </h1>
+        <p
+          style={{
+            fontSize: "clamp(16px, 2vw, 20px)",
+            color: "#8b949e",
+            maxWidth: 600,
+            margin: "0 auto",
+            lineHeight: 1.6,
+          }}
+        >
+          Interactive slide presentation with ElevenLabs narration, AI assistant
+          for Q&A, and intelligent slide navigation.
+        </p>
+      </section>
+
+      {/* Main Content */}
+      <main
+        style={{ maxWidth: 1200, margin: "0 auto", padding: "0 40px 60px" }}
+      >
         {/* App Cards */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))",
+            gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))",
             gap: 24,
             marginBottom: 60,
           }}
@@ -102,6 +144,7 @@ export default function WelcomePage() {
                 padding: 32,
                 cursor: "pointer",
                 transition: "all 0.3s ease",
+                height: "100%",
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = "rgba(239,99,55,0.1)";
@@ -171,6 +214,7 @@ export default function WelcomePage() {
                 padding: 32,
                 cursor: "pointer",
                 transition: "all 0.3s ease",
+                height: "100%",
               }}
               onMouseEnter={(e) => {
                 e.currentTarget.style.background = "rgba(141,182,176,0.1)";
@@ -231,19 +275,59 @@ export default function WelcomePage() {
           </Link>
         </div>
 
+        {/* Quick Stats */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))",
+            gap: 16,
+            marginBottom: 60,
+          }}
+        >
+          {[
+            { value: "78", label: "Slides" },
+            { value: "8", label: "Chapters" },
+            { value: "$17M", label: "Valuation" },
+            { value: "95%", label: "Win Rate" },
+          ].map((stat) => (
+            <div
+              key={stat.label}
+              style={{
+                textAlign: "center",
+                padding: 24,
+                background: "rgba(255,255,255,0.02)",
+                borderRadius: 12,
+                border: "1px solid rgba(255,255,255,0.05)",
+              }}
+            >
+              <div
+                style={{
+                  fontSize: "clamp(24px, 4vw, 32px)",
+                  fontWeight: 700,
+                  color: "#ef6337",
+                  marginBottom: 4,
+                }}
+              >
+                {stat.value}
+              </div>
+              <div style={{ color: "#8b949e", fontSize: 14 }}>{stat.label}</div>
+            </div>
+          ))}
+        </div>
+
         {/* How to Use Section */}
         <div
           style={{
             background: "rgba(255,255,255,0.02)",
             border: "1px solid rgba(255,255,255,0.1)",
             borderRadius: 16,
-            padding: 40,
+            padding: "clamp(24px, 4vw, 40px)",
             marginBottom: 40,
           }}
         >
           <h2
             style={{
-              fontSize: 28,
+              fontSize: "clamp(22px, 3vw, 28px)",
               fontWeight: 600,
               marginBottom: 24,
               textAlign: "center",
@@ -255,7 +339,7 @@ export default function WelcomePage() {
           <div
             style={{
               display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+              gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))",
               gap: 32,
             }}
           >
@@ -340,7 +424,7 @@ export default function WelcomePage() {
               <div
                 style={{
                   display: "grid",
-                  gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))",
+                  gridTemplateColumns: "repeat(auto-fit, minmax(180px, 1fr))",
                   gap: 16,
                 }}
               >
@@ -372,46 +456,6 @@ export default function WelcomePage() {
               </div>
             </div>
           )}
-        </div>
-
-        {/* Quick Stats */}
-        <div
-          style={{
-            display: "grid",
-            gridTemplateColumns: "repeat(4, 1fr)",
-            gap: 16,
-            marginBottom: 40,
-          }}
-        >
-          {[
-            { value: "78", label: "Slides" },
-            { value: "8", label: "Chapters" },
-            { value: "$17M", label: "Valuation" },
-            { value: "95%", label: "Win Rate" },
-          ].map((stat) => (
-            <div
-              key={stat.label}
-              style={{
-                textAlign: "center",
-                padding: 24,
-                background: "rgba(255,255,255,0.02)",
-                borderRadius: 12,
-                border: "1px solid rgba(255,255,255,0.05)",
-              }}
-            >
-              <div
-                style={{
-                  fontSize: 32,
-                  fontWeight: 700,
-                  color: "#ef6337",
-                  marginBottom: 4,
-                }}
-              >
-                {stat.value}
-              </div>
-              <div style={{ color: "#8b949e", fontSize: 14 }}>{stat.label}</div>
-            </div>
-          ))}
         </div>
       </main>
 
