@@ -2,8 +2,8 @@
   "$schema": "https://openapi.vercel.sh/vercel.json",
   "framework": "nextjs",
   "buildCommand": "pnpm turbo build --filter=marpa-presentation",
-  "installCommand": "pnpm install",
   "outputDirectory": "examples/presentation/.next",
+  "installCommand": "pnpm install",
   "regions": ["iad1"],
   "headers": [
     {
