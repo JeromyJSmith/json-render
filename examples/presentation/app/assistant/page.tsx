@@ -5,7 +5,11 @@ import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import { COLORS } from "@/lib/schema";
 import type { UITree, UIElement } from "@json-render/core";
-import { DataProvider, Renderer } from "@json-render/react";
+import {
+  DataProvider,
+  Renderer,
+  Chart as JsonRenderChart,
+} from "@json-render/react";
 
 // ============================================
 // Component Registry for Assistant Responses
@@ -494,6 +498,25 @@ const componentRegistry = {
       </div>
     );
   },
+
+  // Chart component - renders Chart.js visualizations
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  Chart: ({ element }: { element: UIElement }) => {
+    return (
+      <div
+        style={{
+          background: `${COLORS.navy}22`,
+          border: `1px solid ${COLORS.navy}`,
+          borderRadius: 8,
+          padding: 16,
+          marginBottom: 16,
+        }}
+      >
+        {/* Cast element to any for Chart.js component compatibility */}
+        <JsonRenderChart element={element as any} />
+      </div>
+    );
+  },
 };
 
 // ============================================
@@ -583,18 +606,36 @@ function getMessageContent(message: {
 // Main Page Component
 // ============================================
 
+// Available AI models
+const AVAILABLE_MODELS = [
+  {
+    id: "claude-sonnet-4-20250514",
+    name: "Claude Sonnet 4",
+    provider: "anthropic",
+  },
+  {
+    id: "claude-3-5-haiku-20241022",
+    name: "Claude 3.5 Haiku",
+    provider: "anthropic",
+  },
+  { id: "gemini-2.0-flash", name: "Gemini 2.0 Flash", provider: "google" },
+  { id: "gemini-1.5-pro", name: "Gemini 1.5 Pro", provider: "google" },
+];
+
 export default function AssistantPage() {
   const messagesEndRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const [inputValue, setInputValue] = useState("");
+  const [selectedModel, setSelectedModel] = useState(AVAILABLE_MODELS[0].id);
 
-  // AI SDK v3: Use DefaultChatTransport to configure endpoint
+  // AI SDK v3: Use DefaultChatTransport to configure endpoint with model
   const transport = useMemo(
     () =>
       new DefaultChatTransport({
         api: "/api/assistant",
+        body: { model: selectedModel },
       }),
-    [],
+    [selectedModel],
   );
 
   const chatHelpers = useChat({ transport });
@@ -654,12 +695,36 @@ export default function AssistantPage() {
         }}
       >
         <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
-          <span style={{ color: COLORS.coral, fontWeight: 700, fontSize: 18 }}>
-            MARPA
-          </span>
+          <img
+            src="/marpa_logo_darkmode_transparent.png"
+            alt="MARPA"
+            style={{ height: 48, width: "auto" }}
+          />
           <span style={{ color: COLORS.teal, fontSize: 14 }}>
             Q&A Assistant
           </span>
+        </div>
+        <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+          <select
+            value={selectedModel}
+            onChange={(e) => setSelectedModel(e.target.value)}
+            style={{
+              padding: "8px 12px",
+              background: `${COLORS.navy}66`,
+              border: `1px solid ${COLORS.navy}`,
+              borderRadius: 6,
+              color: COLORS.text,
+              fontSize: 12,
+              cursor: "pointer",
+              outline: "none",
+            }}
+          >
+            {AVAILABLE_MODELS.map((model) => (
+              <option key={model.id} value={model.id}>
+                {model.name}
+              </option>
+            ))}
+          </select>
         </div>
         <div style={{ display: "flex", gap: 12 }}>
           <a

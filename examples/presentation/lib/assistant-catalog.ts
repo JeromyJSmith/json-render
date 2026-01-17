@@ -25,6 +25,35 @@ export const TextBlockSchema = z.object({
 });
 
 /**
+ * Chart dataset for data visualizations
+ */
+export const ChartDatasetSchema = z.object({
+  label: z.string(),
+  data: z.array(z.number()),
+  backgroundColor: z.string().optional(),
+  borderColor: z.string().optional(),
+  fill: z.boolean().optional(),
+});
+
+/**
+ * Chart - data visualization component (bar, line, pie, doughnut, area, waterfall)
+ */
+export const ChartSchema = z.object({
+  type: z.literal("Chart"),
+  props: z.object({
+    type: z.enum(["bar", "line", "pie", "doughnut", "area", "waterfall"]),
+    labels: z.array(z.string()),
+    datasets: z.array(ChartDatasetSchema),
+    title: z.string().optional(),
+    height: z.number().optional(),
+    showLegend: z.boolean().optional(),
+    showGrid: z.boolean().optional(),
+    positiveColor: z.string().optional(),
+    negativeColor: z.string().optional(),
+  }),
+});
+
+/**
  * Stat card - displays a metric with label
  */
 export const StatCardSchema = z.object({
@@ -149,6 +178,7 @@ export const ContainerSchema = z.object({
 
 export const AssistantComponentSchema = z.discriminatedUnion("type", [
   TextBlockSchema,
+  ChartSchema,
   StatCardSchema,
   DataTableSchema,
   ListSchema,
@@ -231,7 +261,9 @@ export const ASSISTANT_SYSTEM_PROMPT = `You are the MARPA Q&A Assistant. You hel
 
 3. **Cite your sources** - Include Citation components for web results and SlideRef components for slide references.
 
-4. **Be concise** - Keep text blocks short and use structured components (StatCard, DataTable, List) to present data clearly.
+4. **Use Charts for data visualization** - When asked about financials, ownership splits, projections, or comparisons, USE CHART COMPONENTS to visualize the data. Charts are rendered in real-time using Chart.js.
+
+5. **Be concise** - Keep text blocks short and use structured components (Chart, StatCard, DataTable, List) to present data clearly.
 
 ## Response Format
 
@@ -243,12 +275,19 @@ Your response must be a JSON object with this structure:
       "key": "container-1",
       "type": "Container",
       "props": { "layout": "vertical", "gap": "medium" },
-      "children": ["text-1", "stat-1", ...]
+      "children": ["text-1", "chart-1", ...]
     },
-    "text-1": {
-      "key": "text-1",
-      "type": "TextBlock",
-      "props": { "content": "...", "variant": "body" }
+    "chart-1": {
+      "key": "chart-1",
+      "type": "Chart",
+      "props": {
+        "type": "doughnut",
+        "title": "Ownership Split (52/24/24)",
+        "labels": ["Luke", "Bodie", "Pablo"],
+        "datasets": [{ "label": "Equity %", "data": [52, 24, 24], "backgroundColor": ["#2ECC71", "#3498DB", "#E67E22"] }],
+        "height": 300,
+        "showLegend": true
+      }
     },
     ...
   }
@@ -256,6 +295,10 @@ Your response must be a JSON object with this structure:
 
 ## Available Components
 
+### Data Visualization
+- **Chart**: { type: "bar"|"line"|"pie"|"doughnut"|"area"|"waterfall", labels: string[], datasets: [{label, data: number[], backgroundColor?, borderColor?, fill?}], title?, height?, showLegend?, showGrid?, positiveColor?, negativeColor? }
+
+### Content
 - TextBlock: { content: string, variant: "heading"|"subheading"|"body"|"caption"|"emphasis" }
 - StatCard: { label: string, value: string, change?: string, changeType?: "positive"|"negative"|"neutral", source?: string }
 - DataTable: { columns: [{key, label, align?}], rows: [{...}], caption?: string }
@@ -267,17 +310,33 @@ Your response must be a JSON object with this structure:
 - Divider: {}
 - Container: { layout: "vertical"|"horizontal"|"grid", gap: "small"|"medium"|"large", children: [...] }
 
+## MARPA Chart Examples (use these exact values)
+
+### Ownership Doughnut (Path C - Design-Build):
+{ "type": "doughnut", "labels": ["Luke (52%)", "Bodie (24%)", "Pablo (24%)"], "datasets": [{ "label": "Equity", "data": [52, 24, 24], "backgroundColor": ["#2ECC71", "#3498DB", "#E67E22"] }], "title": "Design-Build Ownership (52/24/24)", "showLegend": true }
+
+### Ownership Doughnut (Solo Path):
+{ "type": "doughnut", "labels": ["Luke (51%)", "Bodie (49%)"], "datasets": [{ "label": "Equity", "data": [51, 49], "backgroundColor": ["#2ECC71", "#3498DB"] }], "title": "Solo Path Ownership (51/49)", "showLegend": true }
+
+### Revenue Breakdown Bar:
+{ "type": "bar", "labels": ["Construction", "Design", "Oversight"], "datasets": [{ "label": "Revenue ($M)", "data": [9.6, 0.805, 0.614], "backgroundColor": ["#ef6337", "#4ECDC4", "#FFE66D"] }], "title": "2025 Revenue Breakdown ($11.03M)", "showLegend": false }
+
+### Vesting Schedule Line:
+{ "type": "line", "labels": ["Year 1", "Year 2", "Year 3", "Year 4"], "datasets": [{ "label": "Cumulative Vesting %", "data": [6, 12, 18, 24], "borderColor": "#4ECDC4", "fill": false }], "title": "4-Year Vesting Schedule", "showGrid": true }
+
 ## Canonical Data Values (DO NOT CHANGE)
 
 - Enterprise Valuation: $17M
 - EBITDA: $1.655M
 - EBITDA Multiple: 10.3x
-- Revenue 2025: $11.03M
+- Revenue 2025: $11.03M (Construction: $9.6M, Design: $805K, Oversight: $614K)
 - Win Rate: 95%
 - Ownership (Path C): 52/24/24 (Luke/Bodie/Pablo)
 - Ownership (Solo): 51/49 (Luke/Bodie)
-- Vesting Period: 4 years
-- Annual Vesting: 6%
+- Vesting Period: 4 years (6% annually)
+- Luke: Principal & Owner (52% in Path C, 51% in Solo)
+- Bodie: Partner, Operations (24% in Path C, 49% in Solo)
+- Pablo: Partner, Construction (24% in Path C)
 
 ## Tools Available
 
@@ -285,7 +344,7 @@ Your response must be a JSON object with this structure:
 2. searchSlides(query) - Search slide content and titles
 3. searchWeb(query) - Search the web via Exa API
 
-Always search before answering MARPA-specific questions.`;
+Always search before answering MARPA-specific questions. When visualizing data, prefer Charts over tables for numerical comparisons.`;
 
 // ============================================
 // Helper to build simple responses
