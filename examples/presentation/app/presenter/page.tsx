@@ -4,15 +4,8 @@ import { useState, useEffect, useRef, useCallback } from "react";
 import { PRESENTATION_SCRIPT, CHAPTERS } from "@/lib/presentation-script";
 import { COLORS } from "@/lib/schema";
 import { getSlideRegistry } from "@/lib/slide-registry";
-import { SlideViewport } from "@/components/SlideViewport";
 
 // SpeechRecognition types for Web Speech API
-type SpeechRecognition = typeof window extends { SpeechRecognition: infer T }
-  ? T extends new () => infer R
-    ? R
-    : never
-  : never;
-
 interface SpeechRecognitionEvent {
   results: SpeechRecognitionResultList;
   resultIndex: number;
@@ -62,6 +55,10 @@ declare global {
 
 type Mode = "presenting" | "paused" | "question";
 
+// Slide base dimensions
+const BASE_WIDTH = 1280;
+const BASE_HEIGHT = 720;
+
 export default function PresenterPage() {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0);
   const [mode, setMode] = useState<Mode>("paused");
@@ -69,14 +66,42 @@ export default function PresenterPage() {
   const [transcript, setTranscript] = useState("");
   const [showGallery, setShowGallery] = useState(false);
   const [isSpeaking, setIsSpeaking] = useState(false);
+  const [slideScale, setSlideScale] = useState(1);
 
   const recognitionRef = useRef<SpeechRecognitionInstance | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const iframeRef = useRef<HTMLIFrameElement>(null);
+  const slideContainerRef = useRef<HTMLDivElement>(null);
   const isSpeakingRef = useRef(false);
   const isPushToTalkRef = useRef(false);
 
   const currentSlide = PRESENTATION_SCRIPT[currentSlideIndex];
+
+  // Calculate scale to fit slides in container
+  useEffect(() => {
+    const updateScale = () => {
+      if (!slideContainerRef.current) return;
+      const container = slideContainerRef.current;
+      const availableWidth = container.clientWidth;
+      const availableHeight = container.clientHeight;
+      const scaleX = availableWidth / BASE_WIDTH;
+      const scaleY = availableHeight / BASE_HEIGHT;
+      setSlideScale(Math.min(scaleX, scaleY, 1));
+    };
+
+    updateScale();
+    window.addEventListener("resize", updateScale);
+
+    const resizeObserver = new ResizeObserver(updateScale);
+    if (slideContainerRef.current) {
+      resizeObserver.observe(slideContainerRef.current);
+    }
+
+    return () => {
+      window.removeEventListener("resize", updateScale);
+      resizeObserver.disconnect();
+    };
+  }, [showGallery]);
 
   // Track slide renders in registry
   const slideRenderStartRef = useRef<number>(Date.now());
@@ -85,13 +110,10 @@ export default function PresenterPage() {
     const startTime = Date.now();
     slideRenderStartRef.current = startTime;
 
-    // Record render event
     registry.recordRender(currentSlideIndex + 1, "presenter");
 
-    // Track duration when leaving slide
     return () => {
       const duration = Date.now() - slideRenderStartRef.current;
-      // Duration is captured for analytics but not re-recorded
       console.log(
         `[Registry] Slide ${currentSlideIndex + 1} viewed for ${duration}ms`,
       );
@@ -115,7 +137,6 @@ export default function PresenterPage() {
     recognitionRef.current.lang = "en-US";
 
     recognitionRef.current.onresult = (event: SpeechRecognitionEvent) => {
-      // Ignore input if AI is speaking
       if (isSpeakingRef.current) {
         console.log("[Voice] BLOCKED - AI is speaking, ignoring input");
         return;
@@ -130,11 +151,9 @@ export default function PresenterPage() {
       const text = event.results[last][0].transcript.toLowerCase();
       setTranscript(text);
 
-      // Only process final results
       if (event.results[last].isFinal) {
         console.log("[Voice] Final transcript:", text);
 
-        // Check for commands
         if (
           text.includes("question") ||
           text.includes("stop") ||
@@ -173,12 +192,10 @@ export default function PresenterPage() {
       const target = e.target as HTMLElement;
       if (target.tagName === "INPUT" || target.tagName === "TEXTAREA") return;
 
-      // Spacebar for play/pause narration
       if (e.code === "Space" && !e.repeat) {
         e.preventDefault();
 
         if (mode === "presenting") {
-          // Pause: stop audio and switch to paused mode
           if (audioRef.current) {
             audioRef.current.pause();
             audioRef.current = null;
@@ -188,12 +205,10 @@ export default function PresenterPage() {
           ttsLockRef.current = false;
           setMode("paused");
         } else {
-          // Play: start presenting
           setMode("presenting");
         }
       }
 
-      // Arrow keys for navigation
       if (e.code === "ArrowRight" || e.code === "ArrowDown") {
         e.preventDefault();
         if (currentSlideIndex < PRESENTATION_SCRIPT.length - 1) {
@@ -218,7 +233,6 @@ export default function PresenterPage() {
   // ElevenLabs TTS
   const ttsLockRef = useRef(false);
   const speak = useCallback(async (text: string, onEnd?: () => void) => {
-    // Prevent concurrent TTS calls
     if (ttsLockRef.current) {
       console.log("[TTS] Blocked - already speaking");
       return;
@@ -284,7 +298,7 @@ export default function PresenterPage() {
     ttsLockRef.current = false;
   }, []);
 
-  // Welcome tutorial - plays on first user interaction
+  // Welcome tutorial
   useEffect(() => {
     if (hasPlayedWelcomeRef.current) return;
 
@@ -319,7 +333,7 @@ export default function PresenterPage() {
     return cleanup;
   }, [speak]);
 
-  // Handle interrupt (user says "question", "stop", etc.)
+  // Handle interrupt
   const handleInterrupt = useCallback(() => {
     stopSpeaking();
     setMode("question");
@@ -340,7 +354,6 @@ export default function PresenterPage() {
     setShowGallery(false);
   }, []);
 
-  // Ref to track manual navigation
   const manualNavRef = useRef(false);
 
   const goToPrevious = useCallback(() => {
@@ -359,7 +372,7 @@ export default function PresenterPage() {
     }
   }, [currentSlideIndex, stopSpeaking]);
 
-  // Start presentation - narrates current slide
+  // Start presentation
   const startPresentation = useCallback(() => {
     setMode("presenting");
     speak(currentSlide.narration, () => {
@@ -418,330 +431,462 @@ export default function PresenterPage() {
         }
       `}</style>
 
-      {/* Top-level shell - fixed viewport, no scroll */}
-      <div className="h-screen w-screen overflow-hidden flex bg-[#0a0a0a]">
-        {/* Left slide gallery / sidebar */}
-        {showGallery && (
-          <aside className="h-full w-[200px] flex-shrink-0 bg-[rgba(15,20,25,0.95)] border-r border-white/10 overflow-y-auto p-2">
-            {CHAPTERS.map((chapter) => (
-              <div key={chapter.number} className="mb-4">
-                <p
-                  className="text-[10px] mb-2 px-2"
-                  style={{ color: COLORS.coral }}
-                >
-                  CH {chapter.number}: {chapter.name}
-                </p>
-                {chapter.slides.map((slideNum) => {
-                  const slide = PRESENTATION_SCRIPT.find(
-                    (s) => s.id === slideNum,
-                  );
-                  const index = PRESENTATION_SCRIPT.findIndex(
-                    (s) => s.id === slideNum,
-                  );
-                  if (!slide) return null;
-                  return (
-                    <button
-                      key={slideNum}
-                      onClick={() => goToSlide(index)}
-                      className="w-full px-2 py-1.5 mb-1 text-[11px] text-left cursor-pointer rounded whitespace-nowrap overflow-hidden text-ellipsis"
-                      style={{
-                        background:
-                          index === currentSlideIndex
-                            ? `${COLORS.teal}22`
-                            : "transparent",
-                        border:
-                          index === currentSlideIndex
-                            ? `1px solid ${COLORS.teal}`
-                            : "1px solid transparent",
-                        color:
-                          index === currentSlideIndex
-                            ? COLORS.teal
-                            : COLORS.muted,
-                      }}
-                    >
-                      {slideNum}. {slide.title.substring(0, 20)}...
-                    </button>
-                  );
-                })}
-              </div>
-            ))}
-          </aside>
-        )}
+      {/* Full viewport container */}
+      <div
+        style={{
+          height: "100vh",
+          width: "100vw",
+          display: "flex",
+          flexDirection: "column",
+          background: "#0a0a0a",
+          overflow: "hidden",
+        }}
+      >
+        {/* Header */}
+        <div
+          style={{
+            padding: "12px 24px",
+            background: "rgba(15,20,25,0.95)",
+            borderBottom: `1px solid ${COLORS.coral}33`,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            flexShrink: 0,
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: 16 }}>
+            <span
+              style={{
+                color: COLORS.coral,
+                fontWeight: 600,
+                letterSpacing: "0.1em",
+              }}
+            >
+              MARPA
+            </span>
+            <span style={{ color: COLORS.teal, fontSize: 14, fontWeight: 600 }}>
+              AI Presenter
+            </span>
+            <span
+              style={{
+                padding: "4px 12px",
+                background:
+                  mode === "presenting"
+                    ? `${COLORS.teal}22`
+                    : mode === "question"
+                      ? `${COLORS.coral}22`
+                      : "rgba(255,255,255,0.1)",
+                border: `1px solid ${mode === "presenting" ? COLORS.teal : mode === "question" ? COLORS.coral : "rgba(255,255,255,0.2)"}`,
+                borderRadius: 20,
+                color:
+                  mode === "presenting"
+                    ? COLORS.teal
+                    : mode === "question"
+                      ? COLORS.coral
+                      : COLORS.muted,
+                fontSize: 11,
+                textTransform: "uppercase",
+              }}
+            >
+              {mode}
+            </span>
+          </div>
 
-        {/* Main presenter column */}
-        <main className="flex-1 h-full flex flex-col min-w-0">
-          {/* Header */}
-          <header
-            className="h-14 flex-shrink-0 flex items-center justify-between px-6 border-b"
-            style={{
-              background: "rgba(15,20,25,0.95)",
-              borderColor: `${COLORS.coral}33`,
-            }}
-          >
-            <div className="flex items-center gap-4">
-              <span
-                className="font-semibold tracking-wider"
-                style={{ color: COLORS.coral }}
-              >
-                MARPA
-              </span>
-              <span
-                className="text-sm font-semibold"
-                style={{ color: COLORS.teal }}
-              >
-                AI Presenter
-              </span>
-              <span
-                className="px-3 py-1 rounded-full text-[11px] uppercase"
-                style={{
-                  background:
-                    mode === "presenting"
-                      ? `${COLORS.teal}22`
-                      : mode === "question"
-                        ? `${COLORS.coral}22`
-                        : "rgba(255,255,255,0.1)",
-                  border: `1px solid ${mode === "presenting" ? COLORS.teal : mode === "question" ? COLORS.coral : "rgba(255,255,255,0.2)"}`,
-                  color:
-                    mode === "presenting"
-                      ? COLORS.teal
-                      : mode === "question"
-                        ? COLORS.coral
-                        : COLORS.muted,
-                }}
-              >
-                {mode}
-              </span>
+          <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+            <span style={{ color: COLORS.muted, fontSize: 13 }}>
+              Slide {currentSlideIndex + 1} of {PRESENTATION_SCRIPT.length}
+            </span>
+            <button
+              onClick={() => setShowGallery(!showGallery)}
+              style={{
+                padding: "6px 12px",
+                background: showGallery
+                  ? `${COLORS.coral}22`
+                  : "rgba(255,255,255,0.05)",
+                border: `1px solid ${showGallery ? COLORS.coral : "rgba(255,255,255,0.1)"}`,
+                borderRadius: 4,
+                color: showGallery ? COLORS.coral : COLORS.text,
+                fontSize: 12,
+                cursor: "pointer",
+              }}
+            >
+              Gallery
+            </button>
+          </div>
+        </div>
+
+        {/* Main Area - 3 column layout */}
+        <div
+          style={{
+            flex: 1,
+            display: "flex",
+            overflow: "hidden",
+            minHeight: 0,
+          }}
+        >
+          {/* Left: Slide Gallery (collapsible) */}
+          {showGallery && (
+            <div
+              style={{
+                width: 200,
+                flexShrink: 0,
+                background: "rgba(15,20,25,0.95)",
+                borderRight: `1px solid ${COLORS.navy}`,
+                overflowY: "auto",
+                padding: 8,
+              }}
+            >
+              {CHAPTERS.map((chapter) => (
+                <div key={chapter.number} style={{ marginBottom: 16 }}>
+                  <p
+                    style={{
+                      color: COLORS.coral,
+                      fontSize: 10,
+                      marginBottom: 8,
+                      padding: "0 8px",
+                    }}
+                  >
+                    CH {chapter.number}: {chapter.name}
+                  </p>
+                  {chapter.slides.map((slideNum) => {
+                    const slide = PRESENTATION_SCRIPT.find(
+                      (s) => s.id === slideNum,
+                    );
+                    const index = PRESENTATION_SCRIPT.findIndex(
+                      (s) => s.id === slideNum,
+                    );
+                    if (!slide) return null;
+                    return (
+                      <button
+                        key={slideNum}
+                        onClick={() => goToSlide(index)}
+                        style={{
+                          width: "100%",
+                          padding: "6px 8px",
+                          marginBottom: 4,
+                          background:
+                            index === currentSlideIndex
+                              ? `${COLORS.teal}22`
+                              : "transparent",
+                          border:
+                            index === currentSlideIndex
+                              ? `1px solid ${COLORS.teal}`
+                              : "1px solid transparent",
+                          borderRadius: 4,
+                          color:
+                            index === currentSlideIndex
+                              ? COLORS.teal
+                              : COLORS.muted,
+                          fontSize: 11,
+                          textAlign: "left",
+                          cursor: "pointer",
+                          whiteSpace: "nowrap",
+                          overflow: "hidden",
+                          textOverflow: "ellipsis",
+                        }}
+                      >
+                        {slideNum}. {slide.title.substring(0, 20)}...
+                      </button>
+                    );
+                  })}
+                </div>
+              ))}
             </div>
+          )}
 
-            <div className="flex items-center gap-3">
-              <span className="text-[13px]" style={{ color: COLORS.muted }}>
-                Slide {currentSlideIndex + 1} of {PRESENTATION_SCRIPT.length}
-              </span>
-              <button
-                onClick={() => setShowGallery(!showGallery)}
-                className="px-3 py-1.5 rounded text-xs cursor-pointer"
-                style={{
-                  background: showGallery
-                    ? `${COLORS.coral}22`
-                    : "rgba(255,255,255,0.05)",
-                  border: `1px solid ${showGallery ? COLORS.coral : "rgba(255,255,255,0.1)"}`,
-                  color: showGallery ? COLORS.coral : COLORS.text,
-                }}
-              >
-                Gallery
-              </button>
-            </div>
-          </header>
-
-          {/* Middle row: slide viewport + narration */}
-          <section
+          {/* Center: Slide Viewer */}
+          <div
+            ref={slideContainerRef}
             style={{
               flex: 1,
+              minWidth: 0,
               minHeight: 0,
               display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              background: "#000",
+              overflow: "hidden",
+              position: "relative",
             }}
           >
-            {/* Slide viewport column */}
+            <div
+              style={{
+                width: BASE_WIDTH,
+                height: BASE_HEIGHT,
+                transform: `scale(${slideScale})`,
+                transformOrigin: "center center",
+                flexShrink: 0,
+              }}
+            >
+              <iframe
+                ref={iframeRef}
+                src={slideUrl}
+                scrolling="no"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  border: "none",
+                  display: "block",
+                }}
+                sandbox="allow-scripts"
+              />
+            </div>
+          </div>
+
+          {/* Right: Info/Narration Panel */}
+          <div
+            style={{
+              width: 320,
+              flexShrink: 0,
+              background: "rgba(15,20,25,0.98)",
+              borderLeft: `1px solid ${COLORS.navy}`,
+              display: "flex",
+              flexDirection: "column",
+              overflow: "hidden",
+            }}
+          >
+            {/* Current Slide Info */}
+            <div
+              style={{
+                padding: 16,
+                borderBottom: `1px solid ${COLORS.navy}`,
+                flexShrink: 0,
+              }}
+            >
+              <p
+                style={{
+                  color: COLORS.coral,
+                  fontSize: 11,
+                  marginBottom: 4,
+                }}
+              >
+                Slide {currentSlideIndex + 1}
+              </p>
+              <h3
+                style={{
+                  color: COLORS.text,
+                  fontSize: 16,
+                  fontWeight: 600,
+                  marginBottom: 8,
+                }}
+              >
+                {currentSlide?.title}
+              </h3>
+            </div>
+
+            {/* Narration - scrollable */}
             <div
               style={{
                 flex: 1,
-                minWidth: 0,
+                overflowY: "auto",
+                padding: 16,
                 minHeight: 0,
-                position: "relative",
               }}
             >
-              <SlideViewport>
-                <iframe
-                  ref={iframeRef}
-                  src={slideUrl}
-                  scrolling="no"
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    border: "none",
-                    display: "block",
-                  }}
-                  sandbox="allow-scripts"
-                />
-              </SlideViewport>
-            </div>
-
-            {/* Narration panel */}
-            <aside
-              className="w-[320px] max-w-[30%] h-full flex-shrink-0 flex flex-col border-l overflow-hidden"
-              style={{
-                background: "rgba(15,20,25,0.98)",
-                borderColor: COLORS.navy,
-              }}
-            >
-              {/* Current Slide Info */}
-              <div
-                className="p-4 flex-shrink-0 border-b"
-                style={{ borderColor: COLORS.navy }}
-              >
-                <p className="text-[11px] mb-1" style={{ color: COLORS.coral }}>
-                  Slide {currentSlideIndex + 1}
-                </p>
-                <h3
-                  className="text-base font-semibold mb-2"
-                  style={{ color: COLORS.text }}
-                >
-                  {currentSlide?.title}
-                </h3>
-              </div>
-
-              {/* Narration - scrollable */}
-              <div className="flex-1 min-h-0 overflow-y-auto p-4">
-                <p
-                  className="text-[11px] mb-2 uppercase"
-                  style={{ color: COLORS.muted }}
-                >
-                  Narration
-                </p>
-                <p
-                  className="text-[13px] leading-relaxed"
-                  style={{ color: COLORS.text }}
-                >
-                  {currentSlide?.narration}
-                </p>
-              </div>
-
-              {/* Voice Status */}
-              <div
-                className="p-4 flex-shrink-0 border-t"
+              <p
                 style={{
-                  borderColor: COLORS.navy,
-                  background: "rgba(0,0,0,0.3)",
+                  color: COLORS.muted,
+                  fontSize: 11,
+                  marginBottom: 8,
+                  textTransform: "uppercase",
                 }}
               >
-                <div className="flex items-center gap-2 mb-2">
-                  <div
-                    className="w-2 h-2 rounded-full"
-                    style={{
-                      background: isPushToTalk
-                        ? COLORS.coral
-                        : isSpeaking
-                          ? COLORS.teal
-                          : COLORS.muted,
-                      animation: isPushToTalk ? "pulse 0.5s infinite" : "none",
-                    }}
-                  />
-                  <span
-                    className="text-[11px]"
-                    style={{
-                      color: isPushToTalk
-                        ? COLORS.coral
-                        : isSpeaking
-                          ? COLORS.teal
-                          : COLORS.muted,
-                    }}
-                  >
-                    {isSpeaking ? "Speaking..." : "Ready"}
-                  </span>
-                </div>
-                <p className="text-[10px] mt-2" style={{ color: COLORS.muted }}>
-                  SPACE = play/pause | Arrows = navigate
-                </p>
-              </div>
-            </aside>
-          </section>
+                Narration
+              </p>
+              <p
+                style={{
+                  color: COLORS.text,
+                  fontSize: 13,
+                  lineHeight: 1.6,
+                }}
+              >
+                {currentSlide?.narration}
+              </p>
+            </div>
 
-          {/* Bottom control bar */}
-          <footer
-            className="h-16 flex-shrink-0 flex items-center justify-center gap-4 px-6 border-t"
+            {/* Voice Status */}
+            <div
+              style={{
+                padding: 16,
+                borderTop: `1px solid ${COLORS.navy}`,
+                background: "rgba(0,0,0,0.3)",
+                flexShrink: 0,
+              }}
+            >
+              <div
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: 8,
+                  marginBottom: 8,
+                }}
+              >
+                <div
+                  style={{
+                    width: 8,
+                    height: 8,
+                    borderRadius: "50%",
+                    background: isPushToTalk
+                      ? COLORS.coral
+                      : isSpeaking
+                        ? COLORS.teal
+                        : COLORS.muted,
+                    animation: isPushToTalk ? "pulse 0.5s infinite" : "none",
+                  }}
+                />
+                <span
+                  style={{
+                    color: isPushToTalk
+                      ? COLORS.coral
+                      : isSpeaking
+                        ? COLORS.teal
+                        : COLORS.muted,
+                    fontSize: 11,
+                  }}
+                >
+                  {isSpeaking ? "Speaking..." : "Ready"}
+                </span>
+              </div>
+              {isPushToTalk && transcript && (
+                <p
+                  style={{
+                    color: COLORS.text,
+                    fontSize: 13,
+                    background: "rgba(239,99,55,0.1)",
+                    padding: "8px 12px",
+                    borderRadius: 4,
+                    border: `1px solid ${COLORS.coral}`,
+                  }}
+                >
+                  "{transcript}"
+                </p>
+              )}
+              <p style={{ color: COLORS.muted, fontSize: 10, marginTop: 8 }}>
+                SPACE = play/pause | Arrows = navigate
+              </p>
+            </div>
+          </div>
+        </div>
+
+        {/* Footer Controls */}
+        <div
+          style={{
+            padding: "16px 24px",
+            background: "rgba(15,20,25,0.95)",
+            borderTop: `1px solid ${COLORS.coral}33`,
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 16,
+            flexShrink: 0,
+          }}
+        >
+          <button
+            onClick={goToPrevious}
+            disabled={currentSlideIndex === 0}
             style={{
-              background: "rgba(15,20,25,0.95)",
-              borderColor: `${COLORS.coral}33`,
+              padding: "10px 20px",
+              background: "rgba(255,255,255,0.1)",
+              border: "1px solid rgba(255,255,255,0.2)",
+              borderRadius: 6,
+              color: COLORS.text,
+              cursor: currentSlideIndex === 0 ? "not-allowed" : "pointer",
+              opacity: currentSlideIndex === 0 ? 0.3 : 1,
             }}
           >
+            Previous
+          </button>
+
+          {mode === "paused" || mode === "question" ? (
             <button
-              onClick={goToPrevious}
-              disabled={currentSlideIndex === 0}
-              className="px-5 py-2.5 rounded-md cursor-pointer"
+              onClick={startPresentation}
               style={{
-                background: "rgba(255,255,255,0.1)",
-                border: "1px solid rgba(255,255,255,0.2)",
-                color: COLORS.text,
-                opacity: currentSlideIndex === 0 ? 0.3 : 1,
-                cursor: currentSlideIndex === 0 ? "not-allowed" : "pointer",
+                padding: "12px 32px",
+                background: COLORS.coral,
+                border: "none",
+                borderRadius: 6,
+                color: "#fff",
+                fontWeight: 600,
+                cursor: "pointer",
+                fontSize: 14,
               }}
             >
-              Previous
+              {currentSlideIndex === 0 ? "Start Presentation" : "Continue"}
             </button>
-
-            {mode === "paused" || mode === "question" ? (
-              <button
-                onClick={startPresentation}
-                className="px-8 py-3 rounded-md font-semibold text-sm cursor-pointer"
-                style={{
-                  background: COLORS.coral,
-                  border: "none",
-                  color: "#fff",
-                }}
-              >
-                {currentSlideIndex === 0 ? "Start Presentation" : "Continue"}
-              </button>
-            ) : (
-              <button
-                onClick={() => {
-                  stopSpeaking();
-                  setMode("paused");
-                  setIsPushToTalk(false);
-                  isPushToTalkRef.current = false;
-                  recognitionRef.current?.stop();
-                }}
-                className="px-8 py-3 rounded-md font-semibold text-sm cursor-pointer"
-                style={{
-                  background: COLORS.coral,
-                  border: "none",
-                  color: "#fff",
-                }}
-              >
-                Pause
-              </button>
-            )}
-
+          ) : (
             <button
-              onClick={goToNext}
-              disabled={currentSlideIndex === PRESENTATION_SCRIPT.length - 1}
-              className="px-5 py-2.5 rounded-md cursor-pointer"
+              onClick={() => {
+                stopSpeaking();
+                setMode("paused");
+                setIsPushToTalk(false);
+                isPushToTalkRef.current = false;
+                recognitionRef.current?.stop();
+              }}
               style={{
-                background: "rgba(255,255,255,0.1)",
-                border: "1px solid rgba(255,255,255,0.2)",
-                color: COLORS.text,
-                opacity:
-                  currentSlideIndex === PRESENTATION_SCRIPT.length - 1
-                    ? 0.3
-                    : 1,
-                cursor:
-                  currentSlideIndex === PRESENTATION_SCRIPT.length - 1
-                    ? "not-allowed"
-                    : "pointer",
+                padding: "12px 32px",
+                background: COLORS.coral,
+                border: "none",
+                borderRadius: 6,
+                color: "#fff",
+                fontWeight: 600,
+                cursor: "pointer",
+                fontSize: 14,
               }}
             >
-              Next
+              Pause
             </button>
+          )}
 
-            {/* Status indicator */}
-            <div className="ml-6 pl-6 border-l border-white/10 flex items-center gap-2">
-              <div
-                className="w-2.5 h-2.5 rounded-full"
-                style={{
-                  background: isSpeaking ? COLORS.teal : COLORS.muted,
-                  animation: isSpeaking ? "pulse 0.5s infinite" : "none",
-                }}
-              />
-              <span
-                className="text-xs"
-                style={{
-                  color: isSpeaking ? COLORS.teal : COLORS.muted,
-                }}
-              >
-                {isSpeaking ? "Playing..." : "SPACE = play/pause"}
-              </span>
-            </div>
-          </footer>
-        </main>
+          <button
+            onClick={goToNext}
+            disabled={currentSlideIndex === PRESENTATION_SCRIPT.length - 1}
+            style={{
+              padding: "10px 20px",
+              background: "rgba(255,255,255,0.1)",
+              border: "1px solid rgba(255,255,255,0.2)",
+              borderRadius: 6,
+              color: COLORS.text,
+              cursor:
+                currentSlideIndex === PRESENTATION_SCRIPT.length - 1
+                  ? "not-allowed"
+                  : "pointer",
+              opacity:
+                currentSlideIndex === PRESENTATION_SCRIPT.length - 1 ? 0.3 : 1,
+            }}
+          >
+            Next
+          </button>
+
+          {/* Status indicator */}
+          <div
+            style={{
+              marginLeft: 24,
+              borderLeft: "1px solid rgba(255,255,255,0.1)",
+              paddingLeft: 24,
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+            }}
+          >
+            <div
+              style={{
+                width: 10,
+                height: 10,
+                borderRadius: "50%",
+                background: isSpeaking ? COLORS.teal : COLORS.muted,
+                animation: isSpeaking ? "pulse 0.5s infinite" : "none",
+              }}
+            />
+            <span
+              style={{
+                color: isSpeaking ? COLORS.teal : COLORS.muted,
+                fontSize: 12,
+              }}
+            >
+              {isSpeaking ? "Playing..." : "SPACE = play/pause"}
+            </span>
+          </div>
+        </div>
       </div>
     </>
   );
