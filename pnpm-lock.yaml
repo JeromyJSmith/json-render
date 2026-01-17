@@ -23,6 +23,9 @@ importers:
       lint-staged:
         specifier: ^16.2.7
         version: 16.2.7
+      next:
+        specifier: 16.1.2
+        version: 16.1.2(@opentelemetry/api@1.9.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
       prettier:
         specifier: ^3.7.4
         version: 3.8.0
