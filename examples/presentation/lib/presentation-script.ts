@@ -345,7 +345,7 @@ export const PRESENTATION_SCRIPT: SlideScript[] = [
     title: "Shared Path - What Changes",
     htmlFile: "wlLseyyy.html",
     narration:
-      "Let me walk through what changes when we compare the Solo Path to the Shared Path. Bodie's ownership goes from forty-nine percent down to thirty to thirty-five percent. Total investment drops from roughly eight point three million to around five point one million. The SBA loan burden shifts from one hundred percent on Bodie to being shared and distributed. Control level decreases from maximum to diluted, but risk profile also shifts from maximum to distributed. The core trade-off is clear: less ownership, less risk, more team depth. Financial risk goes down while sustainability goes up. It feels like building a team and sharing the load.",
+      "Let me walk through what changes when we compare the Solo Path to the Shared Path. Bodie's ownership goes from forty-nine percent down to twenty-four percent. Total investment drops from roughly eight point three million to around five point one million. The SBA loan burden shifts from one hundred percent on Bodie to being shared and distributed. Control level decreases from maximum to diluted, but risk profile also shifts from maximum to distributed. The core trade-off is clear: less ownership, less risk, more team depth. Financial risk goes down while sustainability goes up. It feels like building a team and sharing the load.",
   },
   {
     id: 39,
@@ -408,7 +408,7 @@ export const PRESENTATION_SCRIPT: SlideScript[] = [
     title: "Ownership Matrix - Three Path Comparison",
     htmlFile: "zfVCXRqR.html",
     narration:
-      "This ownership matrix compares the three strategic options. Option A, the Solo Path, has two partners: Luke at fifty-two percent as founder and Bodie at forty-eight percent as successor. Principal control is preserved, but concentrated equity limits scalability and concentrates risk. Option B, the Shared Path, has three partners: Luke at fifty-two percent, Bodie and Pablo each at twenty-four percent. Distributed risk reduces individual burden but increases governance complexity. Option C, Design-Build, also has three partners with the same fifty-two, twenty-four, twenty-four split: Luke as founder, Bodie as successor, Pablo as construction partner. This is growth optimized, aligning equity with high-performance implementation and long-term valuation. Note that Options B and C share identical splits but apply them to different business models.",
+      "This ownership matrix compares the three strategic options. Option A, the Solo Path, has two partners: Luke at fifty-one percent as principal and owner, and Bodie at forty-nine percent as successor. Principal control is preserved, but concentrated equity limits scalability and concentrates risk. Option B, the Shared Path, has three partners: Luke at fifty-two percent, Bodie and Pablo each at twenty-four percent. Distributed risk reduces individual burden but increases governance complexity. Option C, Design-Build, also has three partners with the same fifty-two, twenty-four, twenty-four split: Luke as principal and owner, Bodie as partner, Pablo as construction partner. This is growth optimized, aligning equity with high-performance implementation and long-term valuation. Note that Options B and C share identical splits but apply them to different business models.",
   },
   {
     id: 48,

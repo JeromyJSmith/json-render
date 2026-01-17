@@ -404,13 +404,13 @@
     const cBodie = '#3498DB';
     const cPablo = '#E67E22';
 
-    // Chart A - Solo (UPDATED TO CANONICAL VALUES: Luke 52%, Bodie 48%)
+    // Chart A - Solo (CANONICAL: Luke 51%, Bodie 49%)
     new Chart(document.getElementById('chartA'), {
         type: 'doughnut',
         data: {
             labels: ['Luke', 'Bodie'],
             datasets: [{
-                data: [52, 48],
+                data: [51, 49],
                 backgroundColor: [cLuke, cBodie],
                 borderWidth: 0
             }]
