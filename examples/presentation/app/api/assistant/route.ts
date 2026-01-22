@@ -2,12 +2,46 @@ import { gateway, streamText, convertToModelMessages, generateId } from "ai";
 import { z } from "zod";
 import canonicalTruth from "@/lib/canonical-truth.json";
 import { CANONICAL } from "@/lib/canonical";
-import { PRESENTATION_SCRIPT, CHAPTERS } from "@/lib/presentation-script";
+import { PRESENTATION_SCRIPT } from "@/lib/presentation-script";
 import { slides } from "@/lib/slides";
 import { ASSISTANT_SYSTEM_PROMPT } from "@/lib/assistant-catalog";
 
 // Exa API for web search
 const EXA_API_KEY = process.env.EXA_API_KEY;
+
+/**
+ * Validate that CANONICAL data matches canonicalTruth
+ * This ensures all assistant responses align with the single source of truth
+ */
+function validateCanonicalData(): { valid: boolean; warnings: string[] } {
+  const warnings: string[] = [];
+
+  // Validate valuation
+  if (
+    CANONICAL.valuation.enterpriseValue !==
+    canonicalTruth.valuation.enterprise_value
+  ) {
+    warnings.push(
+      `Valuation mismatch: ${CANONICAL.valuation.enterpriseValue} vs ${canonicalTruth.valuation.enterprise_value}`,
+    );
+  }
+
+  // Validate ownership structure
+  if (CANONICAL.ownership.structure !== canonicalTruth.ownership.structure) {
+    warnings.push(
+      `Ownership mismatch: ${CANONICAL.ownership.structure} vs ${canonicalTruth.ownership.structure}`,
+    );
+  }
+
+  if (warnings.length > 0) {
+    console.warn("[Canonical Validation]", warnings);
+  }
+
+  return { valid: warnings.length === 0, warnings };
+}
+
+// Validate canonical data on startup
+validateCanonicalData();
 
 /**
  * Search canonical data by path or keyword
@@ -265,12 +299,18 @@ async function searchWeb(query: string): Promise<
 }
 
 export async function POST(req: Request) {
-  const { messages } = await req.json();
+  const { messages, model } = await req.json();
+
+  // Default to Gemini 3 Flash if no model specified
+  const selectedModel = model || "gemini-3-flash";
+
+  // Determine provider based on model
+  const provider = selectedModel.startsWith("gemini") ? "google" : "anthropic";
 
   const modelMessages = await convertToModelMessages(messages);
 
   const result = streamText({
-    model: gateway("anthropic/claude-sonnet-4-20250514"),
+    model: gateway(`${provider}/${selectedModel}`),
     system: ASSISTANT_SYSTEM_PROMPT,
     messages: modelMessages,
     tools: {

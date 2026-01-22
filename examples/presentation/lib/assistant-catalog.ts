@@ -1,328 +1,219 @@
 /**
  * Q&A Assistant Component Catalog
  *
- * Defines the JSON schema for AI assistant responses.
+ * Uses @json-render/core createCatalog for proper AI integration.
  * All agent outputs must conform to this catalog for rendering.
  */
 
 import { z } from "zod";
+import { createCatalog, generateCatalogPrompt } from "@json-render/core";
 
 // ============================================
-// Component Schemas
+// Component Definitions using createCatalog
 // ============================================
 
-/**
- * Text block - simple paragraph or heading
- */
-export const TextBlockSchema = z.object({
-  type: z.literal("TextBlock"),
-  props: z.object({
-    content: z.string(),
-    variant: z
-      .enum(["heading", "subheading", "body", "caption", "emphasis"])
-      .default("body"),
-  }),
-});
-
-/**
- * Chart dataset for data visualizations
- */
-export const ChartDatasetSchema = z.object({
-  label: z.string(),
-  data: z.array(z.number()),
-  backgroundColor: z.string().optional(),
-  borderColor: z.string().optional(),
-  fill: z.boolean().optional(),
-});
-
-/**
- * Chart - data visualization component (bar, line, pie, doughnut, area, waterfall)
- */
-export const ChartSchema = z.object({
-  type: z.literal("Chart"),
-  props: z.object({
-    type: z.enum(["bar", "line", "pie", "doughnut", "area", "waterfall"]),
-    labels: z.array(z.string()),
-    datasets: z.array(ChartDatasetSchema),
-    title: z.string().optional(),
-    height: z.number().optional(),
-    showLegend: z.boolean().optional(),
-    showGrid: z.boolean().optional(),
-    positiveColor: z.string().optional(),
-    negativeColor: z.string().optional(),
-  }),
-});
-
-/**
- * Stat card - displays a metric with label
- */
-export const StatCardSchema = z.object({
-  type: z.literal("StatCard"),
-  props: z.object({
-    label: z.string(),
-    value: z.string(),
-    change: z.string().optional(),
-    changeType: z.enum(["positive", "negative", "neutral"]).optional(),
-    source: z.string().optional(),
-  }),
-});
-
-/**
- * Data table - structured data display
- */
-export const DataTableSchema = z.object({
-  type: z.literal("DataTable"),
-  props: z.object({
-    columns: z.array(
-      z.object({
-        key: z.string(),
-        label: z.string(),
-        align: z.enum(["left", "center", "right"]).optional(),
+export const assistantCatalog = createCatalog({
+  name: "MARPA Q&A Assistant",
+  components: {
+    TextBlock: {
+      description: "Text paragraph or heading for displaying content",
+      props: z.object({
+        content: z.string().describe("The text content to display"),
+        variant: z
+          .enum(["heading", "subheading", "body", "caption", "emphasis"])
+          .default("body")
+          .describe("Text style variant"),
       }),
-    ),
-    rows: z.array(z.record(z.string(), z.string())),
-    caption: z.string().optional(),
-  }),
-});
-
-/**
- * List - bullet or numbered list
- */
-export const ListSchema = z.object({
-  type: z.literal("List"),
-  props: z.object({
-    items: z.array(z.string()),
-    variant: z.enum(["bullet", "numbered", "check"]).default("bullet"),
-    title: z.string().optional(),
-  }),
-});
-
-/**
- * Citation card - reference to a source
- */
-export const CitationSchema = z.object({
-  type: z.literal("Citation"),
-  props: z.object({
-    title: z.string(),
-    url: z.string().optional(),
-    snippet: z.string().optional(),
-    source: z.enum(["web", "slide", "canonical"]),
-    slideId: z.number().optional(),
-  }),
-});
-
-/**
- * Slide reference - link to a specific slide
- */
-export const SlideRefSchema = z.object({
-  type: z.literal("SlideRef"),
-  props: z.object({
-    slideId: z.number(),
-    title: z.string(),
-    relevance: z.string().optional(),
-  }),
-});
-
-/**
- * Comparison card - compare two values/options
- */
-export const ComparisonSchema = z.object({
-  type: z.literal("Comparison"),
-  props: z.object({
-    title: z.string().optional(),
-    items: z.array(
-      z.object({
-        label: z.string(),
-        value: z.string(),
-        highlight: z.boolean().optional(),
+    },
+    Chart: {
+      description:
+        "Data visualization component for bar, line, pie, doughnut, area, or waterfall charts. USE THIS for visualizing MARPA financials, ownership splits, and comparisons.",
+      props: z.object({
+        type: z
+          .enum(["bar", "line", "pie", "doughnut", "area", "waterfall"])
+          .describe("Chart type"),
+        labels: z.array(z.string()).describe("Labels for x-axis or segments"),
+        datasets: z
+          .array(
+            z.object({
+              label: z.string(),
+              data: z.array(z.number()),
+              backgroundColor: z.string().optional(),
+              borderColor: z.string().optional(),
+              fill: z.boolean().optional(),
+            }),
+          )
+          .describe("Data series to plot"),
+        title: z.string().optional().describe("Chart title"),
+        height: z.number().optional().describe("Chart height in pixels"),
+        showLegend: z.boolean().optional().describe("Show/hide legend"),
+        showGrid: z.boolean().optional().describe("Show/hide grid lines"),
+        positiveColor: z
+          .string()
+          .optional()
+          .describe("Color for positive values (waterfall)"),
+        negativeColor: z
+          .string()
+          .optional()
+          .describe("Color for negative values (waterfall)"),
       }),
-    ),
-  }),
-});
-
-/**
- * Alert/callout box
- */
-export const AlertSchema = z.object({
-  type: z.literal("Alert"),
-  props: z.object({
-    content: z.string(),
-    variant: z.enum(["info", "warning", "success", "error"]).default("info"),
-    title: z.string().optional(),
-  }),
-});
-
-/**
- * Divider
- */
-export const DividerSchema = z.object({
-  type: z.literal("Divider"),
-  props: z.object({}).optional(),
-});
-
-/**
- * Container - groups other components
- */
-export const ContainerSchema = z.object({
-  type: z.literal("Container"),
-  props: z.object({
-    layout: z.enum(["vertical", "horizontal", "grid"]).default("vertical"),
-    gap: z.enum(["small", "medium", "large"]).default("medium"),
-  }),
-  children: z.array(z.string()), // Keys of child elements
+    },
+    StatCard: {
+      description:
+        "Displays a single metric with label, value, and optional change indicator",
+      props: z.object({
+        label: z.string().describe("Metric label"),
+        value: z.string().describe("Metric value"),
+        change: z
+          .string()
+          .optional()
+          .describe("Change indicator (e.g., '+5%')"),
+        changeType: z
+          .enum(["positive", "negative", "neutral"])
+          .optional()
+          .describe("Change direction for styling"),
+        source: z.string().optional().describe("Data source attribution"),
+      }),
+    },
+    DataTable: {
+      description: "Structured data table with columns and rows",
+      props: z.object({
+        columns: z
+          .array(
+            z.object({
+              key: z.string(),
+              label: z.string(),
+              align: z.enum(["left", "center", "right"]).optional(),
+            }),
+          )
+          .describe("Column definitions"),
+        rows: z.array(z.record(z.string(), z.string())).describe("Table rows"),
+        caption: z.string().optional().describe("Table caption"),
+      }),
+    },
+    List: {
+      description: "Bullet, numbered, or check list",
+      props: z.object({
+        items: z.array(z.string()).describe("List items"),
+        variant: z
+          .enum(["bullet", "numbered", "check"])
+          .default("bullet")
+          .describe("List style"),
+        title: z.string().optional().describe("List title"),
+      }),
+    },
+    Citation: {
+      description: "Reference card for citing sources",
+      props: z.object({
+        title: z.string().describe("Source title"),
+        url: z.string().optional().describe("Source URL"),
+        snippet: z.string().optional().describe("Relevant excerpt"),
+        source: z.enum(["web", "slide", "canonical"]).describe("Source type"),
+        slideId: z
+          .number()
+          .optional()
+          .describe("Slide number if source is slide"),
+      }),
+    },
+    SlideRef: {
+      description: "Link to a specific presentation slide",
+      props: z.object({
+        slideId: z.number().describe("Slide number (1-indexed)"),
+        title: z.string().describe("Slide title"),
+        relevance: z.string().optional().describe("Why this slide is relevant"),
+      }),
+    },
+    Comparison: {
+      description: "Side-by-side comparison of multiple items",
+      props: z.object({
+        title: z.string().optional().describe("Comparison title"),
+        items: z
+          .array(
+            z.object({
+              label: z.string(),
+              value: z.string(),
+              highlight: z.boolean().optional(),
+            }),
+          )
+          .describe("Items to compare"),
+      }),
+    },
+    Alert: {
+      description: "Callout box for important information",
+      props: z.object({
+        content: z.string().describe("Alert message"),
+        variant: z
+          .enum(["info", "warning", "success", "error"])
+          .default("info")
+          .describe("Alert style"),
+        title: z.string().optional().describe("Alert title"),
+      }),
+    },
+    Divider: {
+      description: "Horizontal divider line",
+      props: z.object({}),
+    },
+    Container: {
+      description: "Groups child components with layout control",
+      hasChildren: true,
+      props: z.object({
+        layout: z
+          .enum(["vertical", "horizontal", "grid"])
+          .default("vertical")
+          .describe("Layout direction"),
+        gap: z
+          .enum(["small", "medium", "large"])
+          .default("medium")
+          .describe("Spacing between children"),
+      }),
+    },
+  },
 });
 
 // ============================================
-// Union of all component types
+// Generate Base Prompt from Catalog
 // ============================================
 
-export const AssistantComponentSchema = z.discriminatedUnion("type", [
-  TextBlockSchema,
-  ChartSchema,
-  StatCardSchema,
-  DataTableSchema,
-  ListSchema,
-  CitationSchema,
-  SlideRefSchema,
-  ComparisonSchema,
-  AlertSchema,
-  DividerSchema,
-  ContainerSchema,
-]);
-
-export type AssistantComponent = z.infer<typeof AssistantComponentSchema>;
+const catalogPrompt = generateCatalogPrompt(assistantCatalog);
 
 // ============================================
-// Response Schema (UITree format)
-// ============================================
-
-export const AssistantResponseSchema = z.object({
-  root: z.string(),
-  elements: z.record(
-    z.string(),
-    z.object({
-      key: z.string(),
-      type: z.string(),
-      props: z.record(z.string(), z.any()),
-      children: z.array(z.string()).optional(),
-    }),
-  ),
-});
-
-export type AssistantResponse = z.infer<typeof AssistantResponseSchema>;
-
-// ============================================
-// Tool Schemas for AI Agent
-// ============================================
-
-export const SearchCanonicalResultSchema = z.object({
-  found: z.boolean(),
-  path: z.string(),
-  value: z.any(),
-  display: z.string().optional(),
-  context: z.string().optional(),
-});
-
-export const SearchSlidesResultSchema = z.object({
-  slides: z.array(
-    z.object({
-      id: z.number(),
-      title: z.string(),
-      chapter: z.string().optional(),
-      relevance: z.number(), // 0-1 score
-      excerpt: z.string().optional(),
-    }),
-  ),
-});
-
-export const SearchWebResultSchema = z.object({
-  results: z.array(
-    z.object({
-      title: z.string(),
-      url: z.string(),
-      snippet: z.string(),
-      score: z.number().optional(),
-    }),
-  ),
-  query: z.string(),
-});
-
-// ============================================
-// System Prompt for AI Agent
+// MARPA-Specific System Prompt
 // ============================================
 
 export const ASSISTANT_SYSTEM_PROMPT = `You are the MARPA Q&A Assistant. You help answer questions about MARPA's ownership transition, financials, and business.
 
-## CRITICAL RULES
+${catalogPrompt}
 
-1. **Always use canonical data for MARPA values** - Never make up or estimate MARPA-specific numbers. Use the searchCanonical tool.
+## CRITICAL OUTPUT FORMAT
 
-2. **Output JSON for UI rendering** - Your response MUST be valid JSON matching the UITree schema. Do not output markdown or plain text.
+You MUST output JSONL (JSON Lines) format where each line is a patch operation:
+{"op":"set","path":"/root","value":"container-1"}
+{"op":"set","path":"/elements/container-1","value":{"key":"container-1","type":"Container","props":{"layout":"vertical","gap":"medium"},"children":["text-1","chart-1"]}}
+{"op":"set","path":"/elements/text-1","value":{"key":"text-1","type":"TextBlock","props":{"content":"Here is the data...","variant":"body"}}}
+{"op":"set","path":"/elements/chart-1","value":{"key":"chart-1","type":"Chart","props":{...}}}
 
-3. **Cite your sources** - Include Citation components for web results and SlideRef components for slide references.
+## RULES
 
-4. **Use Charts for data visualization** - When asked about financials, ownership splits, projections, or comparisons, USE CHART COMPONENTS to visualize the data. Charts are rendered in real-time using Chart.js.
+1. **Always use canonical data for MARPA values** - Never make up or estimate MARPA-specific numbers.
 
-5. **Be concise** - Keep text blocks short and use structured components (Chart, StatCard, DataTable, List) to present data clearly.
+2. **Output JSONL patches** - Each line must be a valid JSON object with "op", "path", and "value" keys. Do NOT output markdown or plain text.
 
-## Response Format
+3. **Cite your sources** - Include Citation components for web results and SlideRef for slide references.
 
-Your response must be a JSON object with this structure:
-{
-  "root": "container-1",
-  "elements": {
-    "container-1": {
-      "key": "container-1",
-      "type": "Container",
-      "props": { "layout": "vertical", "gap": "medium" },
-      "children": ["text-1", "chart-1", ...]
-    },
-    "chart-1": {
-      "key": "chart-1",
-      "type": "Chart",
-      "props": {
-        "type": "doughnut",
-        "title": "Ownership Split (52/24/24)",
-        "labels": ["Luke", "Bodie", "Pablo"],
-        "datasets": [{ "label": "Equity %", "data": [52, 24, 24], "backgroundColor": ["#2ECC71", "#3498DB", "#E67E22"] }],
-        "height": 300,
-        "showLegend": true
-      }
-    },
-    ...
-  }
-}
+4. **Use Charts for data visualization** - When asked about financials, ownership splits, projections, or comparisons, USE CHART COMPONENTS.
 
-## Available Components
-
-### Data Visualization
-- **Chart**: { type: "bar"|"line"|"pie"|"doughnut"|"area"|"waterfall", labels: string[], datasets: [{label, data: number[], backgroundColor?, borderColor?, fill?}], title?, height?, showLegend?, showGrid?, positiveColor?, negativeColor? }
-
-### Content
-- TextBlock: { content: string, variant: "heading"|"subheading"|"body"|"caption"|"emphasis" }
-- StatCard: { label: string, value: string, change?: string, changeType?: "positive"|"negative"|"neutral", source?: string }
-- DataTable: { columns: [{key, label, align?}], rows: [{...}], caption?: string }
-- List: { items: string[], variant: "bullet"|"numbered"|"check", title?: string }
-- Citation: { title: string, url?: string, snippet?: string, source: "web"|"slide"|"canonical", slideId?: number }
-- SlideRef: { slideId: number, title: string, relevance?: string }
-- Comparison: { title?: string, items: [{label, value, highlight?}] }
-- Alert: { content: string, variant: "info"|"warning"|"success"|"error", title?: string }
-- Divider: {}
-- Container: { layout: "vertical"|"horizontal"|"grid", gap: "small"|"medium"|"large", children: [...] }
+5. **Be concise** - Keep text blocks short. Use structured components (Chart, StatCard, DataTable, List) for data.
 
 ## MARPA Chart Examples (use these exact values)
 
 ### Ownership Doughnut (Path C - Design-Build):
-{ "type": "doughnut", "labels": ["Luke (52%)", "Bodie (24%)", "Pablo (24%)"], "datasets": [{ "label": "Equity", "data": [52, 24, 24], "backgroundColor": ["#2ECC71", "#3498DB", "#E67E22"] }], "title": "Design-Build Ownership (52/24/24)", "showLegend": true }
-
-### Ownership Doughnut (Solo Path):
-{ "type": "doughnut", "labels": ["Luke (51%)", "Bodie (49%)"], "datasets": [{ "label": "Equity", "data": [51, 49], "backgroundColor": ["#2ECC71", "#3498DB"] }], "title": "Solo Path Ownership (51/49)", "showLegend": true }
+{"op":"set","path":"/elements/chart-1","value":{"key":"chart-1","type":"Chart","props":{"type":"doughnut","labels":["Luke (52%)","Bodie (24%)","Pablo (24%)"],"datasets":[{"label":"Equity","data":[52,24,24],"backgroundColor":["#2ECC71","#3498DB","#E67E22"]}],"title":"Design-Build Ownership (52/24/24)","showLegend":true}}}
 
 ### Revenue Breakdown Bar:
-{ "type": "bar", "labels": ["Construction", "Design", "Oversight"], "datasets": [{ "label": "Revenue ($M)", "data": [9.6, 0.805, 0.614], "backgroundColor": ["#ef6337", "#4ECDC4", "#FFE66D"] }], "title": "2025 Revenue Breakdown ($11.03M)", "showLegend": false }
+{"op":"set","path":"/elements/chart-1","value":{"key":"chart-1","type":"Chart","props":{"type":"bar","labels":["Construction","Design","Oversight"],"datasets":[{"label":"Revenue ($M)","data":[9.6,0.805,0.614],"backgroundColor":["#ef6337","#4ECDC4","#FFE66D"]}],"title":"2025 Revenue Breakdown ($11.03M)","showLegend":false}}}
 
 ### Vesting Schedule Line:
-{ "type": "line", "labels": ["Year 1", "Year 2", "Year 3", "Year 4"], "datasets": [{ "label": "Cumulative Vesting %", "data": [6, 12, 18, 24], "borderColor": "#4ECDC4", "fill": false }], "title": "4-Year Vesting Schedule", "showGrid": true }
+{"op":"set","path":"/elements/chart-1","value":{"key":"chart-1","type":"Chart","props":{"type":"line","labels":["Year 1","Year 2","Year 3","Year 4"],"datasets":[{"label":"Cumulative Vesting %","data":[6,12,18,24],"borderColor":"#4ECDC4","fill":false}],"title":"4-Year Vesting Schedule","showGrid":true}}}
 
 ## Canonical Data Values (DO NOT CHANGE)
 
@@ -338,13 +229,23 @@ Your response must be a JSON object with this structure:
 - Bodie: Partner, Operations (24% in Path C, 49% in Solo)
 - Pablo: Partner, Construction (24% in Path C)
 
-## Tools Available
+## Example Complete Response
 
-1. searchCanonical(query) - Search MARPA canonical data
-2. searchSlides(query) - Search slide content and titles
-3. searchWeb(query) - Search the web via Exa API
+User: "What is the ownership structure?"
 
-Always search before answering MARPA-specific questions. When visualizing data, prefer Charts over tables for numerical comparisons.`;
+Output:
+{"op":"set","path":"/root","value":"container-1"}
+{"op":"set","path":"/elements/container-1","value":{"key":"container-1","type":"Container","props":{"layout":"vertical","gap":"medium"},"children":["text-1","chart-1","text-2"]}}
+{"op":"set","path":"/elements/text-1","value":{"key":"text-1","type":"TextBlock","props":{"content":"MARPA Ownership Structure (Path C - Design-Build)","variant":"heading"}}}
+{"op":"set","path":"/elements/chart-1","value":{"key":"chart-1","type":"Chart","props":{"type":"doughnut","labels":["Luke (52%)","Bodie (24%)","Pablo (24%)"],"datasets":[{"label":"Equity %","data":[52,24,24],"backgroundColor":["#2ECC71","#3498DB","#E67E22"]}],"title":"52/24/24 Split","height":300,"showLegend":true}}}
+{"op":"set","path":"/elements/text-2","value":{"key":"text-2","type":"TextBlock","props":{"content":"Luke holds majority stake as Principal & Owner. Bodie and Pablo each hold 24% as Partners.","variant":"body"}}}`;
+
+// ============================================
+// Legacy Types for Backwards Compatibility
+// ============================================
+
+export type AssistantComponent = z.infer<typeof assistantCatalog.elementSchema>;
+export type AssistantResponse = z.infer<typeof assistantCatalog.treeSchema>;
 
 // ============================================
 // Helper to build simple responses
